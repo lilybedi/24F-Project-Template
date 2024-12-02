@@ -9,9 +9,20 @@ st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
+
+
 st.title('System Admin Home Page')
 
-if st.button('Update ML Models', 
-             type='primary',
-             use_container_width=True):
-  st.switch_page('pages/21_ML_Model_Mgmt.py')
+st.write(f"### Welcome, {st.session_state['first_name']}!")
+
+st.write('\n\n')
+
+with st.expander("See Open Tickets"):
+    st.write('''
+        Insert table with open tickets below once we have them!
+    ''')
+
+with st.expander("Manage Users"):
+    st.write('''
+        Insert table with 10 recently accessed users + a search bar that lets you search all users by USER ID
+    ''')
