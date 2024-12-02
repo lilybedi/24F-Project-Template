@@ -62,10 +62,12 @@ def SideBarLinks(show_home=False):
     """
 
     # add a logo to the sidebar always
-    st.sidebar.image("assets/logo.png", width=150)
+    st.sidebar.image("assets/CC_Logo.png", width=250)
+    
 
     # If there is no logged in user, redirect to the Home (Landing) page
     if "authenticated" not in st.session_state:
+        st.write('\n\n')
         st.session_state.authenticated = False
         st.switch_page("Home.py")
 
@@ -78,18 +80,21 @@ def SideBarLinks(show_home=False):
         
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
         if st.session_state["role"] == "pol_strat_advisor":
+            st.write('\n\n')
             PolStratAdvHomeNav()
             WorldBankVizNav()
             MapDemoNav()
 
         # If the user role is usaid worker, show the Api Testing page
         if st.session_state["role"] == "usaid_worker":
+            st.write('\n\n')
             PredictionNav()
             ApiTestNav()
             ClassificationNav()
 
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "administrator":
+            st.write('\n\n')
             AdminPageNav()
 
     # Always show the About page at the bottom of the list of links
