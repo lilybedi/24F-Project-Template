@@ -70,7 +70,7 @@ if st.button('Act as Kalina, a co-op advisor for students',
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'advisor'
-    st.session_state['first_name'] = 'Kaline'
+    st.session_state['first_name'] = 'Kalina'
     st.switch_page('pages/Advisor_Home.py')
 
 if st.button('Act as Neel, an alumn of Northeastern', 
@@ -86,5 +86,5 @@ if st.button('Act as Tarini, a system administrator of Career Compass',
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
-    st.session_state['first_name'] = 'SysAdmin'
-    st.switch_page('pages/Admin_Home.py')
+    st.session_state['first_name'] = 'Tarini'
+    st.switch_page('pages/20_Admin_Home.py')
