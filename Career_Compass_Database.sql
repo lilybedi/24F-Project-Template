@@ -27,16 +27,28 @@ CREATE TABLE College
     ID   INT AUTO_INCREMENT PRIMARY KEY
 );
 
+CREATE TABLE FieldOfStudy (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Description TEXT
+);
+
 CREATE TABLE Major
 (
-    ID   INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(255)
+    Student_ID INT NOT NULL,
+    FieldOfStudy_ID INT NOT NULL,
+    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
+    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
 );
 
 CREATE TABLE Minor
 (
-    ID   INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(255)
+    Student_ID INT NOT NULL,
+    FieldOfStudy_ID INT NOT NULL,
+    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
+    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
 );
 
 -- Create the Skill table
@@ -160,7 +172,6 @@ CREATE TABLE Student_Minors (
     FOREIGN KEY (Student_ID) REFERENCES Student(ID),
     FOREIGN KEY (Minor_ID) REFERENCES Minor(ID)
 );
-
 
 
 -- Create the Posting_Skills table (junction table)
@@ -347,31 +358,280 @@ VALUES
 # College Insert Statements
 INSERT INTO College (Name)
 VALUES
+INSERT INTO College (Name)
+VALUES
 ('Harvard University'),
 ('Stanford University'),
-('Massachusetts Institute of Technology');
+('Massachusetts Institute of Technology'),
+('University of California, Berkeley'),
+('California Institute of Technology'),
+('University of Chicago'),
+('Columbia University'),
+('Princeton University'),
+('Yale University'),
+('Cornell University'),
+('University of Pennsylvania'),
+('Duke University'),
+('Johns Hopkins University'),
+('University of Michigan, Ann Arbor'),
+('Northwestern University'),
+('University of California, Los Angeles (UCLA)'),
+('University of Virginia'),
+('New York University (NYU)'),
+('University of Texas at Austin'),
+('University of Washington'),
+('Carnegie Mellon University'),
+('University of Southern California'),
+('University of North Carolina, Chapel Hill'),
+('Georgia Institute of Technology'),
+('Brown University'),
+('Vanderbilt University'),
+('Rice University'),
+('University of Florida'),
+('University of Wisconsin, Madison'),
+('University of Illinois at Urbana-Champaign'),
+('University of Minnesota, Twin Cities'),
+('Pennsylvania State University'),
+('University of Maryland, College Park'),
+('University of California, San Diego'),
+('Boston University'),
+('University of Rochester'),
+('Purdue University'),
+('Michigan State University'),
+('Indiana University, Bloomington'),
+('University of Arizona'),
+('University of Colorado, Boulder'),
+('University of California, Irvine'),
+('University of California, Davis'),
+('University of Massachusetts, Amherst'),
+('University of Georgia'),
+('Florida State University'),
+('University of Miami'),
+('Ohio State University'),
+('Arizona State University');
 
-
-# Major Insert Statements
-INSERT INTO Major (Name)
+# FieldOFStudy Insert Statements
+INSERT INTO FieldOfStudy (Name, Description)
 VALUES
-('Computer Science'),
-('Mechanical Engineering'),
-('Business Administration');
+('Computer Science', 'Study of computation, algorithms, and systems.'),
+('Mathematics', 'Study of numbers, quantities, and shapes.'),
+('Business Administration', 'Management of businesses and organizations.'),
+('Economics', 'Study of production, distribution, and consumption of goods.'),
+('Psychology', 'Study of the human mind and behavior.'),
+('Biology', 'Study of living organisms.'),
+('Chemistry', 'Study of matter and its interactions.'),
+('Physics', 'Study of matter, energy, and forces.'),
+('Political Science', 'Study of political systems and behavior.'),
+('Sociology', 'Study of social behavior and societies.'),
+('Philosophy', 'Study of knowledge, reality, and existence.'),
+('English Literature', 'Study of written works in the English language.'),
+('History', 'Study of past events and their impact.'),
+('Art History', 'Study of art and its historical development.'),
+('Anthropology', 'Study of human societies and cultures.'),
+('Linguistics', 'Study of language and its structure.'),
+('Environmental Science', 'Study of the environment and its protection.'),
+('Data Science', 'Study of extracting knowledge from data.'),
+('Cybersecurity', 'Study of protecting computer systems and networks.'),
+('Marketing', 'Study of promoting and selling products or services.'),
+('Accounting', 'Study of financial transactions and reporting.'),
+('Finance', 'Study of managing money and investments.'),
+('Public Relations', 'Study of managing public image and communication.'),
+('Graphic Design', 'Study of creating visual content.'),
+('International Relations', 'Study of political and economic relations between countries.'),
+('Journalism', 'Study of collecting, writing, and reporting news.'),
+('Health Sciences', 'Study of health and healthcare systems.'),
+('Education', 'Study of teaching and learning processes.'),
+('Pre-Medicine', 'Preparation for medical school.'),
+('Pre-Law', 'Preparation for law school.'),
+('Theater Arts', 'Study of acting, directing, and theater production.'),
+('Music', 'Study of musical theory and practice.'),
+('Neuroscience', 'Study of the nervous system.'),
+('Film Studies', 'Study of cinema and its production.'),
+('Sports Management', 'Study of managing sports organizations.'),
+('Criminal Justice', 'Study of law enforcement and criminal behavior.'),
+('Urban Planning', 'Study of designing and managing urban areas.'),
+('Public Policy', 'Study of creating and evaluating government policies.'),
+('Sustainability Studies', 'Study of sustainable practices and development.'),
+('Environmental Engineering', 'Engineering solutions to environmental challenges.'),
+('Agricultural Science', 'Study of farming and food production.'),
+('Biomedical Engineering', 'Application of engineering principles to healthcare.'),
+('Mechanical Engineering', 'Study of machines and mechanical systems.'),
+('Civil Engineering', 'Study of infrastructure and construction.'),
+('Electrical Engineering', 'Study of electrical systems and circuits.'),
+('Chemical Engineering', 'Study of chemical processes in manufacturing.'),
+('Hospitality Management', 'Study of managing hotels and tourism.'),
+('Supply Chain Management', 'Study of managing supply chains.'),
+('Game Design', 'Study of creating video games.'),
+('Artificial Intelligence', 'Study of intelligent systems and algorithms.');
 
-# Minor Insert Statements
-INSERT INTO Minor (Name)
-VALUES
-('Data Science'),
-('Mathematics'),
-('Environmental Studies');
+# Major Insert Statements 
+(1, 1), (1, 15),
+(2, 3),
+(3, 7), (3, 12),
+(4, 2),
+(5, 8), (5, 22),
+(6, 4),
+(7, 9),
+(8, 5), (8, 18),
+(9, 10),
+(10, 6),
+(11, 11), (11, 25),
+(12, 13),
+(13, 14), (13, 28),
+(14, 16),
+(15, 17), (15, 30),
+(16, 19),
+(17, 20),
+(18, 21), (18, 35),
+(19, 23),
+(20, 24),
+(21, 26),
+(22, 27), (22, 38),
+(23, 29),
+(24, 31),
+(25, 32), (25, 40),
+(26, 33),
+(27, 34),
+(28, 36),
+(29, 37), (29, 42),
+(30, 39),
+(31, 1),
+(32, 3), (32, 15),
+(33, 5),
+(34, 7),
+(35, 9), (35, 22),
+(36, 11),
+(37, 13), (37, 25),
+(38, 2),
+(39, 4),
+(40, 6), (40, 28),
+(41, 8),
+(42, 10),
+(43, 12), (43, 30),
+(44, 14),
+(45, 16),
+(46, 18), (46, 33),
+(47, 20),
+(48, 24), (48, 35),
+(49, 26),
+(50, 28);
+
+-- Minor Table Entries
+INSERT INTO Minor (Student_ID, FieldOfStudy_ID) VALUES
+(1, 2),
+(2, 4), (2, 16),
+(3, 6),
+(4, 8), (4, 20),
+(5, 10),
+(6, 12), (6, 24),
+(7, 14),
+(8, 1),
+(9, 3), (9, 27),
+(10, 5),
+(11, 7),
+(12, 9), (12, 30),
+(13, 11),
+(14, 13),
+(15, 15), (15, 33),
+(16, 17),
+(17, 19), (17, 36),
+(18, 21),
+(19, 23), (19, 39),
+(20, 25),
+(21, 28),
+(22, 31),
+(23, 34), (23, 43),
+(24, 37),
+(25, 40),
+(26, 44), (26, 45),
+(27, 46),
+(28, 47), (28, 48),
+(29, 49),
+(30, 50),
+(31, 2),
+(32, 4),
+(33, 6), (33, 17),
+(34, 8),
+(35, 10), (35, 19),
+(36, 12),
+(37, 14),
+(38, 16), (38, 21),
+(39, 18),
+(40, 20),
+(41, 22), (41, 23),
+(42, 24),
+(43, 26),
+(44, 28), (44, 25),
+(45, 30),
+(46, 32),
+(47, 34), (47, 27),
+(48, 36),
+(49, 38), (49, 29),
+(50, 40);
 
 # Skill Insert Stattements
 INSERT INTO Skill (Name, Description, Industry)
 VALUES
-('Python', 'Programming language used for data science and software development.', 'Technology'),
-('Leadership', 'Ability to lead teams and manage projects.', 'Management'),
-('Machine Learning', 'Expertise in building AI-driven systems.', 'Artificial Intelligence');
+INSERT INTO Skill (Name, Description, Industry)
+VALUES
+('Python', 'Programming language used for data science, web development, and AI.', 'Technology'),
+('Leadership', 'Ability to guide, influence, and inspire teams to achieve goals.', 'Management'),
+('Data Analysis', 'Process of inspecting, cleaning, and interpreting data.', 'Data Science'),
+('Machine Learning', 'Application of algorithms to create systems that learn and adapt.', 'Artificial Intelligence'),
+('Marketing Strategy', 'Planning and executing marketing campaigns to achieve business objectives.', 'Marketing'),
+('Project Management', 'Planning, organizing, and managing resources to complete specific goals.', 'Management'),
+('SEO', 'Optimizing websites to rank higher in search engine results.', 'Digital Marketing'),
+('Digital Marketing', 'Promoting products or services through online channels.', 'Marketing'),
+('Web Development', 'Building and maintaining websites.', 'Software Development'),
+('Public Speaking', 'Delivering speeches and presentations effectively.', 'Communication'),
+('Negotiation', 'Reaching mutually beneficial agreements in professional settings.', 'Business'),
+('Graphic Design', 'Creating visual content using tools like Photoshop and Illustrator.', 'Design'),
+('UX Design', 'Designing user-friendly interfaces and experiences.', 'Design'),
+('Content Writing', 'Creating written content for websites, blogs, and other mediums.', 'Media'),
+('Customer Service', 'Providing support and resolving issues for customers.', 'Retail'),
+('Social Media Marketing', 'Promoting brands using social media platforms.', 'Marketing'),
+('Financial Analysis', 'Analyzing financial data to support business decisions.', 'Finance'),
+('Time Management', 'Organizing time effectively to meet deadlines.', 'Productivity'),
+('Team Management', 'Coordinating and leading teams to achieve objectives.', 'Management'),
+('Entrepreneurship', 'Developing and managing business ventures.', 'Business'),
+('Event Planning', 'Organizing and coordinating events.', 'Hospitality'),
+('Programming', 'Writing code in various languages like Java, C++, and Python.', 'Technology'),
+('Data Visualization', 'Representing data in graphical formats for analysis.', 'Data Science'),
+('Cloud Computing', 'Using cloud-based services for data storage and processing.', 'Technology'),
+('Cybersecurity', 'Protecting systems and networks from cyber threats.', 'Technology'),
+('Research', 'Investigating and analyzing to discover new information.', 'Academia'),
+('Presentation Skills', 'Delivering engaging and effective presentations.', 'Communication'),
+('Operations Management', 'Overseeing and improving business operations.', 'Management'),
+('Artificial Intelligence', 'Creating systems that mimic human intelligence.', 'Technology'),
+('Salesforce', 'Using CRM tools for managing customer relationships.', 'Business'),
+('Public Relations', 'Managing the public image of organizations.', 'Media'),
+('Supply Chain Management', 'Overseeing the flow of goods and services.', 'Logistics'),
+('Branding', 'Developing a strong and consistent brand identity.', 'Marketing'),
+('Mobile Development', 'Creating applications for mobile devices.', 'Technology'),
+('Financial Reporting', 'Preparing and analyzing financial statements.', 'Finance'),
+('SQL', 'Using structured query language for database management.', 'Technology'),
+('Python for Data Science', 'Specialized Python skills for analyzing large datasets.', 'Data Science'),
+('Email Marketing', 'Engaging customers through targeted email campaigns.', 'Marketing'),
+('Human Resources', 'Managing employee relations and organizational development.', 'HR'),
+('Statistics', 'Analyzing data and trends using mathematical principles.', 'Data Science'),
+('Strategic Planning', 'Developing strategies to achieve long-term goals.', 'Business'),
+('Biotechnology', 'Using biological processes for industrial purposes.', 'Healthcare'),
+('Game Development', 'Designing and creating video games.', 'Entertainment'),
+('Physics Simulations', 'Creating simulations to study physical systems.', 'Academia'),
+('Engineering Design', 'Designing systems and processes in engineering.', 'Engineering'),
+('Mathematics', 'Applying mathematical theories to solve problems.', 'Academia'),
+('Customer Relationship Management', 'Building strong relationships with customers.', 'Sales'),
+('Business Development', 'Identifying opportunities to grow businesses.', 'Business'),
+('Digital Transformation', 'Adopting digital technology to improve business processes.', 'Technology'),
+('JavaScript', 'Programming language for interactive web applications.', 'Technology'),
+('Linux Administration', 'Managing Linux-based operating systems.', 'IT'),
+('Cloud Architecture', 'Designing cloud solutions and infrastructures.', 'Technology'),
+('Blockchain', 'Using distributed ledger technologies for secure transactions.', 'Finance'),
+('Machine Learning Operations', 'Operationalizing machine learning models in production.', 'Technology'),
+('Video Editing', 'Creating and editing video content.', 'Media'),
+('Product Management', 'Managing the development and lifecycle of products.', 'Business'),
+('Embedded Systems', 'Programming hardware-level applications.', 'Engineering'),
+('Renewable Energy', 'Developing sustainable energy solutions.', 'Energy');
 
 # Advisor Insert Statements
 INSERT INTO Advisor (First_Name, Last_Name, Prefered_Name, College_ID)
@@ -414,11 +674,7 @@ VALUES
 
 
 # Student Insert Statements
-INSERT INTO Student (First_Name, Last_Name, Prefered_Name, Major, Minor, GPA, College_ID, Grad_Year, Cycle, Advisor_ID, Eligibility, Hired, Resume_Link, Email, Phone_Number, Description, NUID)
-VALUES
-('Alex', 'Johnson', 'AJ', 1, 2, 3.8, 1, 2025, 'Fall', 1, TRUE, FALSE, 'link1.pdf', 'ajohnson@example.com', '123-456-7890', 'Looking for a software engineering internship.', 456789),
-('Taylor', 'Smith', 'Tay', 2, 1, 3.6, 2, 2026, 'Spring', 2, TRUE, TRUE, 'link2.pdf', 'tsmith@example.com', '987-654-3210', 'Interested in data science roles.', 567890),
-('Jordan', 'Lee', NULL, 3, NULL, 3.9, 3, 2027, 'Summer', 3, TRUE, FALSE, 'link3.pdf', 'jlee@example.com', '456-789-1230', 'Aspiring business analyst.', 678901);
+
 
 # Posting_Skills Insert Statements
 INSERT INTO Posting_Skills (Position_ID, Skill_ID)
