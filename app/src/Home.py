@@ -65,10 +65,10 @@ if st.button('Job Apps',
     st.session_state['first_name'] = 'Mohammad'
     st.switch_page('pages/32_Job_Apps.py')
 
-if st.button('Act as System Administrator', 
+if st.button('Student profile', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'SysAdmin'
-    st.switch_page('pages/20_Admin_Home.py')
+    st.switch_page('pages/31_Student_Profile.py')
