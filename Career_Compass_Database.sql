@@ -197,20 +197,12 @@ CREATE TABLE Student_Skills
 CREATE TABLE Application
 (
     ID          INT AUTO_INCREMENT PRIMARY KEY,
+    Student_ID  INT NOT NULL,
     Position_ID INT NOT NULL,
-    applyBy DATETIME NOT NULL, 
-    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
-    FOREIGN KEY (Status_ID) REFERENCES Status (ID)
-);
-
--- Create the student Application Table
-CREATE TABLE Student_Applications (
-    Application_ID INT NOT NULL,
-    Student_ID     INT NOT NULL,
-    Status_ID      INT NOT NULL, -- Represents the current status of the student's application
-    PRIMARY KEY (Application_ID, Student_ID),
-    FOREIGN KEY (Application_ID) REFERENCES Application (ID),
+    submittedDate DATETIME NOT NULL, 
+    Status_ID INT NOT NULL, 
     FOREIGN KEY (Student_ID) REFERENCES Student (ID),
+    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
     FOREIGN KEY (Status_ID) REFERENCES Status (ID)
 );
 
@@ -236,7 +228,6 @@ CREATE TABLE Ticket
 (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     Reporter_ID INT NOT NULL,
-    Buggy_Entity_ID INT,
     FOREIGN KEY (Reporter_ID) REFERENCES System_Admin (ID),
     Message VARCHAR(255),
     Completed BOOLEAN
@@ -1137,54 +1128,54 @@ VALUES
 INSERT INTO Student (First_Name, Last_Name, Prefered_Name, GPA, College_ID, Grad_Year, Cycle, Advisor_ID, Eligibility, Hired, Resume_Link, Email, Phone_Number, Description)
 VALUES
 ('Emma', 'Johnson', 'Em', 3.85, 12, 2025, 1, 25, TRUE, FALSE, 'link_to_resume_1', 'emma.johnson@gmail.com', '555-123-4567', 'Passionate about AI research.'),
-('Liam', 'Smith', NULL, 3.75, 15, 2024, 2, 12, TRUE, TRUE, 'link_to_resume_2', 'liam.smith@gmail.com', '555-234-5678', 'Focused on cloud computing and cybersecurity.'),
+('Liam', 'Smith', NULL, 3.75, 15, 2024, 2, 12, TRUE, FALSE, 'link_to_resume_2', 'liam.smith@gmail.com', '555-234-5678', 'Focused on cloud computing and cybersecurity.'),
 ('Sophia', 'Brown', 'Sophie', 3.90, 8, 2026, 1, 22, TRUE, FALSE, 'link_to_resume_3', 'sophia.brown@gmail.com', '555-345-6789', 'Aspiring data scientist.'),
-('Noah', 'Taylor', 'Noah', 3.65, 10, 2023, 2, 18, TRUE, TRUE, 'link_to_resume_4', 'noah.taylor@gmail.com', '555-456-7890', 'Experienced in web development.'),
+('Noah', 'Taylor', 'Noah', 3.65, 10, 2023, 2, 18, TRUE, FALSE, 'link_to_resume_4', 'noah.taylor@gmail.com', '555-456-7890', 'Experienced in web development.'),
 ('Isabella', 'Davis', 'Bella', 3.80, 7, 2024, 1, 30, TRUE, FALSE, 'link_to_resume_5', 'isabella.davis@gmail.com', '555-567-8901', 'Graphic design and marketing enthusiast.'),
 ('Oliver', 'Jones', 'Ollie', 3.70, 5, 2025, 2, 20, TRUE, FALSE, 'link_to_resume_6', 'oliver.jones@gmail.com', '555-678-9012', 'Interest in financial modeling and analytics.'),
-('Mia', 'Wilson', 'Mimi', 3.95, 13, 2026, 1, 35, TRUE, TRUE, 'link_to_resume_7', 'mia.wilson@gmail.com', '555-789-0123', 'Excited to work in renewable energy projects.'),
-('Lucas', 'Garcia', NULL, 3.60, 18, 2025, 2, 17, TRUE, TRUE, 'link_to_resume_8', 'lucas.garcia@gmail.com', '555-890-1234', 'Software engineering focus with cloud expertise.'),
+('Mia', 'Wilson', 'Mimi', 3.95, 13, 2026, 1, 35, TRUE, FALSE, 'link_to_resume_7', 'mia.wilson@gmail.com', '555-789-0123', 'Excited to work in renewable energy projects.'),
+('Lucas', 'Garcia', NULL, 3.60, 18, 2025, 2, 17, TRUE, FALSE, 'link_to_resume_8', 'lucas.garcia@gmail.com', '555-890-1234', 'Software engineering focus with cloud expertise.'),
 ('Ava', 'Martinez', 'Avy', 3.85, 14, 2024, 1, 40, TRUE, FALSE, 'link_to_resume_9', 'ava.martinez@gmail.com', '555-901-2345', 'Marketing and customer engagement specialist.'),
-('Ethan', 'Rodriguez', 'Ethan', 3.75, 9, 2026, 2, 19, TRUE, TRUE, 'link_to_resume_10', 'ethan.rodriguez@gmail.com', '555-012-3456', 'AI and robotics enthusiast.'),
+('Ethan', 'Rodriguez', 'Ethan', 3.75, 9, 2026, 2, 19, TRUE, FALSE, 'link_to_resume_10', 'ethan.rodriguez@gmail.com', '555-012-3456', 'AI and robotics enthusiast.'),
 ('Emily', 'Lopez', 'Emmy', 3.80, 21, 2025, 1, 29, TRUE, FALSE, 'link_to_resume_11', 'emily.lopez@gmail.com', '555-123-4567', 'Graphic designer and creative thinker.'),
-('Benjamin', 'Thomas', NULL, 3.95, 19, 2024, 2, 28, TRUE, TRUE, 'link_to_resume_12', 'benjamin.thomas@gmail.com', '555-234-5678', 'Financial analyst with passion for data.'),
+('Benjamin', 'Thomas', NULL, 3.95, 19, 2024, 2, 28, TRUE, FALSE, 'link_to_resume_12', 'benjamin.thomas@gmail.com', '555-234-5678', 'Financial analyst with passion for data.'),
 ('Ella', 'Anderson', 'Ellie', 3.85, 22, 2025, 1, 36, TRUE, FALSE, 'link_to_resume_13', 'ella.anderson@gmail.com', '555-345-6789', 'Experienced in project management and operations.'),
-('James', 'Hernandez', 'Jimmy', 3.65, 4, 2024, 2, 27, TRUE, TRUE, 'link_to_resume_14', 'james.hernandez@gmail.com', '555-456-7890', 'Blockchain and fintech enthusiast.'),
+('James', 'Hernandez', 'Jimmy', 3.65, 4, 2024, 2, 27, TRUE, FALSE, 'link_to_resume_14', 'james.hernandez@gmail.com', '555-456-7890', 'Blockchain and fintech enthusiast.'),
 ('Lily', 'Moore', 'Lil', 3.90, 6, 2026, 1, 24, TRUE, FALSE, 'link_to_resume_15', 'lily.moore@gmail.com', '555-567-8901', 'Passionate about healthcare technology.'),
-('Matthew', 'Martinez', 'Matt', 3.70, 11, 2023, 2, 23, TRUE, TRUE, 'link_to_resume_16', 'matthew.martinez@gmail.com', '555-678-9012', 'Focus on AI in education and training systems.'),
+('Matthew', 'Martinez', 'Matt', 3.70, 11, 2023, 2, 23, TRUE, FALSE, 'link_to_resume_16', 'matthew.martinez@gmail.com', '555-678-9012', 'Focus on AI in education and training systems.'),
 ('Grace', 'Young', 'Gracie', 3.75, 16, 2024, 1, 15, TRUE, FALSE, 'link_to_resume_17', 'grace.young@gmail.com', '555-789-0123', 'Experienced in event planning and management.'),
-('Jack', 'White', 'Jacky', 3.80, 17, 2026, 2, 45, TRUE, TRUE, 'link_to_resume_18', 'jack.white@gmail.com', '555-890-1234', 'Sales and CRM expert.'),
+('Jack', 'White', 'Jacky', 3.80, 17, 2026, 2, 45, TRUE, FALSE, 'link_to_resume_18', 'jack.white@gmail.com', '555-890-1234', 'Sales and CRM expert.'),
 ('Harper', 'Lee', 'Harp', 3.65, 20, 2025, 1, 44, TRUE, FALSE, 'link_to_resume_19', 'harper.lee@gmail.com', '555-901-2345', 'Excited to work in environmental engineering.'),
-('Alexander', 'Harris', 'Alex', 3.85, 3, 2024, 2, 11, TRUE, TRUE, 'link_to_resume_20', 'alexander.harris@gmail.com', '555-012-3456', 'Business operations and strategic planning.');
-('Zoey', 'Clark', 'Zoe', 3.90, 2, 2026, 1, 33, TRUE, TRUE, 'link_to_resume_21', 'zoey.clark@gmail.com', '555-234-5678', 'Expert in social media marketing and branding.'),
+('Alexander', 'Harris', 'Alex', 3.85, 3, 2024, 2, 11, TRUE, FALSE, 'link_to_resume_20', 'alexander.harris@gmail.com', '555-012-3456', 'Business operations and strategic planning.');
+('Zoey', 'Clark', 'Zoe', 3.90, 2, 2026, 1, 33, TRUE, FALSE, 'link_to_resume_21', 'zoey.clark@gmail.com', '555-234-5678', 'Expert in social media marketing and branding.'),
 ('Daniel', 'Hall', 'Dan', 3.75, 5, 2025, 2, 38, TRUE, FALSE, 'link_to_resume_22', 'daniel.hall@gmail.com', '555-345-6789', 'Focused on renewable energy solutions.'),
-('Scarlett', 'Brown', 'Scar', 3.80, 8, 2024, 1, 12, TRUE, TRUE, 'link_to_resume_23', 'scarlett.brown@gmail.com', '555-456-7890', 'Graphic design and creative storytelling.'),
+('Scarlett', 'Brown', 'Scar', 3.80, 8, 2024, 1, 12, TRUE, FALSE, 'link_to_resume_23', 'scarlett.brown@gmail.com', '555-456-7890', 'Graphic design and creative storytelling.'),
 ('Henry', 'Adams', NULL, 3.95, 10, 2023, 2, 31, TRUE, FALSE, 'link_to_resume_24', 'henry.adams@gmail.com', '555-567-8901', 'Data visualization and analytics enthusiast.'),
-('Victoria', 'Sanchez', 'Vicky', 3.65, 14, 2026, 1, 21, TRUE, TRUE, 'link_to_resume_25', 'victoria.sanchez@gmail.com', '555-678-9012', 'Excited to contribute to AI research.'),
+('Victoria', 'Sanchez', 'Vicky', 3.65, 14, 2026, 1, 21, TRUE, FALSE, 'link_to_resume_25', 'victoria.sanchez@gmail.com', '555-678-9012', 'Excited to contribute to AI research.'),
 ('Owen', 'Roberts', NULL, 3.70, 6, 2024, 2, 25, TRUE, FALSE, 'link_to_resume_26', 'owen.roberts@gmail.com', '555-789-0123', 'Focused on machine learning applications in robotics.'),
 ('Ella', 'Turner', 'Ellie', 3.85, 11, 2025, 1, 14, TRUE, TRUE, 'link_to_resume_27', 'ella.turner@gmail.com', '555-890-1234', 'Marketing and customer engagement specialist.'),
 ('Jackson', 'Phillips', 'Jack', 3.80, 13, 2026, 2, 9, TRUE, FALSE, 'link_to_resume_28', 'jackson.phillips@gmail.com', '555-901-2345', 'Interested in cloud computing and DevOps.'),
-('Zoe', 'Campbell', 'Zoe', 3.75, 4, 2024, 1, 42, TRUE, TRUE, 'link_to_resume_29', 'zoe.campbell@gmail.com', '555-012-3456', 'Experienced in video editing and content creation.'),
-('Logan', 'Evans', 'Log', 3.70, 7, 2025, 2, 28, TRUE, TRUE, 'link_to_resume_30', 'logan.evans@gmail.com', '555-123-4567', 'Software engineer with a focus on AI systems.'),
+('Zoe', 'Campbell', 'Zoe', 3.75, 4, 2024, 1, 42, TRUE, FALSE, 'link_to_resume_29', 'zoe.campbell@gmail.com', '555-012-3456', 'Experienced in video editing and content creation.'),
+('Logan', 'Evans', 'Log', 3.70, 7, 2025, 2, 28, TRUE, FALSE, 'link_to_resume_30', 'logan.evans@gmail.com', '555-123-4567', 'Software engineer with a focus on AI systems.'),
 ('Leah', 'Murphy', 'Lea', 3.85, 9, 2026, 1, 40, TRUE, FALSE, 'link_to_resume_31', 'leah.murphy@gmail.com', '555-234-5678', 'Event planner with an eye for detail.'),
 ('Liam', 'Stewart', 'Liam', 3.65, 20, 2023, 2, 13, TRUE, FALSE, 'link_to_resume_32', 'liam.stewart@gmail.com', '555-345-6789', 'Excited to work in environmental engineering.'),
-('Samantha', 'Morris', 'Sam', 3.90, 22, 2024, 1, 34, TRUE, TRUE, 'link_to_resume_33', 'samantha.morris@gmail.com', '555-456-7890', 'Marketing and content strategy specialist.'),
+('Samantha', 'Morris', 'Sam', 3.90, 22, 2024, 1, 34, TRUE, FALSE, 'link_to_resume_33', 'samantha.morris@gmail.com', '555-456-7890', 'Marketing and content strategy specialist.'),
 ('Ethan', 'Wright', 'Ethan', 3.75, 6, 2026, 2, 29, TRUE, FALSE, 'link_to_resume_34', 'ethan.wright@gmail.com', '555-567-8901', 'Interested in cybersecurity and data privacy.'),
-('Olivia', 'King', 'Liv', 3.85, 15, 2025, 1, 16, TRUE, TRUE, 'link_to_resume_35', 'olivia.king@gmail.com', '555-678-9012', 'Healthcare and biotech enthusiast.'),
+('Olivia', 'King', 'Liv', 3.85, 15, 2025, 1, 16, TRUE, FALSE, 'link_to_resume_35', 'olivia.king@gmail.com', '555-678-9012', 'Healthcare and biotech enthusiast.'),
 ('Andrew', 'Parker', 'Andy', 3.80, 11, 2024, 2, 7, TRUE, FALSE, 'link_to_resume_36', 'andrew.parker@gmail.com', '555-789-0123', 'Software engineering with a focus on SaaS.'),
-('Avery', 'Collins', 'Av', 3.95, 3, 2023, 1, 5, TRUE, TRUE, 'link_to_resume_37', 'avery.collins@gmail.com', '555-890-1234', 'Passionate about education technology.'),
+('Avery', 'Collins', 'Av', 3.95, 3, 2023, 1, 5, TRUE, FALSE, 'link_to_resume_37', 'avery.collins@gmail.com', '555-890-1234', 'Passionate about education technology.'),
 ('Chloe', 'Morgan', 'Chlo', 3.85, 16, 2025, 2, 18, TRUE, FALSE, 'link_to_resume_38', 'chloe.morgan@gmail.com', '555-901-2345', 'Financial analyst with passion for data insights.'),
-('Nathan', 'Green', 'Nate', 3.70, 10, 2026, 1, 26, TRUE, TRUE, 'link_to_resume_39', 'nathan.green@gmail.com', '555-012-3456', 'Data scientist focused on AI applications.'),
-('Lila', 'Perez', NULL, 3.65, 8, 2024, 2, 43, TRUE, TRUE, 'link_to_resume_40', 'lila.perez@gmail.com', '555-123-4567', 'Content marketing and storytelling specialist.'),
+('Nathan', 'Green', 'Nate', 3.70, 10, 2026, 1, 26, TRUE, FALSE, 'link_to_resume_39', 'nathan.green@gmail.com', '555-012-3456', 'Data scientist focused on AI applications.'),
+('Lila', 'Perez', NULL, 3.65, 8, 2024, 2, 43, TRUE, FALSE, 'link_to_resume_40', 'lila.perez@gmail.com', '555-123-4567', 'Content marketing and storytelling specialist.'),
 ('Gabriel', 'Diaz', 'Gabe', 3.90, 5, 2023, 1, 37, TRUE, FALSE, 'link_to_resume_41', 'gabriel.diaz@gmail.com', '555-234-5678', 'AI and machine learning researcher.'),
-('Ella', 'Ramirez', 'Ellie', 3.85, 9, 2025, 2, 6, TRUE, TRUE, 'link_to_resume_42', 'ella.ramirez@gmail.com', '555-345-6789', 'Web development and front-end design expert.'),
+('Ella', 'Ramirez', 'Ellie', 3.85, 9, 2025, 2, 6, TRUE, FALSE, 'link_to_resume_42', 'ella.ramirez@gmail.com', '555-345-6789', 'Web development and front-end design expert.'),
 ('Zoe', 'Martinez', 'Zoe', 3.80, 12, 2024, 1, 15, TRUE, FALSE, 'link_to_resume_43', 'zoe.martinez@gmail.com', '555-456-7890', 'Graphic design and digital media enthusiast.'),
-('Aiden', 'Lee', 'Aid', 3.65, 18, 2026, 2, 48, TRUE, TRUE, 'link_to_resume_44', 'aiden.lee@gmail.com', '555-567-8901', 'Focused on DevOps and cloud infrastructure.'),
+('Aiden', 'Lee', 'Aid', 3.65, 18, 2026, 2, 48, TRUE, FALSE, 'link_to_resume_44', 'aiden.lee@gmail.com', '555-567-8901', 'Focused on DevOps and cloud infrastructure.'),
 ('Madison', 'Harris', 'Maddie', 3.70, 7, 2023, 1, 39, TRUE, FALSE, 'link_to_resume_45', 'madison.harris@gmail.com', '555-678-9012', 'Software engineering for healthcare systems.'),
-('Logan', 'Clark', 'Logan', 3.85, 4, 2024, 2, 25, TRUE, TRUE, 'link_to_resume_46', 'logan.clark@gmail.com', '555-789-0123', 'Blockchain technology and security specialist.'),
-('Nora', 'Thompson', 'Nor', 3.90, 2, 2025, 1, 20, TRUE, TRUE, 'link_to_resume_47', 'nora.thompson@gmail.com', '555-890-1234', 'Environmental engineering and green solutions.'),
-('Sophia', 'Walker', 'Sophie', 3.65, 14, 2026, 2, 11, TRUE, TRUE, 'link_to_resume_48', 'sophia.walker@gmail.com', '555-901-2345', 'Project management and operations specialist.'),
-('Elliot', 'Moore', NULL, 3.70, 20, 2024, 1, 9, TRUE, TRUE, 'link_to_resume_49', 'elliot.moore@gmail.com', '555-012-3456', 'AI and robotics enthusiast.'),
+('Logan', 'Clark', 'Logan', 3.85, 4, 2024, 2, 25, TRUE, FALSE, 'link_to_resume_46', 'logan.clark@gmail.com', '555-789-0123', 'Blockchain technology and security specialist.'),
+('Nora', 'Thompson', 'Nor', 3.90, 2, 2025, 1, 20, TRUE, FALSE, 'link_to_resume_47', 'nora.thompson@gmail.com', '555-890-1234', 'Environmental engineering and green solutions.'),
+('Sophia', 'Walker', 'Sophie', 3.65, 14, 2026, 2, 11, TRUE, FALSE, 'link_to_resume_48', 'sophia.walker@gmail.com', '555-901-2345', 'Project management and operations specialist.'),
+('Elliot', 'Moore', NULL, 3.70, 20, 2024, 1, 9, TRUE, FALSE, 'link_to_resume_49', 'elliot.moore@gmail.com', '555-012-3456', 'AI and robotics enthusiast.'),
 ('Violet', 'Brooks', 'Vi', 3.85, 19, 2025, 2, 13, TRUE, FALSE, 'link_to_resume_50', 'violet.brooks@gmail.com', '555-123-4567', 'Marketing analytics and strategy expert.'),
 
 # Posting_Skills Insert Statements
@@ -1522,87 +1513,210 @@ VALUES
 ('Rejected'),
 ('Accepted');
 
-INSERT INTO Application (Position_ID, applyBy)
-VALUES
-(1, 3, '2024-02-15'),    -- ML Engineer Intern
-(2, 52, '2024-02-16'),   -- AI Research Scientist
-(3, 51, '2024-02-15'),   -- AI Research Intern
-(4, 3, '2024-02-17'),    -- ML Engineer Intern
-(5, 52, '2024-02-18'),   -- AI Research Scientist
-(6, 1, '2024-02-15'),    -- Backend Developer Intern
-(7, 31, '2024-02-16'),   -- Backend Developer
-(8, 2, '2024-02-17'),    -- Frontend Developer
-(9, 14, '2024-02-18'),   -- UI Developer Intern
-(10, 15, '2024-02-19'),  -- Full Stack Developer
-(11, 4, '2024-02-15'),   -- Data Scientist
-(12, 33, '2024-02-16'),  -- Data Analyst
-(13, 34, '2024-02-17'),  -- Analytics Intern
-(14, 4, '2024-02-18'),   -- Data Scientist
-(15, 33, '2024-02-19'),  -- Data Analyst
-(16, 6, '2024-02-15'),   -- DevOps Engineer
-(17, 25, '2024-02-16'),  -- Security Engineer
-(18, 54, '2024-02-17'),  -- DevOps Manager
-(19, 26, '2024-02-18'),  -- Security Analyst Intern
-(20, 12, '2024-02-19'),  -- Cloud Engineer Intern
-(21, 9, '2024-02-15'),   -- Marketing Intern
-(22, 10, '2024-02-16'),  -- Content Strategist
-(23, 40, '2024-02-17'),  -- Digital Marketing Intern
-(24, 39, '2024-02-18'),  -- Marketing Manager
-(25, 9, '2024-02-19'),   -- Marketing Intern
-(26, 13, '2024-02-15'),  -- UX Designer
-(27, 36, '2024-02-16'),  -- Product Designer
-(28, 14, '2024-02-17'),  -- UI Developer Intern
-(29, 56, '2024-02-18'),  -- UX Research Intern
-(30, 13, '2024-02-19'),  -- UX Designer
-(31, 17, '2024-02-15'),  -- Finance Analyst
-(32, 8, '2024-02-16'),   -- Business Analyst Intern
-(33, 29, '2024-02-17'),  -- Sales Representative
-(34, 28, '2024-02-18'),  -- Operations Intern
-(35, 37, '2024-02-19'),  -- Project Coordinator
-(36, 11, '2024-02-15'),  -- Data Engineer
-(37, 28, '2024-02-16'),  -- Operations Intern
-(38, 11, '2024-02-17'),  -- Data Engineer
-(39, 28, '2024-02-18'),  -- Operations Intern
-(40, 37, '2024-02-19'),  -- Project Coordinator
-(41, 1, '2024-02-15'),   -- Backend Developer Intern
-(42, 16, '2024-02-16'),  -- Systems Engineer Intern
-(43, 5, '2024-02-17'),   -- Software QA Intern
-(44, 31, '2024-02-18'),  -- Backend Developer
-(45, 3, '2024-02-19'),   -- ML Engineer Intern
-(46, 24, '2024-02-15'),  -- Research Assistant
-(47, 43, '2024-02-16'),  -- BI Intern
-(48, 37, '2024-02-17'),  -- Project Coordinator
-(49, 10, '2024-02-18'),  -- Content Strategist
-(50, 33, '2024-02-19');  -- Data Analyst
-
-INSERT INTO Student_Applications (Application_ID, Student_ID, Status_ID)
+INSERT INTO Application (Student_ID, Position_ID, submittedDate, Status_ID)
 VALUES
 -- AI/ML focused students
-(1, 1, 1),    -- Emma Johnson -> ML Engineer Intern, Under Review
-(2, 41, 1),   -- Gabriel Diaz -> AI Research Scientist, Under Review
-(3, 49, 2),   -- Elliot Moore -> AI Research Intern, Pending
-(4, 25, 3),   -- Victoria Sanchez -> ML Engineer Intern, Rejected
-(5, 10, 1),   -- Ethan Rodriguez -> AI Research Scientist, Under Review
+(1, 3, '2024-02-15', 1),    -- Emma Johnson -> ML Engineer Intern
+(41, 52, '2024-02-16', 1),  -- Gabriel Diaz -> AI Research Scientist
+(49, 51, '2024-02-15', 1),  -- Elliot Moore -> AI Research Intern
+(25, 3, '2024-02-17', 2),   -- Victoria Sanchez -> ML Engineer Intern
+(10, 52, '2024-02-18', 1),  -- Ethan Rodriguez -> AI Research Scientist
 
 -- Software Development focused
-(6, 8, 1),    -- Lucas Garcia -> Backend Developer Intern, Under Review
-(7, 30, 2),   -- Logan Evans -> Backend Developer, Pending
+(8, 1, '2024-02-15', 1),    -- Lucas Garcia -> Backend Developer Intern
+(30, 31, '2024-02-16', 1),  -- Logan Evans -> Backend Developer
+(4, 2, '2024-02-17', 1),    -- Noah Taylor -> Frontend Developer
+(42, 14, '2024-02-18', 1),  -- Ella Ramirez -> UI Developer Intern
+(36, 15, '2024-02-19', 1),  -- Andrew Parker -> Full Stack Developer
+
+-- Data Science/Analytics
+(3, 4, '2024-02-15', 1),    -- Sophia Brown -> Data Scientist
+(39, 33, '2024-02-16', 1),  -- Nathan Green -> Data Analyst
+(24, 34, '2024-02-17', 1),  -- Henry Adams -> Analytics Intern
+(12, 4, '2024-02-18', 2),   -- Benjamin Thomas -> Data Scientist
+(38, 33, '2024-02-19', 1),  -- Chloe Morgan -> Data Analyst
+
+-- Cybersecurity/DevOps
+(2, 6, '2024-02-15', 1),    -- Liam Smith -> DevOps Engineer
+(34, 25, '2024-02-16', 1),  -- Ethan Wright -> Security Engineer
+(44, 54, '2024-02-17', 1),  -- Aiden Lee -> DevOps Manager
+(46, 26, '2024-02-18', 1),  -- Logan Clark -> Security Analyst Intern
+(28, 12, '2024-02-19', 1),  -- Jackson Phillips -> Cloud Engineer Intern
+
+-- Marketing/Content
+(5, 9, '2024-02-15', 1),    -- Isabella Davis -> Marketing Intern
+(21, 10, '2024-02-16', 1),  -- Zoey Clark -> Content Strategist
+(40, 40, '2024-02-17', 1),  -- Lila Perez -> Digital Marketing Intern
+(27, 39, '2024-02-18', 1),  -- Ella Turner -> Marketing Manager
+(33, 9, '2024-02-19', 1),   -- Samantha Morris -> Marketing Intern
+
+-- Design/UX
+(11, 13, '2024-02-15', 1),  -- Emily Lopez -> UX Designer
+(23, 36, '2024-02-16', 1),  -- Scarlett Brown -> Product Designer
+(43, 14, '2024-02-17', 1),  -- Zoe Martinez -> UI Developer Intern
+(29, 56, '2024-02-18', 1),  -- Zoe Campbell -> UX Research Intern
+(35, 13, '2024-02-19', 1),  -- Olivia King -> UX Designer
+
+-- Business/Finance
+(6, 17, '2024-02-15', 1),   -- Oliver Jones -> Finance Analyst
+(17, 8, '2024-02-16', 1),   -- Grace Young -> Business Analyst Intern
+(18, 29, '2024-02-17', 1),  -- Jack White -> Sales Representative
+(31, 28, '2024-02-18', 2),  -- Leah Murphy -> Operations Intern
+(48, 37, '2024-02-19', 1),  -- Sophia Walker -> Project Coordinator
+
+-- Environmental/Sustainability
+(7, 11, '2024-02-15', 1),   -- Mia Wilson -> Data Engineer
+(19, 28, '2024-02-16', 1),  -- Harper Lee -> Operations Intern
+(22, 11, '2024-02-17', 1),  -- Daniel Hall -> Data Engineer
+(32, 28, '2024-02-18', 1),  -- Liam Stewart -> Operations Intern
+(47, 37, '2024-02-19', 1),  -- Nora Thompson -> Project Coordinator
+
+-- Technology/Engineering
+(45, 1, '2024-02-15', 1),   -- Madison Harris -> Backend Developer Intern
+(26, 16, '2024-02-16', 1),  -- Owen Roberts -> Systems Engineer Intern
+(37, 5, '2024-02-17', 1),   -- Avery Collins -> Software QA Intern
+(14, 31, '2024-02-18', 1),  -- James Hernandez -> Backend Developer
+(16, 3, '2024-02-19', 1),   -- Matthew Martinez -> ML Engineer Intern
+
+-- Research/Academic
+(15, 24, '2024-02-15', 1),  -- Lily Moore -> Research Assistant
+(20, 43, '2024-02-16', 1),  -- Alexander Harris -> BI Intern
+(13, 37, '2024-02-17', 1),  -- Ella Anderson -> Project Coordinator
+(9, 10, '2024-02-18', 1),   -- Ava Martinez -> Content Strategist
+(50, 33, '2024-02-19', 1);  -- Violet Brooks -> Data Analyst
 
 
 # Question Insert Statements
 INSERT INTO Question (Question, Answer, Application_ID)
 VALUES
-('Why do you want this internship?', 'To gain real-world experience in software engineering.', 1),
-('What is your greatest strength?', 'Problem-solving and teamwork.', 2),
-('Describe a challenging project you worked on.', 'Developed a data pipeline for analyzing large datasets.', 3);
+INSERT INTO Question (Question, Answer, Application_ID)
+VALUES
+-- AI/ML focused students
+('Why do you want this internship?', 'To gain real-world experience in machine learning.', 1),
+('What is your greatest strength?', 'Critical thinking and perseverance.', 1),
+('How do you stay updated with AI advancements?', 'I follow AI research journals and attend webinars.', 2),
+('What excites you about AI research?', 'The potential to solve complex real-world problems.', 2),
+('What was your favorite ML project?', 'Building a recommendation system using collaborative filtering.', 3),
+
+-- Software Development focused
+('Why do you want this position?', 'To deepen my backend development skills.', 6),
+('What is your favorite programming language and why?', 'Java, because of its versatility and robust libraries.', 6),
+('Describe a time you optimized a system.', 'Improved API response times by implementing caching.', 7),
+('What motivates you about frontend development?', 'Creating user-friendly interfaces that improve accessibility.', 8),
+('Describe a UI/UX improvement you made.', 'Redesigned a dashboard for better usability.', 9),
+
+-- Data Science/Analytics
+('How do you approach data cleaning?', 'By systematically identifying outliers and missing values.', 11),
+('What is your experience with predictive modeling?', 'Developed predictive models for sales forecasting.', 12),
+('How do you ensure the accuracy of your analysis?', 'By cross-validating results and using multiple datasets.', 13),
+('What excites you about analytics?', 'Uncovering actionable insights from data.', 14),
+('Describe a challenging dataset you worked with.', 'Cleaned and analyzed unstructured text data for sentiment analysis.', 15),
+
+-- Cybersecurity/DevOps
+('What interests you about DevOps?', 'Streamlining software development and deployment.', 16),
+('Describe a security issue you solved.', 'Identified and patched a vulnerability in a web application.', 17),
+('What is your experience with CI/CD?', 'Built and maintained CI/CD pipelines using Jenkins.', 18),
+('Why is cybersecurity important to you?', 'To protect sensitive data and prevent breaches.', 19),
+('What is your experience with cloud security?', 'Implemented security protocols for AWS deployments.', 20),
+
+-- Marketing/Content
+('Why are you passionate about marketing?', 'Connecting with audiences and creating impactful campaigns.', 21),
+('What is your favorite digital marketing tool?', 'Google Analytics for its insightful data visualizations.', 22),
+('How do you create effective social media campaigns?', 'By analyzing audience engagement and trends.', 23),
+('Describe a successful content strategy you implemented.', 'Developed a blog series that increased traffic by 30%.', 24),
+('What interests you about digital marketing?', 'The combination of creativity and analytics.', 25),
+
+-- Design/UX
+('What excites you about UX design?', 'Improving the user experience through thoughtful design.', 26),
+('Describe your design process.', 'Empathize, define, ideate, prototype, and test.', 27),
+('How do you handle feedback on your designs?', 'By embracing it as an opportunity for improvement.', 28),
+('What is your favorite design project?', 'Creating a mobile app for budget tracking.', 29),
+('How do you ensure accessibility in design?', 'Following WCAG guidelines and conducting user testing.', 30),
+
+-- Business/Finance
+('What interests you about finance?', 'Helping organizations make informed financial decisions.', 31),
+('How do you manage competing priorities?', 'By prioritizing tasks based on impact and deadlines.', 32),
+('Describe a financial analysis you performed.', 'Evaluated profitability and cost structure for a project.', 33),
+('Why do you want this position?', 'To gain hands-on experience in financial modeling.', 34),
+('What motivates you about business analysis?', 'Uncovering insights to drive strategic decisions.', 35),
+
+-- Environmental/Sustainability
+('Why do you care about sustainability?', 'To create a better future for the planet.', 36),
+('Describe a sustainability project you worked on.', 'Designed a system for reducing water usage in agriculture.', 37),
+('What is your experience with environmental engineering?', 'Developed renewable energy solutions for small businesses.', 38),
+('How do you measure the success of sustainability initiatives?', 'Using KPIs like energy savings and waste reduction.', 39),
+('What motivates you about sustainability?', 'Making a tangible impact on environmental health.', 40),
+
+-- Technology/Engineering
+('Why do you enjoy backend development?', 'The challenge of building scalable systems.', 41),
+('What is your experience with API development?', 'Built RESTful APIs for a financial application.', 42),
+('Describe a technical challenge you overcame.', 'Optimized database queries to reduce load times.', 43),
+('What excites you about engineering?', 'Solving complex problems through innovative solutions.', 44),
+('How do you stay updated with technology trends?', 'Following tech blogs and participating in hackathons.', 45),
+
+-- Research/Academic
+('Why do you enjoy research?', 'The opportunity to explore and discover new knowledge.', 46),
+('What is your favorite area of study?', 'Machine learning and its applications.', 47),
+('Describe a research project you led.', 'Developed a novel algorithm for image recognition.', 48),
+('What motivates you about academic research?', 'Contributing to the advancement of knowledge.', 49),
+('What do you enjoy about being a research assistant?', 'Learning from experts and contributing to meaningful projects.', 50);
 
 
 # Ticket Insert Statements
-INSERT INTO Ticket (Reporter_ID, Buggy_Entity_ID, Message, Completed)
+INSERT INTO Ticket (Reporter_ID, Message, Completed)
 VALUES
-(1, 2, 'Error in application submission.', FALSE),
-(2, 1, 'Duplicate entries in the alumni table.', TRUE),
-(3, 3, 'Skill data not populating correctly.', FALSE);
+INSERT INTO Ticket (Reporter_ID, Message, Completed)
+VALUES
+(1, 'Error in application submission.', FALSE),
+(2, 'Duplicate entries in the alumni table.', TRUE),
+(3, 'Skill data not populating correctly.', FALSE),
+(4, 'Incorrect data in student GPA field.', TRUE),
+(5, 'Resume link is broken for some students.', FALSE),
+(6, 'Advisor information not linked properly.', TRUE),
+(7, 'Missing values in posting location.', FALSE),
+(8, 'Application status ID mismatch.', TRUE),
+(9, 'Issue with the frontend rendering of postings.', FALSE),
+(10, 'Database connection timeout on login.', TRUE),
+(11, 'Bug in the search functionality for postings.', FALSE),
+(12, 'Duplicate values in major and minor tables.', TRUE),
+(13, 'Error during status update for applications.', FALSE),
+(14, 'Advisor cannot assign students.', TRUE),
+(15, 'Internship pay field accepts negative values.', FALSE),
+(16, 'Pagination not working in student list view.', TRUE),
+(17, 'Broken links in the alumni section.', FALSE),
+(18, 'Incorrect data formatting in posting descriptions.', TRUE),
+(19, 'Error during file upload for student resumes.', FALSE),
+(20, 'Bug in the reporting system for tickets.', TRUE),
+(21, 'Incomplete data migration for skills.', FALSE),
+(22, 'Search filters in postings not functioning.', TRUE),
+(23, 'Advisor IDs not being assigned correctly.', FALSE),
+(24, 'Major table schema mismatch.', TRUE),
+(25, 'Notification system not sending updates.', FALSE),
+(26, 'Incorrect SQL constraints on applications.', TRUE),
+(27, 'Field validation missing for GPA inputs.', FALSE),
+(28, 'Missing dropdown options for application statuses.', TRUE),
+(29, 'Broken layout on mobile devices.', FALSE),
+(30, 'Advisor college IDs not displaying.', TRUE),
+(31, 'Frontend crashes during student application.', FALSE),
+(32, 'Skill description field accepts invalid characters.', TRUE),
+(33, 'Duplicate entries allowed in alumni positions.', FALSE),
+(34, 'Error in the calculation of internship durations.', TRUE),
+(35, 'Auto-complete in posting search is too slow.', FALSE),
+(36, 'Application status updates are not saving.', TRUE),
+(37, 'Broken links in the advisor profiles.', FALSE),
+(38, 'Error in displaying applicant details.', TRUE),
+(39, 'Bug in the password reset functionality.', FALSE),
+(40, 'Posting pay field not validating inputs.', TRUE),
+(41, 'UI issue with the dashboard view.', FALSE),
+(42, 'Broken images in alumni section.', TRUE),
+(43, 'Advisor dropdown list not populating.', FALSE),
+(44, 'Timeout during data sync for applications.', TRUE),
+(45, 'Student table missing graduation year.', FALSE),
+(46, 'Search results displaying incorrect order.', TRUE),
+(47, 'Error during database backup.', FALSE),
+(48, 'Date validation missing for internship postings.', TRUE),
+(49, 'Incorrect query result for student applications.', FALSE),
+(50, 'Bug in sorting alumni by graduation year.', TRUE);
 
 # Message Insert Statements
 INSERT INTO Message (RE, Student_ID, Message, Alumni_ID)
