@@ -6,6 +6,14 @@ import streamlit as st
 
 import streamlit as st
 
+student_name = "John Kennedy"
+major = "English"
+grad_year = 2027 # skill / description?
+skills_experiences = {"Writing": "Advanced",
+               "Mathematics": "Basic"}
+
+
+
 # Header Section: Navbar
 st.markdown(
     """
@@ -22,12 +30,7 @@ st.markdown(
     .navbar div {
         display: inline-block;
     }
-    .profile-pic {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: white; /* Placeholder for profile picture */
-    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -37,8 +40,8 @@ st.markdown(
     """
     <div class="navbar">
         <div>Career Compass</div>
-        <div>Profile</div>
-        <div class="profile-pic"></div>
+        <div>Jobs</div>
+        <div class="profile-pic">Edit Profile</div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -51,41 +54,35 @@ st.divider()
 col1, col2 = st.columns([2, 3])
 
 with col1:
-    st.image("./assets/profile_photo.png", caption="Picture", width=150)  # Placeholder for profile image
-    st.button("Edit Profile")  # Edit Profile Button
+    st.image("./assets/profile_photo.png", caption="Picture", width=150) 
+    st.button("Edit Profile")  
 
 with col2:
-    st.write("Student Name")
+    st.write(student_name)
     st.write("Major / Graduation Year")
     st.write("GPA")
-    st.selectbox("Status", ["Looking for co-op", "Accepted Offer"])  # Dropdown for status
+    st.selectbox("Status", ["Looking for co-op", "Accepted Offer"]) 
 
-# Links to Websites Section (Top-Right)
+# Resumes
 col3, col4 = st.columns([2, 3])
 
 with col4:
-    st.markdown("**Links to Websites**")
+    st.write("Links to Websites")
     st.selectbox("Resumes", ["Resume 1", "Resume 2", "Resume 3"])  # Dropdown for resumes
 
-# Experiences and Skills Section (Bottom-Left)
-st.markdown("### Experiences and Skills")
-exp_col1, exp_col2, exp_col3 = st.columns([1, 1, 1])
+st.divider()
+exp_col, team_col = st.columns([3, 2]) 
 
-with exp_col1:
-    st.empty()  # Placeholder for first experience block
+# Experiences and Skills
+with exp_col:
+    st.markdown("#### Experiences and Skills")
+    for compets in list(skills_experiences.keys()):
+        skill_container = st.container()
+        st.markdown("**" + compets + "**")
+        st.write(skills_experiences.get(compets))
 
-with exp_col2:
-    st.empty()  # Placeholder for second experience block
-
-with exp_col3:
-    st.empty()  # Placeholder for third experience block
-
-# Your Team Section (Bottom-Right)
-st.markdown("### Your Team")
-team_col1, team_col2 = st.columns([1, 1])
-
-with team_col1:
-    st.button("Advisor Profile and Contact")  # Advisor profile block
-
-with team_col2:
-    st.button("Alumni Profile and Contact")  # Alumni profile block
+# Your Team
+with team_col:
+    st.write("#### Your Team")
+    st.button("Advisor Profile and Contact")
+    st.button("Alumni Profile and Contact")

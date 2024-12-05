@@ -63,7 +63,7 @@ if st.button('Company',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'usaid_worker'
     st.session_state['first_name'] = 'Mohammad'
-    st.switch_page('pages/31_Company.py')
+    st.switch_page('pages/31_Student_Profile.py')
 
 if st.button('Act as System Administrator', 
             type = 'primary', 
