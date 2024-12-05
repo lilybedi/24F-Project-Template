@@ -11,6 +11,17 @@ major = "English"
 grad_year = 2027 # skill / description?
 skills_experiences = {"Writing": "Advanced",
                "Mathematics": "Basic"}
+gpa = 3.0
+photo_link = "./assets/profile_photo.png"
+status = 1
+resumes = {"Teaching Resume": "google.com",
+           "Lawyer Resume": "yahoo.com"}
+
+advisor_name = "Jeremy"
+advisor_contact = "gmail.com"
+
+alumni = {"Mary": "gmail2.com",
+          "Alice": "gmail3.com"}
 
 
 
@@ -41,7 +52,6 @@ st.markdown(
     <div class="navbar">
         <div>Career Compass</div>
         <div>Jobs</div>
-        <div class="profile-pic">Edit Profile</div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -54,21 +64,27 @@ st.divider()
 col1, col2 = st.columns([2, 3])
 
 with col1:
-    st.image("./assets/profile_photo.png", caption="Picture", width=150) 
-    st.button("Edit Profile")  
+    st.image(photo_link, width=150) 
 
 with col2:
     st.write(student_name)
-    st.write("Major / Graduation Year")
-    st.write("GPA")
-    st.selectbox("Status", ["Looking for co-op", "Accepted Offer"]) 
+    st.write(major + " / " + str(grad_year))
+    st.write("GPA: " + str(gpa))
+
+    # Default shows up first
+    if (status == 0):
+        st.selectbox("Status", ["Looking for co-op", "Not looking for co-op"]) 
+
+    else:
+        st.selectbox("Status", ["Not looking for co-op", "Looking for co-op"]) 
 
 # Resumes
 col3, col4 = st.columns([2, 3])
 
 with col4:
     st.write("Links to Websites")
-    st.selectbox("Resumes", ["Resume 1", "Resume 2", "Resume 3"])  # Dropdown for resumes
+    for name, link in resumes.items():
+        st.markdown(f"- [{name}]({link})")
 
 st.divider()
 exp_col, team_col = st.columns([3, 2]) 
@@ -83,6 +99,12 @@ with exp_col:
 
 # Your Team
 with team_col:
-    st.write("#### Your Team")
-    st.button("Advisor Profile and Contact")
-    st.button("Alumni Profile and Contact")
+    st.markdown("#### Your Team")
+    st.markdown("##### Advisor")
+    st.write(advisor_name)
+    st.write(advisor_contact)
+    st.divider()
+    st.markdown("#### Alumni")
+    for alumnus in list(alumni.keys()):
+        st.markdown("#### " + alumnus)
+        st.write(alumni.get(alumnus))
