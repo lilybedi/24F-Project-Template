@@ -1,10 +1,8 @@
 import streamlit as st
 
 #
-# Information needed on load
+# Information needed on load -- FIX
 #
-
-import streamlit as st
 
 student_name = "John Kennedy"
 major = "English"
@@ -47,7 +45,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.markdown(
+st.markdown( # FIX -- make these actually link to the proper site
     """
     <div class="navbar">
         <div>Career Compass</div>

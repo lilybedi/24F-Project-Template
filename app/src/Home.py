@@ -57,13 +57,13 @@ if st.button("Act as John, a Political Strategy Advisor",
     logger.info("Logging in as Political Strategy Advisor Persona")
     st.switch_page('pages/00_Pol_Strat_Home.py')
 
-if st.button('Company', 
+if st.button('Job Apps', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'usaid_worker'
     st.session_state['first_name'] = 'Mohammad'
-    st.switch_page('pages/31_Student_Profile.py')
+    st.switch_page('pages/32_Job_Apps.py')
 
 if st.button('Act as System Administrator', 
             type = 'primary', 
