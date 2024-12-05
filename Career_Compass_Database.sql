@@ -33,7 +33,7 @@ CREATE TABLE FieldOfStudy (
     Description TEXT
 );
 
-CREATE TABLE Major
+CREATE TABLE Student_Majors
 (
     Student_ID INT NOT NULL,
     FieldOfStudy_ID INT NOT NULL,
@@ -42,12 +42,30 @@ CREATE TABLE Major
     FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
 );
 
-CREATE TABLE Minor
+CREATE TABLE Student_Minors
 (
     Student_ID INT NOT NULL,
     FieldOfStudy_ID INT NOT NULL,
     PRIMARY KEY (Student_ID, FieldOfStudy_ID),
     FOREIGN KEY (Student_ID) REFERENCES Student(ID),
+    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
+);
+
+CREATE TABLE Alumni_Majors
+(
+    Alumni_ID INT NOT NULL,
+    FieldOfStudy_ID INT NOT NULL,
+    PRIMARY KEY (Alumni_ID, FieldOfStudy_ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni_ID(ID),
+    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
+);
+
+CREATE TABLE Alumni_Minors
+(
+    Alumni_ID INT NOT NULL,
+    FieldOfStudy_ID INT NOT NULL,
+    PRIMARY KEY (Alumni_ID, FieldOfStudy_ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni_ID(ID),
     FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
 );
 
@@ -104,6 +122,7 @@ CREATE TABLE Posting
 );
 
 -- Create the Alumni table
+
 CREATE TABLE Alumni
 (
     ID         INT PRIMARY KEY,
@@ -115,7 +134,6 @@ CREATE TABLE Alumni
     College_ID INT NOT NULL,
     FOREIGN KEY (College_ID) REFERENCES College (ID)
 );
-
 
 CREATE TABLE Alumni_Position
 (
@@ -153,22 +171,6 @@ CREATE TABLE Student
     Email VARCHAR(255),
     Phone_Number VARCHAR(255),
     Description TEXT,
-);
-
-CREATE TABLE Student_Majors (
-    Student_ID INT NOT NULL,
-    Major_ID INT NOT NULL,
-    PRIMARY KEY (Student_ID, Major_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
-    FOREIGN KEY (Major_ID) REFERENCES Major(ID)
-);
-
-CREATE TABLE Student_Minors (
-    Student_ID INT NOT NULL,
-    Minor_ID INT NOT NULL,
-    PRIMARY KEY (Student_ID, Minor_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
-    FOREIGN KEY (Minor_ID) REFERENCES Minor(ID)
 );
 
 
@@ -463,6 +465,7 @@ VALUES
 ('Artificial Intelligence', 'Study of intelligent systems and algorithms.');
 
 # Major Insert Statements 
+INSERT INTO Student_Majors (Student_ID, FieldOfStudy_ID) VALUES
 (1, 1), (1, 15),
 (2, 3),
 (3, 7), (3, 12),
@@ -515,7 +518,7 @@ VALUES
 (50, 28);
 
 -- Minor Table Entries
-INSERT INTO Minor (Student_ID, FieldOfStudy_ID) VALUES
+INSERT INTO Student_Minors (Student_ID, FieldOfStudy_ID) VALUES
 (1, 2),
 (2, 4), (2, 16),
 (3, 6),
@@ -806,11 +809,9 @@ VALUES
 
 
 # Alumni Insert Statements
-INSERT INTO Alumni (ID, Title, Grad_Year, First_Name, Last_Name, Email, College_ID)
+INSERT INTO Alumni (ID, Grad_Year, First_Name, Last_Name, Email, College_ID)
 VALUES
-(1, 'Dr.', 2020, 'Sarah', 'Connor', 'sconnor@example.com', 123456, 1, FALSE),
-(2, 'Mr.', 2018, 'James', 'Carter', 'jcarter@example.com', 234567, 2, TRUE),
-(3, 'Ms.', 2021, 'Laura', 'Adams', 'ladams@example.com', 345678, 3, FALSE);
+
 
 
 # Alumni_Position Insert Statements
