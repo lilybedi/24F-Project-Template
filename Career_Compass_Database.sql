@@ -9,7 +9,7 @@ CREATE TABLE System_Admin
     ID            INT AUTO_INCREMENT PRIMARY KEY,
     First_Name    VARCHAR(255),
     Last_Name     VARCHAR(255),
-    Prefered_Name VARCHAR(255)
+    Preferred_Name VARCHAR(255)
 );
 
 -- Create the Company table
@@ -33,30 +33,12 @@ CREATE TABLE FieldOfStudy (
     Description TEXT
 );
 
-CREATE TABLE Student_Majors
-(
-    Student_ID INT NOT NULL,
-    FieldOfStudy_ID INT NOT NULL,
-    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
-    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
-);
-
-CREATE TABLE Student_Minors
-(
-    Student_ID INT NOT NULL,
-    FieldOfStudy_ID INT NOT NULL,
-    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
-    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
-);
-
 CREATE TABLE Alumni_Majors
 (
     Alumni_ID INT NOT NULL,
     FieldOfStudy_ID INT NOT NULL,
     PRIMARY KEY (Alumni_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni_ID(ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID),
     FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
 );
 
@@ -65,7 +47,7 @@ CREATE TABLE Alumni_Minors
     Alumni_ID INT NOT NULL,
     FieldOfStudy_ID INT NOT NULL,
     PRIMARY KEY (Alumni_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni_ID(ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID),
     FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
 );
 
@@ -84,7 +66,7 @@ CREATE TABLE Advisor
     ID            INT AUTO_INCREMENT PRIMARY KEY,
     First_Name    VARCHAR(255),
     Last_Name     VARCHAR(255),
-    Prefered_Name VARCHAR(255), -- optional
+    Preferred_Name VARCHAR(255), -- optional
     College_ID    INT NOT NULL,
     FOREIGN KEY (College_ID) REFERENCES College (ID)
 
@@ -155,7 +137,7 @@ CREATE TABLE Student
     ID            INT AUTO_INCREMENT PRIMARY KEY,
     First_Name    VARCHAR(255) NOT NULL,
     Last_Name     VARCHAR(255) NOT NULL,
-    Prefered_Name VARCHAR(255),
+    Preferred_Name VARCHAR(255),
     GPA           DECIMAL(3, 2) CHECK (GPA >= 0 AND GPA <= 4.0),
     College_ID    INT         NOT NULL,
     FOREIGN KEY (College_ID) REFERENCES College (ID),
@@ -169,9 +151,26 @@ CREATE TABLE Student
     Resume_Link VARCHAR(255),
     Email VARCHAR(255),
     Phone_Number VARCHAR(255),
-    Description TEXT,
+    Description TEXT
 );
 
+CREATE TABLE Student_Majors
+(
+    Student_ID INT NOT NULL,
+    FieldOfStudy_ID INT NOT NULL,
+    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
+    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
+);
+
+CREATE TABLE Student_Minors
+(
+    Student_ID INT NOT NULL,
+    FieldOfStudy_ID INT NOT NULL,
+    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
+    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
+);
 
 -- Create the Posting_Skills table (junction table)
 CREATE TABLE Posting_Skills
@@ -199,8 +198,8 @@ CREATE TABLE Application
     ID          INT AUTO_INCREMENT PRIMARY KEY,
     Student_ID  INT NOT NULL,
     Position_ID INT NOT NULL,
-    submittedDate DATETIME NOT NULL, 
-    Status_ID INT NOT NULL, 
+    submittedDate DATETIME NOT NULL,
+    Status_ID INT NOT NULL,
     FOREIGN KEY (Student_ID) REFERENCES Student (ID),
     FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
     FOREIGN KEY (Status_ID) REFERENCES Status (ID)
@@ -210,7 +209,7 @@ CREATE TABLE Application
 CREATE TABLE Status
 (
     ID          INT AUTO_INCREMENT PRIMARY KEY,
-    Status_Description VARCHAR(50) NOT NULL,
+    Status_Description VARCHAR(50) NOT NULL
 );
 
 
@@ -247,12 +246,10 @@ CREATE TABLE Message
 
 
 
-# Insert Statements 
+ -- Insert Statements
 
-# System_Admin Insert Statements
-INSERT INTO System_Admin (First_Name, Last_Name, Prefered_Name)
-VALUES
-INSERT INTO System_Admin (First_Name, Last_Name, Prefered_Name)
+-- System_Admin Insert Statements
+INSERT INTO System_Admin (First_Name, Last_Name, Preferred_Name)
 VALUES
 ('John', 'Doe', 'Johnny'),
 ('Jane', 'Smith', 'Janie'),
@@ -306,9 +303,7 @@ VALUES
 ('Emily', 'Bailey', 'Emy');
 
 
-# Company Insert Statements
-INSERT INTO Company (Name, Industry, Description)
-VALUES
+ -- Company Insert Statements
 INSERT INTO Company (Name, Industry, Description)
 VALUES
 ('Tech Innovators', 'Software Engineer', 'A leading technology firm focused on developing innovative AI-driven solutions for businesses, governments, and educational institutions.'),
@@ -361,9 +356,7 @@ VALUES
 ('HomeCare Inc.', 'Care Specialist', 'Providing compassionate home care services for elderly and disabled individuals to improve their quality of life.'),
 ('NetSecure', 'Cybersecurity Consultant', 'Protecting businesses from cyber threats with cutting-edge security solutions and risk management strategies.');
 
-# College Insert Statements
-INSERT INTO College (Name)
-VALUES
+ -- College Insert Statements
 INSERT INTO College (Name)
 VALUES
 ('Harvard University'),
@@ -416,7 +409,7 @@ VALUES
 ('Ohio State University'),
 ('Arizona State University');
 
-# FieldOFStudy Insert Statements
+ -- FieldOFStudy Insert Statements
 INSERT INTO FieldOfStudy (Name, Description)
 VALUES
 ('Computer Science', 'Study of computation, algorithms, and systems.'),
@@ -470,7 +463,7 @@ VALUES
 ('Game Design', 'Study of creating video games.'),
 ('Artificial Intelligence', 'Study of intelligent systems and algorithms.');
 
-# Major Insert Statements 
+ -- Major Insert Statements
 INSERT INTO Student_Majors (Student_ID, FieldOfStudy_ID) VALUES
 (1, 1), (1, 15),
 (2, 3),
@@ -683,9 +676,7 @@ INSERT INTO Alumni_Minors (Alumni_ID, FieldOfStudy_ID) VALUES
 (50, 40);
 
 
-# Skill Insert Stattements
-INSERT INTO Skill (Name, Description, Industry)
-VALUES
+ -- Skill Insert Stattements
 INSERT INTO Skill (Name, Description, Industry)
 VALUES
 ('Python', 'Programming language used for data science, web development, and AI.', 'Technology'),
@@ -747,7 +738,7 @@ VALUES
 ('Embedded Systems', 'Programming hardware-level applications.', 'Engineering'),
 ('Renewable Energy', 'Developing sustainable energy solutions.', 'Energy');
 
-INSERT INTO Advisor (First_Name, Last_Name, Prefered_Name, College_ID)
+INSERT INTO Advisor (First_Name, Last_Name, Preferred_Name, College_ID)
 VALUES
 ('Emily', 'Brown', 'Em', 1),
 ('Chris', 'Evans', 'CE', 2),
@@ -801,7 +792,7 @@ VALUES
 ('Emma', 'Nguyen', 'Em', 50);
 
 
-# Posting_Location Insert Statements
+ -- Posting_Location Insert Statements
 INSERT INTO Posting_Location (Region, State, Zip_Code, Address_Number, Street, City, Country)
 VALUES
 ('Northeast', 'Massachusetts', '02139', 123, 'Main St', 'Cambridge', 'USA'),
@@ -856,7 +847,7 @@ VALUES
 ('Southeast', 'Alabama', '36601', 349, 'Government St', 'Mobile', 'USA');
 
 
-# Posting Insert Statements
+-- Posting Insert Statements
 INSERT INTO Posting (Name, Company_ID, Industry, Location, Date_Start, Date_End, Filled, Minimum_GPA, Title, Description, Pay)
 VALUES
 ('Backend Developer Intern', 1, 'Technology', 3, '2024-05-15', '2024-08-15', FALSE, 3.3, 'Internship', 'Develop and maintain backend services using Java and Spring Boot.', 65),
@@ -918,7 +909,7 @@ VALUES
 ('Database Administrator', 29, 'Technology', 18, '2024-05-15', '2024-08-15', FALSE, 3.4, 'Full-Time', 'Manage database systems and performance.', 69),
 ('Database Intern', 29, 'Technology', 18, '2024-06-01', '2024-08-31', FALSE, 3.2, 'Internship', 'Support database administration tasks.', 45),
 ('Quality Assurance Lead', 30, 'Technology', 20, '2024-06-15', '2024-09-15', TRUE, 3.3, 'Full-Time', 'Lead QA processes and testing teams.', 67),
-('QA Intern', 30, 'Technology', 20, '2024-05-20', '2024-08-20', FALSE, 3.1, 'Internship', 'Support QA testing and documentation.', 40);
+('QA Intern', 30, 'Technology', 20, '2024-05-20', '2024-08-20', FALSE, 3.1, 'Internship', 'Support QA testing and documentation.', 40),
 ('Cybersecurity Analyst', 13, 'Security', 35, '2024-06-01', '2024-08-31', FALSE, 3.4, 'Full-Time', 'Analyze and mitigate security threats.', 68),
 ('Junior Mobile Developer', 11, 'Mobile', 30, '2024-06-15', '2024-09-15', FALSE, 3.2, 'Full-Time', 'Develop and debug mobile apps for Android and iOS.', 65),
 ('Data Architect', 6, 'Technology', 18, '2024-05-15', '2024-08-15', TRUE, 3.5, 'Full-Time', 'Design and manage enterprise-level data models.', 73),
@@ -950,7 +941,7 @@ VALUES
 ('Data Security Analyst', 13, 'Security', 35, '2024-05-15', '2024-08-15', TRUE, 3.5, 'Full-Time', 'Monitor and secure organizational data.', 72);
 
 
-# Alumni Insert Statements
+-- Alumni Insert Statements
 INSERT INTO Alumni (Grad_Year, First_Name, Last_Name, Email, College_ID)
 VALUES
 (2001, 'Emma', 'Walsh', 'emma.walsh@gmail.com', 16),
@@ -1015,9 +1006,7 @@ VALUES
 (2017, 'Lori', 'Moran', 'lori.moran@ai.com', 26);
 
 
-# Alumni_Position Insert Statements
-INSERT INTO Alumni_Position (Position_ID, Alumni_ID)
-VALUES
+-- Alumni_Position Insert Statements
 INSERT INTO Alumni_Position (Position_ID, Alumni_ID)
 VALUES
 (50, 20),
@@ -1118,14 +1107,14 @@ VALUES
 (1, 58),
 (27, 35);
 
-# Cycle insert statements
+-- Cycle insert statements
 INSERT INTO Cycle (cycle)
 VALUES
-('Spring')
-('Fall')
- 
- # Student Insert Statements
-INSERT INTO Student (First_Name, Last_Name, Prefered_Name, GPA, College_ID, Grad_Year, Cycle, Advisor_ID, Eligibility, Hired, Resume_Link, Email, Phone_Number, Description)
+('Spring'),
+('Fall');
+
+ -- Student Insert Statements
+INSERT INTO Student (First_Name, Last_Name, Preferred_Name, GPA, College_ID, Grad_Year, Cycle, Advisor_ID, Eligibility, Hired, Resume_Link, Email, Phone_Number, Description)
 VALUES
 ('Emma', 'Johnson', 'Em', 3.85, 12, 2025, 1, 25, TRUE, FALSE, 'link_to_resume_1', 'emma.johnson@gmail.com', '555-123-4567', 'Passionate about AI research.'),
 ('Liam', 'Smith', NULL, 3.75, 15, 2024, 2, 12, TRUE, FALSE, 'link_to_resume_2', 'liam.smith@gmail.com', '555-234-5678', 'Focused on cloud computing and cybersecurity.'),
@@ -1146,7 +1135,7 @@ VALUES
 ('Grace', 'Young', 'Gracie', 3.75, 16, 2024, 1, 15, TRUE, FALSE, 'link_to_resume_17', 'grace.young@gmail.com', '555-789-0123', 'Experienced in event planning and management.'),
 ('Jack', 'White', 'Jacky', 3.80, 17, 2026, 2, 45, TRUE, FALSE, 'link_to_resume_18', 'jack.white@gmail.com', '555-890-1234', 'Sales and CRM expert.'),
 ('Harper', 'Lee', 'Harp', 3.65, 20, 2025, 1, 44, TRUE, FALSE, 'link_to_resume_19', 'harper.lee@gmail.com', '555-901-2345', 'Excited to work in environmental engineering.'),
-('Alexander', 'Harris', 'Alex', 3.85, 3, 2024, 2, 11, TRUE, FALSE, 'link_to_resume_20', 'alexander.harris@gmail.com', '555-012-3456', 'Business operations and strategic planning.');
+('Alexander', 'Harris', 'Alex', 3.85, 3, 2024, 2, 11, TRUE, FALSE, 'link_to_resume_20', 'alexander.harris@gmail.com', '555-012-3456', 'Business operations and strategic planning.'),
 ('Zoey', 'Clark', 'Zoe', 3.90, 2, 2026, 1, 33, TRUE, FALSE, 'link_to_resume_21', 'zoey.clark@gmail.com', '555-234-5678', 'Expert in social media marketing and branding.'),
 ('Daniel', 'Hall', 'Dan', 3.75, 5, 2025, 2, 38, TRUE, FALSE, 'link_to_resume_22', 'daniel.hall@gmail.com', '555-345-6789', 'Focused on renewable energy solutions.'),
 ('Scarlett', 'Brown', 'Scar', 3.80, 8, 2024, 1, 12, TRUE, FALSE, 'link_to_resume_23', 'scarlett.brown@gmail.com', '555-456-7890', 'Graphic design and creative storytelling.'),
@@ -1176,9 +1165,9 @@ VALUES
 ('Nora', 'Thompson', 'Nor', 3.90, 2, 2025, 1, 20, TRUE, FALSE, 'link_to_resume_47', 'nora.thompson@gmail.com', '555-890-1234', 'Environmental engineering and green solutions.'),
 ('Sophia', 'Walker', 'Sophie', 3.65, 14, 2026, 2, 11, TRUE, FALSE, 'link_to_resume_48', 'sophia.walker@gmail.com', '555-901-2345', 'Project management and operations specialist.'),
 ('Elliot', 'Moore', NULL, 3.70, 20, 2024, 1, 9, TRUE, FALSE, 'link_to_resume_49', 'elliot.moore@gmail.com', '555-012-3456', 'AI and robotics enthusiast.'),
-('Violet', 'Brooks', 'Vi', 3.85, 19, 2025, 2, 13, TRUE, FALSE, 'link_to_resume_50', 'violet.brooks@gmail.com', '555-123-4567', 'Marketing analytics and strategy expert.'),
+('Violet', 'Brooks', 'Vi', 3.85, 19, 2025, 2, 13, TRUE, FALSE, 'link_to_resume_50', 'violet.brooks@gmail.com', '555-123-4567', 'Marketing analytics and strategy expert.');
 
-# Posting_Skills Insert Statements
+-- Posting_Skills Insert Statements
 INSERT INTO Posting_Skills (Position_ID, Skill_ID)
 VALUES
 -- Backend Developer Intern (Python, Cloud Computing, Programming)
@@ -1329,11 +1318,11 @@ VALUES
 (49, 22), (49, 2), (49, 19),
 
 -- Development Team Intern (Programming, Team Management)
-(50, 22), (50, 19), (50, 18)
+(50, 22), (50, 19), (50, 18);
 
-# Student_Skills Insert Statements
+-- Student_Skills Insert Statements
 -- Student Skills Insert Statements based on descriptions
-INSERT INTO Student_Skills (Student_ID, Skill_ID) VALUES 
+INSERT INTO Student_Skills (Student_ID, Skill_ID) VALUES
 -- Emma Johnson - AI research
 (1, 1),  -- Computer Science
 (1, 50), -- Artificial Intelligence
@@ -1506,7 +1495,7 @@ INSERT INTO Student_Skills (Student_ID, Skill_ID) VALUES
 (50, 18)  -- Data Science
 ;
 
-# Status INSERT statements
+-- Status INSERT statements
 INSERT INTO Status (Status_Description)
 VALUES
 ('Under Review'),
@@ -1586,9 +1575,7 @@ VALUES
 (50, 33, '2024-02-19', 1);  -- Violet Brooks -> Data Analyst
 
 
-# Question Insert Statements
-INSERT INTO Question (Question, Answer, Application_ID)
-VALUES
+-- Question Insert Statements
 INSERT INTO Question (Question, Answer, Application_ID)
 VALUES
 -- AI/ML focused students
@@ -1662,9 +1649,7 @@ VALUES
 ('What do you enjoy about being a research assistant?', 'Learning from experts and contributing to meaningful projects.', 50);
 
 
-# Ticket Insert Statements
-INSERT INTO Ticket (Reporter_ID, Message, Completed)
-VALUES
+-- Ticket Insert Statements
 INSERT INTO Ticket (Reporter_ID, Message, Completed)
 VALUES
 (1, 'Error in application submission.', FALSE),
@@ -1789,3 +1774,7 @@ VALUES
 (47, 10, 'Good! Don’t forget to research the company.', 10),
 (48, 10, 'I’ve noted that. Thank you for the reminder!', 10),
 (49, 10, 'You’re welcome. Best of luck!', 10);
+
+
+
+SHOW TABLES;
