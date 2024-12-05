@@ -197,12 +197,20 @@ CREATE TABLE Student_Skills
 CREATE TABLE Application
 (
     ID          INT AUTO_INCREMENT PRIMARY KEY,
-    Student_ID  INT NOT NULL,
     Position_ID INT NOT NULL,
     applyBy DATETIME NOT NULL, 
-    Status_ID INT NOT NULL, 
-    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
     FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
+    FOREIGN KEY (Status_ID) REFERENCES Status (ID)
+);
+
+-- Create the student Application Table
+CREATE TABLE Student_Applications (
+    Application_ID INT NOT NULL,
+    Student_ID     INT NOT NULL,
+    Status_ID      INT NOT NULL, -- Represents the current status of the student's application
+    PRIMARY KEY (Application_ID, Student_ID),
+    FOREIGN KEY (Application_ID) REFERENCES Application (ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
     FOREIGN KEY (Status_ID) REFERENCES Status (ID)
 );
 
@@ -920,6 +928,35 @@ VALUES
 ('Database Intern', 29, 'Technology', 18, '2024-06-01', '2024-08-31', FALSE, 3.2, 'Internship', 'Support database administration tasks.', 45),
 ('Quality Assurance Lead', 30, 'Technology', 20, '2024-06-15', '2024-09-15', TRUE, 3.3, 'Full-Time', 'Lead QA processes and testing teams.', 67),
 ('QA Intern', 30, 'Technology', 20, '2024-05-20', '2024-08-20', FALSE, 3.1, 'Internship', 'Support QA testing and documentation.', 40);
+('Cybersecurity Analyst', 13, 'Security', 35, '2024-06-01', '2024-08-31', FALSE, 3.4, 'Full-Time', 'Analyze and mitigate security threats.', 68),
+('Junior Mobile Developer', 11, 'Mobile', 30, '2024-06-15', '2024-09-15', FALSE, 3.2, 'Full-Time', 'Develop and debug mobile apps for Android and iOS.', 65),
+('Data Architect', 6, 'Technology', 18, '2024-05-15', '2024-08-15', TRUE, 3.5, 'Full-Time', 'Design and manage enterprise-level data models.', 73),
+('Marketing Coordinator', 5, 'Marketing', 15, '2024-06-01', '2024-08-31', FALSE, 3.1, 'Full-Time', 'Coordinate marketing campaigns and events.', 60),
+('SEO Specialist Intern', 5, 'Marketing', 15, '2024-05-20', '2024-08-20', FALSE, 3.2, 'Internship', 'Optimize web content for search engines.', 45),
+('Software Test Engineer', 3, 'Technology', 8, '2024-06-15', '2024-09-15', TRUE, 3.4, 'Full-Time', 'Develop automated tests for software applications.', 72),
+('Data Visualization Specialist', 17, 'Data Science', 44, '2024-06-01', '2024-08-31', FALSE, 3.3, 'Full-Time', 'Create interactive dashboards and data visualizations.', 65),
+('Technical Writer', 4, 'Management', 12, '2024-05-15', '2024-08-15', FALSE, 3.0, 'Full-Time', 'Write technical documentation and user manuals.', 55),
+('Customer Success Manager', 10, 'HR', 28, '2024-06-01', '2024-08-31', TRUE, 3.2, 'Full-Time', 'Manage client relationships and customer success strategies.', 70),
+('Technical Support Specialist', 10, 'HR', 28, '2024-05-15', '2024-08-15', FALSE, 3.1, 'Internship', 'Assist with resolving technical support tickets.', 45),
+('Environmental Engineer', 14, 'Environmental', 38, '2024-06-01', '2024-08-31', FALSE, 3.4, 'Full-Time', 'Design sustainable engineering solutions.', 68),
+('Energy Efficiency Intern', 14, 'Environmental', 38, '2024-05-20', '2024-08-20', TRUE, 3.2, 'Internship', 'Assist in evaluating energy efficiency initiatives.', 40),
+('Social Media Manager', 5, 'Marketing', 15, '2024-06-15', '2024-09-15', FALSE, 3.0, 'Full-Time', 'Plan and manage social media campaigns.', 55),
+('Brand Strategist', 5, 'Marketing', 15, '2024-05-20', '2024-08-20', TRUE, 3.1, 'Full-Time', 'Develop and implement branding strategies.', 60),
+('AI Ethics Researcher', 2, 'AI', 5, '2024-06-01', '2024-08-31', FALSE, 3.7, 'Full-Time', 'Research ethical implications of AI technologies.', 74),
+('Cloud Migration Specialist', 6, 'Technology', 18, '2024-06-15', '2024-09-15', FALSE, 3.4, 'Full-Time', 'Assist in migrating systems to the cloud.', 72),
+('Machine Learning Intern', 2, 'AI', 5, '2024-05-15', '2024-08-15', FALSE, 3.6, 'Internship', 'Develop and optimize machine learning algorithms.', 55),
+('Front-End Engineer', 16, 'Technology', 42, '2024-06-01', '2024-08-31', TRUE, 3.2, 'Full-Time', 'Develop dynamic and user-friendly interfaces.', 65),
+('DevOps Intern', 27, 'Technology', 14, '2024-07-01', '2024-09-30', FALSE, 3.3, 'Internship', 'Support automation and deployment pipelines.', 45),
+('UX Researcher', 28, 'Design', 16, '2024-06-15', '2024-09-15', FALSE, 3.1, 'Full-Time', 'Conduct research to improve user experience.', 67),
+('Game Developer Intern', 11, 'Mobile', 30, '2024-05-20', '2024-08-20', FALSE, 3.4, 'Internship', 'Develop game features for mobile platforms.', 55),
+('Data Governance Analyst', 6, 'Technology', 18, '2024-05-15', '2024-08-15', FALSE, 3.5, 'Full-Time', 'Implement data governance policies.', 72),
+('Financial Planner', 9, 'Finance', 25, '2024-06-15', '2024-09-15', TRUE, 3.4, 'Full-Time', 'Provide financial planning services to clients.', 68),
+('Digital Advertising Intern', 5, 'Marketing', 15, '2024-05-20', '2024-08-20', FALSE, 3.2, 'Internship', 'Assist with pay-per-click advertising campaigns.', 40),
+('IT Support Specialist', 10, 'HR', 28, '2024-06-01', '2024-08-31', FALSE, 3.0, 'Full-Time', 'Provide IT support to staff and clients.', 60),
+('Operations Coordinator', 14, 'Operations', 38, '2024-06-15', '2024-09-15', FALSE, 3.3, 'Full-Time', 'Coordinate operational projects and logistics.', 70),
+('Sustainability Intern', 14, 'Environmental', 38, '2024-05-15', '2024-08-15', TRUE, 3.1, 'Internship', 'Work on sustainability assessments and reports.', 40),
+('Mobile App Designer', 11, 'Mobile', 30, '2024-06-01', '2024-08-31', FALSE, 3.3, 'Full-Time', 'Design user interfaces for mobile applications.', 68),
+('Data Security Analyst', 13, 'Security', 35, '2024-05-15', '2024-08-15', TRUE, 3.5, 'Full-Time', 'Monitor and secure organizational data.', 72);
 
 
 # Alumni Insert Statements
@@ -1485,79 +1522,71 @@ VALUES
 ('Rejected'),
 ('Accepted');
 
-# Application Insert Statements
-INSERT INTO Application (Student_ID, Position_ID, Status_ID, applyBy, )
+INSERT INTO Application (Position_ID, applyBy)
+VALUES
+(1, 3, '2024-02-15'),    -- ML Engineer Intern
+(2, 52, '2024-02-16'),   -- AI Research Scientist
+(3, 51, '2024-02-15'),   -- AI Research Intern
+(4, 3, '2024-02-17'),    -- ML Engineer Intern
+(5, 52, '2024-02-18'),   -- AI Research Scientist
+(6, 1, '2024-02-15'),    -- Backend Developer Intern
+(7, 31, '2024-02-16'),   -- Backend Developer
+(8, 2, '2024-02-17'),    -- Frontend Developer
+(9, 14, '2024-02-18'),   -- UI Developer Intern
+(10, 15, '2024-02-19'),  -- Full Stack Developer
+(11, 4, '2024-02-15'),   -- Data Scientist
+(12, 33, '2024-02-16'),  -- Data Analyst
+(13, 34, '2024-02-17'),  -- Analytics Intern
+(14, 4, '2024-02-18'),   -- Data Scientist
+(15, 33, '2024-02-19'),  -- Data Analyst
+(16, 6, '2024-02-15'),   -- DevOps Engineer
+(17, 25, '2024-02-16'),  -- Security Engineer
+(18, 54, '2024-02-17'),  -- DevOps Manager
+(19, 26, '2024-02-18'),  -- Security Analyst Intern
+(20, 12, '2024-02-19'),  -- Cloud Engineer Intern
+(21, 9, '2024-02-15'),   -- Marketing Intern
+(22, 10, '2024-02-16'),  -- Content Strategist
+(23, 40, '2024-02-17'),  -- Digital Marketing Intern
+(24, 39, '2024-02-18'),  -- Marketing Manager
+(25, 9, '2024-02-19'),   -- Marketing Intern
+(26, 13, '2024-02-15'),  -- UX Designer
+(27, 36, '2024-02-16'),  -- Product Designer
+(28, 14, '2024-02-17'),  -- UI Developer Intern
+(29, 56, '2024-02-18'),  -- UX Research Intern
+(30, 13, '2024-02-19'),  -- UX Designer
+(31, 17, '2024-02-15'),  -- Finance Analyst
+(32, 8, '2024-02-16'),   -- Business Analyst Intern
+(33, 29, '2024-02-17'),  -- Sales Representative
+(34, 28, '2024-02-18'),  -- Operations Intern
+(35, 37, '2024-02-19'),  -- Project Coordinator
+(36, 11, '2024-02-15'),  -- Data Engineer
+(37, 28, '2024-02-16'),  -- Operations Intern
+(38, 11, '2024-02-17'),  -- Data Engineer
+(39, 28, '2024-02-18'),  -- Operations Intern
+(40, 37, '2024-02-19'),  -- Project Coordinator
+(41, 1, '2024-02-15'),   -- Backend Developer Intern
+(42, 16, '2024-02-16'),  -- Systems Engineer Intern
+(43, 5, '2024-02-17'),   -- Software QA Intern
+(44, 31, '2024-02-18'),  -- Backend Developer
+(45, 3, '2024-02-19'),   -- ML Engineer Intern
+(46, 24, '2024-02-15'),  -- Research Assistant
+(47, 43, '2024-02-16'),  -- BI Intern
+(48, 37, '2024-02-17'),  -- Project Coordinator
+(49, 10, '2024-02-18'),  -- Content Strategist
+(50, 33, '2024-02-19');  -- Data Analyst
+
+INSERT INTO Student_Applications (Application_ID, Student_ID, Status_ID)
 VALUES
 -- AI/ML focused students
-(1, 3, '2024-02-15', 'Under Review', 1),    -- Emma Johnson -> ML Engineer Intern
-(41, 52, '2024-02-16', 'Pending', 1),       -- Gabriel Diaz -> AI Research Scientist
-(49, 51, '2024-02-15', 'Under Review', 2),  -- Elliot Moore -> AI Research Intern
-(25, 3, '2024-02-17', 'Rejected', 1),       -- Victoria Sanchez -> ML Engineer Intern
-(10, 52, '2024-02-18', 'Under Review', 1),  -- Ethan Rodriguez -> AI Research Scientist
+(1, 1, 1),    -- Emma Johnson -> ML Engineer Intern, Under Review
+(2, 41, 1),   -- Gabriel Diaz -> AI Research Scientist, Under Review
+(3, 49, 2),   -- Elliot Moore -> AI Research Intern, Pending
+(4, 25, 3),   -- Victoria Sanchez -> ML Engineer Intern, Rejected
+(5, 10, 1),   -- Ethan Rodriguez -> AI Research Scientist, Under Review
 
 -- Software Development focused
-(8, 1, '2024-02-15', 'Under Review', 1),    -- Lucas Garcia -> Backend Developer Intern
-(30, 31, '2024-02-16', 'Pending', 2),       -- Logan Evans -> Backend Developer
-(4, 2, '2024-02-17', 'Under Review', 1),    -- Noah Taylor -> Frontend Developer
-(42, 14, '2024-02-18', 'Pending', 1),       -- Ella Ramirez -> UI Developer Intern
-(36, 15, '2024-02-19', 'Under Review', 2),  -- Andrew Parker -> Full Stack Developer
-
--- Data Science/Analytics
-(3, 4, '2024-02-15', 'Under Review', 1),    -- Sophia Brown -> Data Scientist
-(39, 33, '2024-02-16', 'Pending', 1),       -- Nathan Green -> Data Analyst
-(24, 34, '2024-02-17', 'Under Review', 2),  -- Henry Adams -> Analytics Intern
-(12, 4, '2024-02-18', 'Rejected', 1),       -- Benjamin Thomas -> Data Scientist
-(38, 33, '2024-02-19', 'Under Review', 1),  -- Chloe Morgan -> Data Analyst
-
--- Cybersecurity/DevOps
-(2, 6, '2024-02-15', 'Under Review', 1),    -- Liam Smith -> DevOps Engineer
-(34, 25, '2024-02-16', 'Pending', 2),       -- Ethan Wright -> Security Engineer
-(44, 54, '2024-02-17', 'Under Review', 1),  -- Aiden Lee -> DevOps Manager
-(46, 26, '2024-02-18', 'Under Review', 1),  -- Logan Clark -> Security Analyst Intern
-(28, 12, '2024-02-19', 'Pending', 2),       -- Jackson Phillips -> Cloud Engineer Intern
-
--- Marketing/Content
-(5, 9, '2024-02-15', 'Under Review', 1),    -- Isabella Davis -> Marketing Intern
-(21, 10, '2024-02-16', 'Pending', 1),       -- Zoey Clark -> Content Strategist
-(40, 40, '2024-02-17', 'Under Review', 2),  -- Lila Perez -> Digital Marketing Intern
-(27, 39, '2024-02-18', 'Under Review', 1),  -- Ella Turner -> Marketing Manager
-(33, 9, '2024-02-19', 'Pending', 1),        -- Samantha Morris -> Marketing Intern
-
--- Design/UX
-(11, 13, '2024-02-15', 'Under Review', 1),  -- Emily Lopez -> UX Designer
-(23, 36, '2024-02-16', 'Pending', 2),       -- Scarlett Brown -> Product Designer
-(43, 14, '2024-02-17', 'Under Review', 1),  -- Zoe Martinez -> UI Developer Intern
-(29, 56, '2024-02-18', 'Under Review', 1),  -- Zoe Campbell -> UX Research Intern
-(35, 13, '2024-02-19', 'Pending', 2),       -- Olivia King -> UX Designer
-
--- Business/Finance
-(6, 17, '2024-02-15', 'Under Review', 1),   -- Oliver Jones -> Finance Analyst
-(17, 8, '2024-02-16', 'Pending', 1),        -- Grace Young -> Business Analyst Intern
-(18, 29, '2024-02-17', 'Under Review', 2),  -- Jack White -> Sales Representative
-(31, 28, '2024-02-18', 'Rejected', 1),      -- Leah Murphy -> Operations Intern
-(48, 37, '2024-02-19', 'Under Review', 1),  -- Sophia Walker -> Project Coordinator
-
--- Environmental/Sustainability
-(7, 11, '2024-02-15', 'Under Review', 1),   -- Mia Wilson -> Data Engineer
-(19, 28, '2024-02-16', 'Pending', 2),       -- Harper Lee -> Operations Intern
-(22, 11, '2024-02-17', 'Under Review', 1),  -- Daniel Hall -> Data Engineer
-(32, 28, '2024-02-18', 'Under Review', 1),  -- Liam Stewart -> Operations Intern
-(47, 37, '2024-02-19', 'Pending', 2),       -- Nora Thompson -> Project Coordinator
-
--- Technology/Engineering
-(45, 1, '2024-02-15', 'Under Review', 1),   -- Madison Harris -> Backend Developer Intern
-(26, 16, '2024-02-16', 'Pending', 1),       -- Owen Roberts -> Systems Engineer Intern
-(37, 5, '2024-02-17', 'Under Review', 2),   -- Avery Collins -> Software QA Intern
-(14, 31, '2024-02-18', 'Under Review', 1),  -- James Hernandez -> Backend Developer
-(16, 3, '2024-02-19', 'Pending', 1),        -- Matthew Martinez -> ML Engineer Intern
-
--- Research/Academic
-(15, 24, '2024-02-15', 'Under Review', 1),  -- Lily Moore -> Research Assistant
-(20, 43, '2024-02-16', 'Pending', 2),       -- Alexander Harris -> BI Intern
-(13, 37, '2024-02-17', 'Under Review', 1),  -- Ella Anderson -> Project Coordinator
-(9, 10, '2024-02-18', 'Under Review', 1),   -- Ava Martinez -> Content Strategist
-(50, 33, '2024-02-19', 'Pending', 2)        -- Violet Brooks -> Data Analyst
-;
+(6, 8, 1),    -- Lucas Garcia -> Backend Developer Intern, Under Review
+(7, 30, 2),   -- Logan Evans -> Backend Developer, Pending
 
 
 # Question Insert Statements
