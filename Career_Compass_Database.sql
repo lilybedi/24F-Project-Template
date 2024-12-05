@@ -1082,34 +1082,393 @@ VALUES
 (1, 58),
 (27, 35);
 
-
-
-# Student Insert Statements
-
-
 # Cycle insert statements
 INSERT INTO Cycle (cycle)
 VALUES
 ('Spring')
 ('Fall')
  
+ # Student Insert Statements
+INSERT INTO Student (First_Name, Last_Name, Prefered_Name, GPA, College_ID, Grad_Year, Cycle, Advisor_ID, Eligibility, Hired, Resume_Link, Email, Phone_Number, Description)
+VALUES
+('Emma', 'Johnson', 'Em', 3.85, 12, 2025, 1, 25, TRUE, FALSE, 'link_to_resume_1', 'emma.johnson@gmail.com', '555-123-4567', 'Passionate about AI research.'),
+('Liam', 'Smith', NULL, 3.75, 15, 2024, 2, 12, TRUE, TRUE, 'link_to_resume_2', 'liam.smith@gmail.com', '555-234-5678', 'Focused on cloud computing and cybersecurity.'),
+('Sophia', 'Brown', 'Sophie', 3.90, 8, 2026, 1, 22, TRUE, FALSE, 'link_to_resume_3', 'sophia.brown@gmail.com', '555-345-6789', 'Aspiring data scientist.'),
+('Noah', 'Taylor', 'Noah', 3.65, 10, 2023, 2, 18, TRUE, TRUE, 'link_to_resume_4', 'noah.taylor@gmail.com', '555-456-7890', 'Experienced in web development.'),
+('Isabella', 'Davis', 'Bella', 3.80, 7, 2024, 1, 30, TRUE, FALSE, 'link_to_resume_5', 'isabella.davis@gmail.com', '555-567-8901', 'Graphic design and marketing enthusiast.'),
+('Oliver', 'Jones', 'Ollie', 3.70, 5, 2025, 2, 20, TRUE, FALSE, 'link_to_resume_6', 'oliver.jones@gmail.com', '555-678-9012', 'Interest in financial modeling and analytics.'),
+('Mia', 'Wilson', 'Mimi', 3.95, 13, 2026, 1, 35, TRUE, TRUE, 'link_to_resume_7', 'mia.wilson@gmail.com', '555-789-0123', 'Excited to work in renewable energy projects.'),
+('Lucas', 'Garcia', NULL, 3.60, 18, 2025, 2, 17, TRUE, TRUE, 'link_to_resume_8', 'lucas.garcia@gmail.com', '555-890-1234', 'Software engineering focus with cloud expertise.'),
+('Ava', 'Martinez', 'Avy', 3.85, 14, 2024, 1, 40, TRUE, FALSE, 'link_to_resume_9', 'ava.martinez@gmail.com', '555-901-2345', 'Marketing and customer engagement specialist.'),
+('Ethan', 'Rodriguez', 'Ethan', 3.75, 9, 2026, 2, 19, TRUE, TRUE, 'link_to_resume_10', 'ethan.rodriguez@gmail.com', '555-012-3456', 'AI and robotics enthusiast.'),
+('Emily', 'Lopez', 'Emmy', 3.80, 21, 2025, 1, 29, TRUE, FALSE, 'link_to_resume_11', 'emily.lopez@gmail.com', '555-123-4567', 'Graphic designer and creative thinker.'),
+('Benjamin', 'Thomas', NULL, 3.95, 19, 2024, 2, 28, TRUE, TRUE, 'link_to_resume_12', 'benjamin.thomas@gmail.com', '555-234-5678', 'Financial analyst with passion for data.'),
+('Ella', 'Anderson', 'Ellie', 3.85, 22, 2025, 1, 36, TRUE, FALSE, 'link_to_resume_13', 'ella.anderson@gmail.com', '555-345-6789', 'Experienced in project management and operations.'),
+('James', 'Hernandez', 'Jimmy', 3.65, 4, 2024, 2, 27, TRUE, TRUE, 'link_to_resume_14', 'james.hernandez@gmail.com', '555-456-7890', 'Blockchain and fintech enthusiast.'),
+('Lily', 'Moore', 'Lil', 3.90, 6, 2026, 1, 24, TRUE, FALSE, 'link_to_resume_15', 'lily.moore@gmail.com', '555-567-8901', 'Passionate about healthcare technology.'),
+('Matthew', 'Martinez', 'Matt', 3.70, 11, 2023, 2, 23, TRUE, TRUE, 'link_to_resume_16', 'matthew.martinez@gmail.com', '555-678-9012', 'Focus on AI in education and training systems.'),
+('Grace', 'Young', 'Gracie', 3.75, 16, 2024, 1, 15, TRUE, FALSE, 'link_to_resume_17', 'grace.young@gmail.com', '555-789-0123', 'Experienced in event planning and management.'),
+('Jack', 'White', 'Jacky', 3.80, 17, 2026, 2, 45, TRUE, TRUE, 'link_to_resume_18', 'jack.white@gmail.com', '555-890-1234', 'Sales and CRM expert.'),
+('Harper', 'Lee', 'Harp', 3.65, 20, 2025, 1, 44, TRUE, FALSE, 'link_to_resume_19', 'harper.lee@gmail.com', '555-901-2345', 'Excited to work in environmental engineering.'),
+('Alexander', 'Harris', 'Alex', 3.85, 3, 2024, 2, 11, TRUE, TRUE, 'link_to_resume_20', 'alexander.harris@gmail.com', '555-012-3456', 'Business operations and strategic planning.');
+('Zoey', 'Clark', 'Zoe', 3.90, 2, 2026, 1, 33, TRUE, TRUE, 'link_to_resume_21', 'zoey.clark@gmail.com', '555-234-5678', 'Expert in social media marketing and branding.'),
+('Daniel', 'Hall', 'Dan', 3.75, 5, 2025, 2, 38, TRUE, FALSE, 'link_to_resume_22', 'daniel.hall@gmail.com', '555-345-6789', 'Focused on renewable energy solutions.'),
+('Scarlett', 'Brown', 'Scar', 3.80, 8, 2024, 1, 12, TRUE, TRUE, 'link_to_resume_23', 'scarlett.brown@gmail.com', '555-456-7890', 'Graphic design and creative storytelling.'),
+('Henry', 'Adams', NULL, 3.95, 10, 2023, 2, 31, TRUE, FALSE, 'link_to_resume_24', 'henry.adams@gmail.com', '555-567-8901', 'Data visualization and analytics enthusiast.'),
+('Victoria', 'Sanchez', 'Vicky', 3.65, 14, 2026, 1, 21, TRUE, TRUE, 'link_to_resume_25', 'victoria.sanchez@gmail.com', '555-678-9012', 'Excited to contribute to AI research.'),
+('Owen', 'Roberts', NULL, 3.70, 6, 2024, 2, 25, TRUE, FALSE, 'link_to_resume_26', 'owen.roberts@gmail.com', '555-789-0123', 'Focused on machine learning applications in robotics.'),
+('Ella', 'Turner', 'Ellie', 3.85, 11, 2025, 1, 14, TRUE, TRUE, 'link_to_resume_27', 'ella.turner@gmail.com', '555-890-1234', 'Marketing and customer engagement specialist.'),
+('Jackson', 'Phillips', 'Jack', 3.80, 13, 2026, 2, 9, TRUE, FALSE, 'link_to_resume_28', 'jackson.phillips@gmail.com', '555-901-2345', 'Interested in cloud computing and DevOps.'),
+('Zoe', 'Campbell', 'Zoe', 3.75, 4, 2024, 1, 42, TRUE, TRUE, 'link_to_resume_29', 'zoe.campbell@gmail.com', '555-012-3456', 'Experienced in video editing and content creation.'),
+('Logan', 'Evans', 'Log', 3.70, 7, 2025, 2, 28, TRUE, TRUE, 'link_to_resume_30', 'logan.evans@gmail.com', '555-123-4567', 'Software engineer with a focus on AI systems.'),
+('Leah', 'Murphy', 'Lea', 3.85, 9, 2026, 1, 40, TRUE, FALSE, 'link_to_resume_31', 'leah.murphy@gmail.com', '555-234-5678', 'Event planner with an eye for detail.'),
+('Liam', 'Stewart', 'Liam', 3.65, 20, 2023, 2, 13, TRUE, FALSE, 'link_to_resume_32', 'liam.stewart@gmail.com', '555-345-6789', 'Excited to work in environmental engineering.'),
+('Samantha', 'Morris', 'Sam', 3.90, 22, 2024, 1, 34, TRUE, TRUE, 'link_to_resume_33', 'samantha.morris@gmail.com', '555-456-7890', 'Marketing and content strategy specialist.'),
+('Ethan', 'Wright', 'Ethan', 3.75, 6, 2026, 2, 29, TRUE, FALSE, 'link_to_resume_34', 'ethan.wright@gmail.com', '555-567-8901', 'Interested in cybersecurity and data privacy.'),
+('Olivia', 'King', 'Liv', 3.85, 15, 2025, 1, 16, TRUE, TRUE, 'link_to_resume_35', 'olivia.king@gmail.com', '555-678-9012', 'Healthcare and biotech enthusiast.'),
+('Andrew', 'Parker', 'Andy', 3.80, 11, 2024, 2, 7, TRUE, FALSE, 'link_to_resume_36', 'andrew.parker@gmail.com', '555-789-0123', 'Software engineering with a focus on SaaS.'),
+('Avery', 'Collins', 'Av', 3.95, 3, 2023, 1, 5, TRUE, TRUE, 'link_to_resume_37', 'avery.collins@gmail.com', '555-890-1234', 'Passionate about education technology.'),
+('Chloe', 'Morgan', 'Chlo', 3.85, 16, 2025, 2, 18, TRUE, FALSE, 'link_to_resume_38', 'chloe.morgan@gmail.com', '555-901-2345', 'Financial analyst with passion for data insights.'),
+('Nathan', 'Green', 'Nate', 3.70, 10, 2026, 1, 26, TRUE, TRUE, 'link_to_resume_39', 'nathan.green@gmail.com', '555-012-3456', 'Data scientist focused on AI applications.'),
+('Lila', 'Perez', NULL, 3.65, 8, 2024, 2, 43, TRUE, TRUE, 'link_to_resume_40', 'lila.perez@gmail.com', '555-123-4567', 'Content marketing and storytelling specialist.'),
+('Gabriel', 'Diaz', 'Gabe', 3.90, 5, 2023, 1, 37, TRUE, FALSE, 'link_to_resume_41', 'gabriel.diaz@gmail.com', '555-234-5678', 'AI and machine learning researcher.'),
+('Ella', 'Ramirez', 'Ellie', 3.85, 9, 2025, 2, 6, TRUE, TRUE, 'link_to_resume_42', 'ella.ramirez@gmail.com', '555-345-6789', 'Web development and front-end design expert.'),
+('Zoe', 'Martinez', 'Zoe', 3.80, 12, 2024, 1, 15, TRUE, FALSE, 'link_to_resume_43', 'zoe.martinez@gmail.com', '555-456-7890', 'Graphic design and digital media enthusiast.'),
+('Aiden', 'Lee', 'Aid', 3.65, 18, 2026, 2, 48, TRUE, TRUE, 'link_to_resume_44', 'aiden.lee@gmail.com', '555-567-8901', 'Focused on DevOps and cloud infrastructure.'),
+('Madison', 'Harris', 'Maddie', 3.70, 7, 2023, 1, 39, TRUE, FALSE, 'link_to_resume_45', 'madison.harris@gmail.com', '555-678-9012', 'Software engineering for healthcare systems.'),
+('Logan', 'Clark', 'Logan', 3.85, 4, 2024, 2, 25, TRUE, TRUE, 'link_to_resume_46', 'logan.clark@gmail.com', '555-789-0123', 'Blockchain technology and security specialist.'),
+('Nora', 'Thompson', 'Nor', 3.90, 2, 2025, 1, 20, TRUE, TRUE, 'link_to_resume_47', 'nora.thompson@gmail.com', '555-890-1234', 'Environmental engineering and green solutions.'),
+('Sophia', 'Walker', 'Sophie', 3.65, 14, 2026, 2, 11, TRUE, TRUE, 'link_to_resume_48', 'sophia.walker@gmail.com', '555-901-2345', 'Project management and operations specialist.'),
+('Elliot', 'Moore', NULL, 3.70, 20, 2024, 1, 9, TRUE, TRUE, 'link_to_resume_49', 'elliot.moore@gmail.com', '555-012-3456', 'AI and robotics enthusiast.'),
+('Violet', 'Brooks', 'Vi', 3.85, 19, 2025, 2, 13, TRUE, FALSE, 'link_to_resume_50', 'violet.brooks@gmail.com', '555-123-4567', 'Marketing analytics and strategy expert.'),
+
 # Posting_Skills Insert Statements
 INSERT INTO Posting_Skills (Position_ID, Skill_ID)
 VALUES
-(1, 1),
-(1, 3),
-(2, 2),
-(3, 1),
-(3, 3);
+-- Backend Developer Intern (Python, Cloud Computing, Programming)
+(1, 1), (1, 24), (1, 22),
+
+-- Frontend Developer (JavaScript, Web Development, UX Design)
+(2, 50), (2, 9), (2, 13),
+
+-- ML Engineer Intern (Python, Machine Learning, AI)
+(3, 1), (3, 4), (3, 29),
+
+-- Data Scientist (Data Analysis, Python for Data Science, Statistics)
+(4, 3), (4, 37), (4, 40),
+
+-- Software QA Intern (Programming, Testing skills)
+(5, 22), (5, 9), (5, 24),
+
+-- DevOps Engineer (Cloud Computing, Linux Administration, Programming)
+(6, 24), (6, 51), (6, 22),
+
+-- Product Manager (Product Management, Leadership, Strategic Planning)
+(7, 56), (7, 2), (7, 41),
+
+-- Business Analyst Intern (Data Analysis, Financial Analysis, Business Development)
+(8, 3), (8, 17), (8, 48),
+
+-- Marketing Intern (Digital Marketing, Social Media Marketing, Content Writing)
+(9, 8), (9, 16), (9, 14),
+
+-- Content Strategist (Content Writing, SEO, Digital Marketing)
+(10, 14), (10, 7), (10, 8),
+
+-- Data Engineer (Python, SQL, Cloud Computing)
+(11, 1), (11, 36), (11, 24),
+
+-- Cloud Engineer Intern (Cloud Computing, Cloud Architecture, Linux Administration)
+(12, 24), (12, 52), (12, 51),
+
+-- UX Designer (UX Design, Graphic Design, Research)
+(13, 13), (13, 12), (13, 26),
+
+-- UI Developer Intern (Web Development, JavaScript, UX Design)
+(14, 9), (14, 50), (14, 13),
+
+-- Full Stack Developer (Programming, Web Development, JavaScript)
+(15, 22), (15, 9), (15, 50),
+
+-- Systems Engineer Intern (Cloud Computing, Linux Administration, Programming)
+(16, 24), (16, 51), (16, 22),
+
+-- Finance Analyst (Financial Analysis, Data Analysis, Financial Reporting)
+(17, 17), (17, 3), (17, 35),
+
+-- Accounting Intern (Financial Analysis, Financial Reporting)
+(18, 17), (18, 35), (18, 3),
+
+-- HR Coordinator (Human Resources, Leadership, Team Management)
+(19, 39), (19, 2), (19, 19),
+
+-- Recruitment Intern (Human Resources, Communication skills)
+(20, 39), (20, 27), (20, 19),
+
+-- Android Developer (Mobile Development, Programming, UI/UX)
+(21, 34), (21, 22), (21, 13),
+
+-- iOS Developer Intern (Mobile Development, Programming)
+(22, 34), (22, 22), (22, 13),
+
+-- Research Scientist (AI, Machine Learning, Research)
+(23, 29), (23, 4), (23, 26),
+
+-- Research Assistant (Research, Data Analysis, Statistics)
+(24, 26), (24, 3), (24, 40),
+
+-- Security Engineer (Cybersecurity, Cloud Computing, Programming)
+(25, 25), (25, 24), (25, 22),
+
+-- Security Analyst Intern (Cybersecurity, Data Analysis)
+(26, 25), (26, 3), (26, 24),
+
+-- Operations Manager (Operations Management, Leadership, Strategic Planning)
+(27, 28), (27, 2), (27, 41),
+
+-- Operations Intern (Operations Management, Time Management)
+(28, 28), (28, 18), (28, 19),
+
+-- Sales Representative (Customer Service, Negotiation, Sales)
+(29, 15), (29, 11), (29, 47),
+
+-- Sales Intern (Customer Service, Communication, Sales)
+(30, 15), (30, 27), (30, 47),
+
+-- Backend Developer (Programming, Cloud Computing, Python)
+(31, 22), (31, 24), (31, 1),
+
+-- Frontend Developer Intern (JavaScript, Web Development, UX Design)
+(32, 50), (32, 9), (32, 13),
+
+-- Data Analyst (Data Analysis, Python for Data Science, Statistics)
+(33, 3), (33, 37), (33, 40),
+
+-- Analytics Intern (Data Analysis, Python, Statistics)
+(34, 3), (34, 1), (34, 40),
+
+-- Product Designer (UX Design, Graphic Design, Research)
+(35, 13), (35, 12), (35, 26),
+
+-- Design Intern (UX Design, Graphic Design)
+(36, 13), (36, 12), (36, 27),
+
+-- Project Coordinator (Project Management, Time Management, Team Management)
+(37, 6), (37, 18), (37, 19),
+
+-- Project Management Intern (Project Management, Time Management)
+(38, 6), (38, 18), (38, 27),
+
+-- Marketing Manager (Marketing Strategy, Digital Marketing, Leadership)
+(39, 5), (39, 8), (39, 2),
+
+-- Digital Marketing Intern (Digital Marketing, Social Media Marketing)
+(40, 8), (40, 16), (40, 14),
+
+-- Software Architect (Cloud Architecture, Programming, Strategic Planning)
+(41, 52), (41, 22), (41, 41),
+
+-- Architecture Intern (Cloud Architecture, Programming)
+(42, 52), (42, 22), (42, 24),
+
+-- Business Intelligence Analyst (Data Analysis, SQL, Business Development)
+(43, 3), (43, 36), (43, 48),
+
+-- BI Intern (Data Analysis, SQL)
+(44, 3), (44, 36), (44, 40),
+
+-- Cloud Solutions Architect (Cloud Architecture, Cloud Computing, Linux Administration)
+(45, 52), (45, 24), (45, 51),
+
+-- Cloud Infrastructure Intern (Cloud Computing, Linux Administration)
+(46, 24), (46, 51), (46, 22),
+
+-- Financial Analyst (Financial Analysis, Data Analysis, Financial Reporting)
+(47, 17), (47, 3), (47, 35),
+
+-- Finance Intern (Financial Analysis, Data Analysis)
+(48, 17), (48, 3), (48, 35),
+
+-- Software Development Manager (Programming, Leadership, Team Management)
+(49, 22), (49, 2), (49, 19),
+
+-- Development Team Intern (Programming, Team Management)
+(50, 22), (50, 19), (50, 18)
 
 # Student_Skills Insert Statements
-INSERT INTO Student_Skills (Student_ID, Skill_ID)
-VALUES
-(1, 1),
-(1, 3),
-(2, 2),
-(3, 1),
-(3, 3);
+-- Student Skills Insert Statements based on descriptions
+INSERT INTO Student_Skills (Student_ID, Skill_ID) VALUES 
+-- Emma Johnson - AI research
+(1, 1),  -- Computer Science
+(1, 50), -- Artificial Intelligence
+(1, 18), -- Data Science
+
+-- Liam Smith - cloud computing and cybersecurity
+(2, 1),  -- Computer Science
+(2, 19), -- Cybersecurity
+(2, 18), -- Data Science
+
+-- Sophia Brown - data scientist
+(3, 18), -- Data Science
+(3, 1),  -- Computer Science
+(3, 2),  -- Mathematics
+
+-- Noah Taylor - web development
+(4, 1),  -- Computer Science
+(4, 24), -- Graphic Design
+
+-- Isabella Davis - graphic design and marketing
+(5, 24), -- Graphic Design
+(5, 20), -- Marketing
+(5, 23), -- Public Relations
+
+-- Oliver Jones - financial modeling and analytics
+(6, 22), -- Finance
+(6, 18), -- Data Science
+(6, 2),  -- Mathematics
+
+-- Mia Wilson - renewable energy
+(7, 17), -- Environmental Science
+(7, 40), -- Environmental Engineering
+(7, 39), -- Sustainability Studies
+
+-- Lucas Garcia - software engineering with cloud
+(8, 1),  -- Computer Science
+(8, 19), -- Cybersecurity
+
+-- Ava Martinez - marketing and customer engagement
+(9, 20), -- Marketing
+(9, 23), -- Public Relations
+
+-- Ethan Rodriguez - AI and robotics
+(10, 50), -- Artificial Intelligence
+(10, 1),  -- Computer Science
+(10, 43), -- Mechanical Engineering
+
+-- Continue for remaining students...
+(11, 24), -- Emily Lopez - Graphic Design
+(11, 20), -- Marketing
+
+(12, 22), -- Benjamin Thomas - Finance
+(12, 18), -- Data Science
+
+(13, 48), -- Ella Anderson - Supply Chain Management
+(13, 3),  -- Business Administration
+
+(14, 22), -- James Hernandez - Fintech
+(14, 1),  -- Computer Science
+
+(15, 27), -- Lily Moore - Healthcare Technology
+(15, 42), -- Biomedical Engineering
+
+-- And so on for all 50 students...
+(16, 50), -- Matthew Martinez - AI in education
+(16, 28), -- Education
+
+(17, 47), -- Grace Young - Event Planning
+(17, 3),  -- Business Administration
+
+(18, 20), -- Jack White - Sales and CRM
+(18, 3),  -- Business Administration
+
+(19, 40), -- Harper Lee - Environmental Engineering
+(19, 17), -- Environmental Science
+
+(20, 3),  -- Alexander Harris - Business Operations
+(20, 38), -- Public Policy
+
+-- Continue with remaining students...
+(21, 20), -- Zoey Clark - Social Media Marketing
+(21, 23), -- Public Relations
+
+(22, 40), -- Daniel Hall - Renewable Energy
+(22, 39), -- Sustainability Studies
+
+(23, 24), -- Scarlett Brown - Graphic Design
+(23, 20), -- Marketing
+
+(24, 18), -- Henry Adams - Data Analytics
+(24, 2),  -- Mathematics
+
+(25, 50), -- Victoria Sanchez - AI Research
+(25, 1),  -- Computer Science
+
+-- And the rest of the students...
+(26, 50), -- Owen Roberts - Machine Learning
+(26, 43), -- Mechanical Engineering
+
+(27, 20), -- Ella Turner - Marketing
+(27, 23), -- Public Relations
+
+(28, 1),  -- Jackson Phillips - Cloud Computing
+(28, 19), -- Cybersecurity
+
+(29, 24), -- Zoe Campbell - Video Editing
+(29, 34), -- Film Studies
+
+(30, 1),  -- Logan Evans - Software Engineering
+(30, 50), -- AI Systems
+
+(31, 47), -- Leah Murphy - Event Planning
+(31, 3),  -- Business Administration
+
+(32, 40), -- Liam Stewart - Environmental Engineering
+(32, 17), -- Environmental Science
+
+(33, 20), -- Samantha Morris - Marketing
+(33, 23), -- Public Relations
+
+(34, 19), -- Ethan Wright - Cybersecurity
+(34, 1),  -- Computer Science
+
+(35, 27), -- Olivia King - Healthcare
+(35, 42), -- Biomedical Engineering
+
+(36, 1),  -- Andrew Parker - Software Engineering
+(36, 18), -- Data Science
+
+(37, 28), -- Avery Collins - Education Technology
+(37, 1),  -- Computer Science
+
+(38, 22), -- Chloe Morgan - Financial Analysis
+(38, 18), -- Data Science
+
+(39, 18), -- Nathan Green - Data Science
+(39, 50), -- AI Applications
+
+(40, 20), -- Lila Perez - Content Marketing
+(40, 23), -- Public Relations
+
+(41, 50), -- Gabriel Diaz - AI Research
+(41, 1),  -- Computer Science
+
+(42, 1),  -- Ella Ramirez - Web Development
+(42, 24), -- Graphic Design
+
+(43, 24), -- Zoe Martinez - Graphic Design
+(43, 20), -- Marketing
+
+(44, 1),  -- Aiden Lee - DevOps
+(44, 19), -- Cybersecurity
+
+(45, 1),  -- Madison Harris - Software Engineering
+(45, 27), -- Health Sciences
+
+(46, 1),  -- Logan Clark - Blockchain
+(46, 19), -- Cybersecurity
+
+(47, 40), -- Nora Thompson - Environmental Engineering
+(47, 39), -- Sustainability Studies
+
+(48, 48), -- Sophia Walker - Project Management
+(48, 3),  -- Business Administration
+
+(49, 50), -- Elliot Moore - AI and Robotics
+(49, 43), -- Mechanical Engineering
+
+(50, 20), -- Violet Brooks - Marketing Analytics
+(50, 18)  -- Data Science
+;
 
 
 # Application Insert Statements
