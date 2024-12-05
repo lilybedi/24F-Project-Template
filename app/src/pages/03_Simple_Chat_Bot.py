@@ -10,28 +10,16 @@ from modules.nav import SideBarLinks
 SideBarLinks()
 
 def response_generator():
-  response = random.choice (
-    [
-      "Hello there! How can I assist you today?",
-      "Hi, human!  Is there anything I can help you with?",
-      "Do you need help?",
-    ]
-  )
-  for word in response.split():
-    yield word + " "
-    time.sleep(0.05)
+  response = ("Response here based on query of messages with a later timestams but the same starting message")
 #-----------------------------------------------------------------------
 
 st.set_page_config (page_title="Sample Chat Bot", page_icon="🤖")
 add_logo("assets/logo.png", height=400)
 
-st.title("Echo Bot 🤖")
+st.title("Chat with Neel")
 
 st.markdown("""
-            Currently, this chat bot only returns a random message from the following list:
-            - Hello there! How can I assist you today?
-            - Hi, human!  Is there anything I can help you with?
-            - Do you need help?
+            Currently, this chat only returns a default message
             """
            )
 
