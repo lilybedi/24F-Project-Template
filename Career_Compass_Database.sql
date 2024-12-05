@@ -4,447 +4,467 @@ CREATE DATABASE IF NOT EXISTS Career_Compass;
 
 USE Career_Compass;
 
-DROP TABLE IF EXISTS Advisor;
-
-CREATE TABLE Advisor (
-    id INT PRIMARY KEY,
-    First_Name VARCHAR(50),
-    Last_Name VARCHAR(50),
-    Title VARCHAR(100),
-    Students_List TEXT,
-    College_ID INT
+CREATE TABLE System_Admin
+(
+    ID            INT AUTO_INCREMENT PRIMARY KEY,
+    First_Name    VARCHAR(255),
+    Last_Name     VARCHAR(255),
+    Prefered_Name VARCHAR(255)
 );
 
+-- Create the Company table
+CREATE TABLE Company
+(
+    ID                 INT AUTO_INCREMENT PRIMARY KEY,
+    Name               VARCHAR(255) NOT NULL,
+    Industry           VARCHAR(255),
+    Description        TEXT
+);
 
-INSERT INTO Advisor (id, First_Name, Last_Name, Title, Students_List, College_ID)
-VALUES
-(1, 'Yankee', 'Taunton', 'Mr', 25, 23),
-(2, 'Lacy', 'Ardy', 'Ms', 25, 33),
-(3, 'Gayle', 'Brookton', 'Mr', 8, 25),
-(4, 'Arabel', 'Aasaf', 'Honorable', 21, 8),
-(5, 'Boyd', 'Strotton', 'Honorable', 31, 21),
-(6, 'Chere', 'Dibner', 'Honorable', 10, 14),
-(7, 'Aurlie', 'Rimes', 'Rev', 33, 1),
-(8, 'Johny', 'Rivallant', 'Dr', 11, 7),
-(9, 'Harre', 'Lebarree', 'Mr', 20, 31),
-(10, 'Marie', 'Eberlein', 'Mrs', 31, 37),
-(11, 'Wendall', 'Dameisele', 'Rev', 2, 33),
-(12, 'Francyne', 'Fenlon', 'Mrs', 1, 5),
-(13, 'Husein', 'Dewerson', 'Mrs', 25, 36),
-(14, 'Marie-ann', 'Juanes', 'Mrs', 4, 34),
-(15, 'Vida', 'Barkley', 'Mrs', 10, 37),
-(16, 'Alicia', 'Start', 'Mr', 11, 1),
-(17, 'Coleen', 'Winchester', 'Mr', 18, 25),
-(18, 'Lesya', 'Gresly', 'Mrs', 6, 1),
-(19, 'Clerkclaude', 'Verchambre', 'Mrs', 29, 12),
-(20, 'Nanete', 'Port', 'Honorable', 20, 28),
-(21, 'John', 'Smith', 'Mr', 22, 44),
-(22, 'Anna', 'Brown', 'Ms', 30, 25),
-(23, 'Peter', 'Jones', 'Dr', 12, 19),
-(24, 'Linda', 'Taylor', 'Honorable', 14, 18),
-(25, 'Michael', 'Wilson', 'Mr', 20, 12),
-(26, 'Sarah', 'Moore', 'Mrs', 11, 13),
-(27, 'James', 'Martin', 'Rev', 32, 24),
-(28, 'Patricia', 'Lee', 'Honorable', 25, 31),
-(29, 'Robert', 'White', 'Mr', 28, 35),
-(30, 'Jessica', 'Harris', 'Ms', 21, 16),
-(31, 'George', 'Clark', 'Dr', 10, 26),
-(32, 'Karen', 'Lewis', 'Mrs', 17, 40),
-(33, 'Thomas', 'Walker', 'Mr', 13, 23),
-(34, 'Barbara', 'Hall', 'Mrs', 7, 21),
-(35, 'Daniel', 'Allen', 'Mr', 26, 11),
-(36, 'Nancy', 'Young', 'Ms', 29, 20),
-(37, 'Paul', 'Hernandez', 'Dr', 18, 17),
-(38, 'Margaret', 'King', 'Mrs', 30, 27),
-(39, 'Frank', 'Wright', 'Rev', 24, 22),
-(40, 'Laura', 'Lopez', 'Mrs', 19, 14);
+CREATE TABLE College
+(
+    Name VARCHAR(255),
+    ID   INT AUTO_INCREMENT PRIMARY KEY
+);
 
-DROP TABLE IF EXISTS College;
-CREATE TABLE College (
-    id INT PRIMARY KEY,
+CREATE TABLE Major
+(
+    ID   INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(255)
 );
 
-INSERT INTO College (id, Name)
-VALUES
-(1, 'Western State University College of Law - Orange County'),
-(2, 'Bahcesehir University'),
-(3, 'Istanbul University'),
-(4, 'Kazan State Music Conservatory'),
-(5, "Ecole Nationale d'Administration"),
-(6, 'Tohoku Gakuin University'),
-(7, 'Technological Education Institute of Patras'),
-(8, 'Rajasthan Technical University'),
-(9, "Tokai Women's College"),
-(10, 'Afghan University'),
-(11, "Université de N'Djamena"),
-(12, 'Long Island University, C.W. Post'),
-(13, 'University of Utah'),
-(14, 'Royal Melbourne Institute of Technology'),
-(15, 'University of Melbourne'),
-(16, 'University of Tokyo'),
-(17, 'Kyoto University'),
-(18, 'University of Sydney'),
-(19, 'University of Toronto'),
-(20, 'Harvard University'),
-(21, 'Massachusetts Institute of Technology'),
-(22, 'Stanford University'),
-(23, 'Oxford University'),
-(24, 'Cambridge University'),
-(25, 'Princeton University'),
-(26, 'Schimmel-Orn'),
-(27, 'Legros, Feeney and Mertz'),
-(28, 'Denesik-Rodriguez'),
-(29, 'Bradtke, Schmidt and Murazik'),
-(30, 'Legros-Gutkowski'),
-(31, 'Bergstrom, Waelchi and Nitzsche'),
-(32, 'Lynch, Ferry and Skiles'),
-(33, 'White, Larkin and Kreiger'),
-(34, 'Kuhn and Sons'),
-(35, 'Hauck-Witting'),
-(36, 'Conn, Zieme and Casper'),
-(37, "Miller-O'Hara"),
-(38, 'Brakus and Sons'),
-(39, 'Champlin-Kuhic'),
-(40, 'Doyle Inc');
-
-CREATE TABLE Company (
-    id INT PRIMARY KEY,
-    Name VARCHAR(255),
-    Available_Postings INT,
-    Description TEXT
+CREATE TABLE Minor
+(
+    ID   INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255)
 );
 
-INSERT INTO Company (id, Name, Available_Postings, Description)
-VALUES
-(1, 'Wintheiser and Sons', 5, 'A company pioneering electric vehicle charging solutions.'),
-(2, 'Schroeder-Bogan', 3, 'A robotics company developing autonomous solutions.'),
-(3, 'Heaney LLC', 7, 'An edtech platform offering personalized learning.'),
-(4, 'Parker-Reilly', 2, 'An AI-powered virtual assistant tailored to healthcare.'),
-(5, 'Bernhard, Grimes and Beer', 6, 'A technology startup revolutionizing personal finance.'),
-(6, 'Zulauf, Hessel and Waelchi', 4, 'A healthcare company specializing in patient care automation.'),
-(7, 'Roberts Inc.', 5, 'A logistics company specializing in global supply chain solutions.'),
-(8, 'Douglas, Kreiger and Labadie', 3, 'A SaaS platform for collaborative remote teams.'),
-(9, 'Kessler and Sons', 8, 'A company revolutionizing personal wellness with data-driven products.'),
-(10, 'Gottlieb Group', 10, 'A firm specializing in cybersecurity solutions for small-to-medium-sized businesses.'),
-(11, 'Miller-Larkin', 2, 'A software development company focusing on mobile apps.'),
-(12, 'Jacobson LLC', 5, 'A biotechnology company working on cancer research.'),
-(13, 'Fay-Towne', 6, 'A consumer goods company creating eco-friendly packaging solutions.'),
-(14, 'Stehr-Bednar', 4, 'A digital marketing agency specializing in influencer outreach.'),
-(15, 'Krajcik and Sons', 7, 'A renewable energy firm focusing on solar technology.'),
-(16, 'Lehner-Krajcik', 3, 'A firm specializing in 3D printing and rapid prototyping services.'),
-(17, 'Schroeder, Terry and McDermott', 1, 'A digital media company focused on video production for small businesses.'),
-(18, 'Purdy-Wolf', 9, 'An AI-driven company helping clients make data-backed decisions.'),
-(19, 'Jacobson-Kovacek', 10, 'A firm offering software solutions for the finance industry.'),
-(20, 'Schimmel-Orn', 10, 'A firm specializing in cybersecurity solutions for small-to-medium-sized businesses.'),
-(21, 'Legros, Feeney and Mertz', 1, 'A gaming studio dedicated to creating immersive VR experiences for education and entertainment.'),
-(22, 'Denesik-Rodriguez', 11, 'A fitness platform combining live virtual classes with AI-driven personal coaching.'),
-(23, 'Bradtke, Schmidt and Murazik', 5, 'A nonprofit connecting underserved youth with mentors and internship opportunities in STEM fields.'),
-(24, 'Legros-Gutkowski', 4, 'An AI-driven fashion app that helps users curate personalized wardrobes based on their style preferences.'),
-(25, 'Bergstrom, Waelchi and Nitzsche', 9, 'A digital health platform offering wearable technology for chronic condition management.'),
-(26, 'Lynch, Ferry and Skiles', 8, 'An innovative design firm offering both physical and virtual product development services.'),
-(27, 'White, Larkin and Kreiger', 6, 'A mobile app development company focused on helping small businesses grow.'),
-(28, 'Kuhn and Sons', 5, 'A company focusing on home automation systems and smart technology solutions.'),
-(29, 'Hauck-Witting', 3, 'A healthcare tech startup offering an AI-powered diagnostic tool for doctors.'),
-(30, 'Conn, Zieme and Casper', 4, 'A platform that connects service professionals with clients in need of home repairs.'),
-(31, 'Miller-O’Hara', 3, 'An online marketplace for second-hand luxury goods.'),
-(32, 'Brakus and Sons', 6, 'A nonprofit working with local communities to create green urban spaces.'),
-(33, 'Champlin-Kuhic', 7, 'A cutting-edge fintech company revolutionizing peer-to-peer lending platforms.'),
-(34, 'Doyle Inc.', 5, 'A multinational logistics company focused on sustainable transport solutions.'),
-(35, 'Zulauf-Bednar', 8, 'A digital marketing agency providing data-driven advertising strategies.'),
-(36, 'Graham, Krajcik and Klein', 6, 'A data analytics company helping businesses unlock actionable insights from large datasets.'),
-(37, 'Miller-Feeney', 7, 'A law firm specializing in intellectual property and technology law.'),
-(38, 'Bailey-Rosales', 5, 'An IoT company focused on making industries smarter with connected devices.'),
-(39, 'Schmitt and Co.', 9, 'A digital transformation firm helping enterprises implement new technologies.'),
-(40, 'Fay-Larkin', 10, 'A research company providing insights into customer behavior through big data.');
+-- Create the Skill table
+CREATE TABLE Skill
+(
+    ID          INT AUTO_INCREMENT PRIMARY KEY,
+    Name        VARCHAR(255) NOT NULL,
+    Description TEXT,
+    Industry    VARCHAR(255)
+);
 
-CREATE TABLE Posting_Location (
-    id INT PRIMARY KEY,
-    Region TEXT,
-    State TEXT,
-    Zip_Code INT,
+-- Create the Advisor table
+CREATE TABLE Advisor
+(
+    ID            INT AUTO_INCREMENT PRIMARY KEY,
+    First_Name    VARCHAR(255),
+    Last_Name     VARCHAR(255),
+    Prefered_Name VARCHAR(255), -- optional
+    College_ID    INT NOT NULL,
+    FOREIGN KEY (College_ID) REFERENCES College (ID)
+
+);
+
+CREATE TABLE Posting_Location
+(
+    ID             INT AUTO_INCREMENT PRIMARY KEY,
+    Region         VARCHAR(255),
+    State          VARCHAR(100),
+    Zip_Code       CHAR(10),
     Address_Number INT,
-    Street TEXT,
-    City TEXT,
-    Country TEXT
+    Street         VARCHAR(255),
+    City           VARCHAR(255),
+    Country        VARCHAR(100)
 );
 
-INSERT INTO Posting_Location (id, Region, State, Zip_Code, Address_Number, Street, City, Country)
-VALUES
-(1, 'US Regions', 'North Carolina', 90210, 8, 'Reindahl', 'Durham', 'United States'),
-(2, 'West North Central', 'Texas', 38103, 229, 'Hoepker', 'Waco', 'United States'),
-(3, 'East North Central', 'Virginia', 90001, 45, 'Blue Bill Park', 'Richmond', 'United States'),
-(4, 'New England', 'Texas', 98105, 2504, 'Badeau', 'Plano', 'United States'),
-(5, 'Pacific', 'Missouri', 94111, 5, 'Arizona', 'Kansas City', 'United States'),
-(6, 'East North Central', 'Iowa', 33139, 35, 'Shasta', 'Iowa City', 'United States'),
-(7, 'US Regions', 'Iowa', 43201, 86, 'Schiller', 'Des Moines', 'United States'),
-(8, 'Mountain', 'Texas', 10001, 76571, 'Sherman', 'Fort Worth', 'United States'),
-(9, 'South', 'Oklahoma', 37203, 33049, 'Everett', 'Oklahoma City', 'United States'),
-(10, 'Middle Atlantic', 'Texas', 2139, 769, 'Lyons', 'Wichita Falls', 'United States'),
-(11, 'Midwest', 'Wisconsin', 33139, 85105, 'Pleasure', 'Milwaukee', 'United States'),
-(12, 'Middle Atlantic', 'Kansas', 2118, 15, 'Arrowood', 'Wichita', 'United States'),
-(13, 'Northeast', 'South Carolina', 75206, 68, 'Scott', 'Spartanburg', 'United States'),
-(14, 'US Regions', 'Texas', 55401, 45, 'Anderson', 'Houston', 'United States'),
-(15, 'West North Central', 'Missouri', 2115, 78203, 'Eastwood', 'Jefferson City', 'United States'),
-(16, 'Pacific', 'Minnesota', 43201, 8, 'Atwood', 'Saint Paul', 'United States'),
-(17, 'Middle Atlantic', 'Texas', 99201, 50, 'Monument', 'El Paso', 'United States'),
-(18, 'New England', 'New York', 37203, 53944, 'Sunfield', 'New York City', 'United States'),
-(19, 'Pacific', 'Texas', 90210, 2, 'Grover', 'San Antonio', 'United States'),
-(20, 'East South Central', 'Texas', 99201, 768, 'Badeau', 'Houston', 'United States')
-(21, 'East North Central', 'Texas', 75206, 6488, 'Morrow', 'El Paso', 'United States'),
-(22, 'East South Central', 'Oregon', 19103, 1297, 'Scofield', 'Portland', 'United States'),
-(23, 'South', 'Florida', 94103, 785, 'Thompson', 'Miami', 'United States'),
-(24, 'Pacific', 'New York', 38103, 6325, 'Stuart', 'Utica', 'United States'),
-(25, 'US Regions', 'Pennsylvania', 98105, 4550, 'Cottonwood', 'Valley Forge', 'United States'),
-(26, 'Mountain', 'Colorado', 33139, 3, 'Dakota', 'Boulder', 'United States'),
-(27, 'East South Central', 'Texas', 30303, 3, 'Mallard', 'Fort Worth', 'United States'),
-(28, 'East North Central', 'Michigan', 85001, 140, 'Darwin', 'Detroit', 'United States'),
-(29, 'West North Central', 'Oklahoma', 45402, 934, 'Johnson', 'Tulsa', 'United States'),
-(30, 'Middle Atlantic', 'North Carolina', 10001, 45, 'Caliangt', 'Raleigh', 'United States'),
-(31, 'New England', 'California', 38103, 2, 'Canary', 'Sacramento', 'United States'),
-(32, 'West North Central', 'Texas', 94111, 1, 'Delaware', 'Austin', 'United States'),
-(33, 'West South Central', 'Texas', 75201, 2, 'Maywood', 'Houston', 'United States'),
-(34, 'Pacific', 'Arizona', 98105, 1, 'La Follette', 'Phoenix', 'United States'),
-(35, 'US Regions', 'Ohio', 90001, 24898, 'Hermina', 'Columbus', 'United States'),
-(36, 'West South Central', 'Utah', 99201, 30646, 'Mifflin', 'Salt Lake City', 'United States'),
-(37, 'East South Central', 'California', 80202, 8, 'Mcguire', 'San Francisco', 'United States'),
-(38, 'East South Central', 'Florida', 80301, 1, 'Hooker', 'Miami', 'United States'),
-(39, 'Mountain', 'Louisiana', 94107, 30575, 'Holmberg', 'New Orleans', 'United States'),
-(40, 'Northeast', 'Pennsylvania', 60611, 1, 'Union', 'Bethlehem', 'United States');
 
-DROP TABLE IF EXISTS Students;
-CREATE TABLE Students (
-    id INT PRIMARY KEY,
-    First_Name VARCHAR(255),
-    Last_Name VARCHAR(255),
-    email VARCHAR(255),
-    Major INT,
-    Minor INT,
-    GPA INT,
-    College_ID INT,
-    Grad_Year INT,
-    Cycle VARCHAR(50),
-    Advisor_ID INT
+CREATE TABLE Posting
+(
+    ID          INT AUTO_INCREMENT PRIMARY KEY,
+    Name        VARCHAR(255) NOT NULL,
+    Company_ID  INT          NOT NULL,
+    Industry    VARCHAR(255),
+    Location    INT          NOT NULL,
+    FOREIGN KEY (Company_ID) REFERENCES Company (ID),
+    FOREIGN KEY (Location) REFERENCES Posting_Location (ID),
+    Date_Start  DATE,
+    Date_End    DATE,
+    Filled      BOOLEAN,
+    Minimum_GPA DECIMAL(3, 2) CHECK (Minimum_GPA >= 0 AND Minimum_GPA <= 4.0),
+    Title       VARCHAR(255),
+    Description TEXT,
+    Pay         INT          NOT NULL
 );
 
-INSERT INTO Students (id, First_Name, Last_Name, email, Major, Minor, GPA, College_ID, Grad_Year, Cycle, Advisor_ID)
-VALUES
-(1, 'Creigh', 'Trowel', 'ctrowel0@alexa.com', 27, NULL, 1, 30, 2024, 'Fall', 7),
-(2, 'Gweneth', 'Crame', 'gcrame1@list-manage.com', 18, 18, 3, 15, 2022, 'Spring', 38),
-(3, 'Saxe', 'Levay', 'slevay2@nps.gov', 21, 11, 4, 27, 2021, 'Fall', 1),
-(4, 'Vernice', 'Hauxby', 'vhauxby3@mysql.com', 10, 25, 1, 9, 2023, 'Spring', 25),
-(5, 'Kelsey', 'Smead', 'ksmead4@sciencedirect.com', 25, NULL, 4, 29, 2028, 'Fall', 24),
-(6, 'Vyky', 'Romain', 'vromain5@wordpress.com', 3, NULL, 2, 29, 2022, 'Spring', 16),
-(7, 'Saidee', 'Perroni', 'sperroni6@xrea.com', 11, 10, 2, 35, 2024, 'Spring', 35),
-(8, 'Ruthie', 'McDuall', 'rmcduall7@lulu.com', 26, NULL, 2, 14, 2028, 'Fall', 3),
-(9, 'Ashbey', 'McConaghy', 'amcconaghy8@wix.com', 37, 36, 2, 37, 2026, 'Spring', 9),
-(10, 'Rois', 'Ashborn', 'rashborn9@nps.gov', 33, NULL, 4, 29, 2028, 'Fall', 5),
-(11, 'Bartholomeo', 'Matuszyk', 'bmatuszyka@i2i.jp', 11, NULL, 2, 34, 2024, 'Fall', 33),
-(12, 'Ingemar', 'Zuanazzi', 'izuanazzib@devhub.com', 39, NULL, 3, 31, 2022, 'Fall', 23),
-(13, 'Eve', 'Shall', 'eshallc@mozilla.com', 24, NULL, 2, 32, 2024, 'Spring', 8),
-(14, 'Mariska', 'Wittman', 'mwittmand@mozilla.org', 4, 31, 1, 25, 2024, 'Fall', 7),
-(15, 'Lanny', 'Nockells', 'lnockellse@businessinsider.com', 28, 13, 2, 29, 2025, 'Fall', 15),
-(16, 'Etan', 'Piller', 'epillerf@webs.com', 15, 25, 1, 4, 2024, 'Spring', 6),
-(17, 'Jordon', 'Lorenzin', 'jlorenzing@skyrock.com', 9, 7, 3, 3, 2026, 'Fall', 9),
-(18, 'Viviyan', 'Sackett', 'vsacketth@bigcartel.com', 3, 35, 1, 2, 2028, 'Spring', 28),
-(19, 'Kellia', 'Morilla', 'kmorillai@cbslocal.com', 15, 22, 2, 33, 2022, 'Spring', 23),
-(20, 'Thane', 'Keese', 'tkeesej@nymag.com', 16, 20, 1, 17, 2022, 'Fall', 14),
-(21, 'Zeb', 'Esterbrook', 'zesterbrookk@webeden.co.uk', 17, NULL, 4, 39, 2028, 'Spring', 32),
-(22, 'Myrwyn', 'Quinn', 'mquinnl@typepad.com', 4, 38, 1, 28, 2022, 'Spring', 6),
-(23, 'Freeman', 'Borleace', 'fborleacem@samsung.com', 15, NULL, 1, 22, 2026, 'Fall', 9),
-(24, 'Glenna', 'McVittie', 'gmcvittien@miitbeian.gov.cn', 18, NULL, 1, 34, 2022, 'Fall', 9),
-(25, 'Nevins', 'Rumsby', 'nrumsbyo@squidoo.com', 11, 39, 1, 6, 2026, 'Fall', 27),
-(26, 'Mikol', ' Donohue', 'modonohuep@angelfire.com', 33, 9, 2, 35, 2025, 'Spring', 1),
-(27, 'Kiah', 'Sunter', 'ksunterq@webnode.com', 32, 6, 1, 1, 2023, 'Spring', 21),
-(28, 'Cati', 'Neeve', 'cneever@boston.com', 40, 39, 3, 9, 2022, 'Fall', 6),
-(29, 'Lucian', 'Stovine', 'lstovines@spotify.com', 20, 3, 3, 29, 2025, 'Spring', 20),
-(30, 'Lexy', 'Grix', 'lgrixt@japanpost.jp', 19, 39, 1, 23, 2022, 'Fall', 5),
-(31, 'Luci', 'Whymark', 'lwhymarku@ucsd.edu', 39, 28, 2, 24, 2025, 'Fall', 26),
-(32, 'Lucie', 'Maskill', 'lmaskillv@wordpress.com', 30, 12, 1, 21, 2027, 'Spring', 37),
-(33, 'Fanni', 'Marquot', 'fmarquotw@gravatar.com', 7, NULL, 4, 3, 2026, 'Spring', 16),
-(34, 'Dedie', 'Edling', 'dedlingx@cocolog-nifty.com', 13, NULL, 1, 39, 2022, 'Spring', 35),
-(35, 'Madelin', 'Hovy', 'mhovyy@abc.net.au', 4, NULL, 2, 12, 2026, 'Spring', 27),
-(36, 'Moishe', 'Bent', 'mbentz@senate.gov', 27, NULL, 3, 4, 2025, 'Spring', 14),
-(37, 'Gina', 'Osgardby', 'gosgardby10@edublogs.org', 3, NULL, 1, 33, 2024, 'Fall', 24),
-(38, 'Odo', 'Cubbin', 'ocubbin11@cmu.edu', 19, 4, 3, 35, 2024, 'Spring', 1),
-(39, 'Sonny', 'Gorry', 'sgorry12@youtu.be', 26, 6, 3, 29, 2027, 'Spring', 9),
-(40, 'Neall', 'Cudd', 'ncudd13@devhub.com', 2, NULL, 4, 7, 2026, 'Fall', 19);
-
-DROP TABLE IF EXISTS Skill;
-CREATE TABLE Skill (
-    id INT PRIMARY KEY,
-    Name VARCHAR(255),
-    Description VARCHAR(255),
-    Industry VARCHAR(255)
-);
-
-INSERT INTO Skill(id, Name, Description, Industry)
-VALUES(1,	'Project Management',	'The ability to plan, organize, and manage resources to achieve specific project goals and objectives.',	'Semiconductors'),
-    (2,	'Leadership',	'The ability to lead, inspire, and motivate a team to achieve organizational goals.', 'IT'),
-    (3,	'Marketing Strategy',	'The process of developing and executing marketing plans to promote products or services.', 'Finance: Consumer Services'),
-(4, 'Data Analysis', 'The process of collecting, interpreting, and analyzing data to make informed business decisions.',	'Industrial Machinery/Components'),
-(5, 'Team Management', 'The ability to manage, coordinate, and support a team to achieve goals effectively.', 'Multi-Sector Companies'),
-(6, 'Customer Service', 'Providing assistance and support to customers to ensure satisfaction with products or services.', 'Marine Transportation'),
-(7, 'Digital Marketing', 'The use of digital channels and strategies to market products or services to a wider audience.', 'n/a'),
-(8, 'Salesforce', 'A customer relationship management (CRM) tool used for managing business relationships and data.', 'n/a'),
-(9, 'Social Media Marketing', 'The use of social media platforms to promote products, services, or brands.', 'Real Estate Investment Trusts'),
-(10, 'Communication', 'The ability to convey information clearly and effectively in both written and verbal forms.', 'Semiconductors'),
-(11, 'Business Analysis', 'The practice of analyzing an organization’s business processes to improve efficiency and effectiveness.', 'n/a'),
-(12, 'Content Marketing', 'Creating and distributing valuable, relevant content to attract and engage a target audience.', 'Biotechnology: In Vitro & In Vivo Diagnostic Substances'),
-(13, 'SEO', 'The practice of optimizing a website to rank higher in search engine results and increase visibility.', 'Medical/Dental Instruments'),
-(14, 'Negotiation', 'The ability to reach mutually beneficial agreements through communication and compromise.', 'Medical Specialities'),
-(15, 'Public Speaking', 'The ability to present information clearly and effectively to an audience.', 'Consumer Electronics/Appliances'),
-(16, 'Event Planning', 'The coordination and management of events to ensure smooth execution and achieve desired outcomes.', 'Semiconductors'),
-(17, 'Financial Analysis', 'The process of analyzing financial data to support business decisions and manage financial resources.', 'Major Pharmaceuticals'),
-(18, 'Strategic Planning', 'The process of creating long-term plans to achieve specific business objectives and growth.', 'Building Materials'),
-(19, 'Entrepreneurship', 'The ability to start, develop, and manage a business venture while handling risks and challenges.', 'n/a'),
-(20, 'Product Management', 'Managing the lifecycle of a product from development to launch and continuous improvement.', 'Telecommunications Equipment'),
-(21, 'Advertising', 'The practice of promoting products or services through paid advertising channels.', 'Property-Casualty Insurers'),
-(22, 'Microsoft Office', 'The use of software applications such as Word, Excel, and PowerPoint to manage and analyze data.', 'Restaurants'),
-(23, 'Python', 'A programming language used for software development, data analysis, and automation.', 'n/a'),
-(24, 'Human Resources', 'Managing human resources to recruit, train, and develop talent within an organization.', 'Metal Fabrications'),
-(25, 'Branding', 'Creating and maintaining a brand identity and ensuring consistency across marketing channels.', 'n/a'),
-(26, 'Business Development', 'The practice of growing and expanding a business through strategic partnerships and initiatives.', 'Military/Government/Technical'),
-(27, 'Budgeting', 'The process of managing and allocating financial resources to achieve business goals.', 'n/a'),
-(28, 'Sales', 'The act of selling products or services and managing customer relationships to drive business revenue.', 'Agricultural Chemicals'),
-(29, 'Operations Management', 'The ability to plan, organize, and oversee the operations of a business or department.', 'Biotechnology: Biological Products (No Diagnostic Substances)'),
-(30, 'Training', 'The development and delivery of training programs to enhance skills and knowledge within an organization.', 'Major Chemicals'),
-(31, 'Team Leadership', 'The ability to motivate and manage a team to achieve goals and improve performance.', 'Major Pharmaceuticals'),
-(32, 'Cloud Computing', 'The use of cloud-based technologies to store, manage, and process data remotely.', 'Major Banks'),
-(33, 'Graphic Design', 'Creating and editing visual content such as logos, graphics, and layouts for digital and print media.', 'Computer Communications Equipment'),
-(34, 'Customer Relationship Management (CRM)', 'Managing customer relationships and business data using specialized software or tools.', 'n/a'),
-(35, 'Machine Learning', 'The use of artificial intelligence algorithms to create systems that can learn and make predictions.', 'Major Banks'),
-(36, 'Research', 'The practice of gathering and analyzing information to support scientific, social, or business research.', 'Telecommunications Equipment'),
-(37, 'Financial Reporting', 'The process of preparing and analyzing financial statements to provide insight into business performance.', 'Trucking Freight/Courier Services'),
-(38, 'Web Development', 'The design and development of websites and web applications to provide services and information.', 'Electronic Components'),
-(39, 'Email Marketing', 'The use of email campaigns to communicate and promote products, services, or content.', 'Tobacco'),
-(40, 'Time Management', 'The ability to manage and prioritize tasks effectively to meet deadlines and optimize productivity.', 'Miscellaneous');
-
-DROP TABLE IF EXISTS Alumni;
+-- Create the Alumni table
 CREATE TABLE Alumni
 (
-    id         INT PRIMARY KEY,
-    Title      VARCHAR(225),
+    ID         INT PRIMARY KEY,
+    Title      VARCHAR(255),
+    Grad_Year  INT NOT NULL,
     First_Name VARCHAR(255),
     Last_Name  VARCHAR(255),
-    email      VARCHAR(255),
-    NUID       INT,
-    Grad_Year  INT,
-    College_ID INT FOREIGN KEY Alumni(Customer_ID) REFERENCES College (id)
-
+    Email      VARCHAR(255),
+    NUID       INT NOT NULL,
+    College_ID INT NOT NULL,
+    Opt_out    BOOLEAN,
+    FOREIGN KEY (College_ID) REFERENCES College (ID)
 );
 
 
-DROP TABLE IF EXISTS Application;
-
-CREATE TABLE Application (
-    id INT PRIMARY KEY,
-    Student_ID INT,
-    Position_ID INT,
-    FOREIGN KEY (Student_ID) REFERENCES Student(id),
-    FOREIGN KEY (Position_ID) REFERENCES Posting(id)
+CREATE TABLE Alumni_Position
+(
+    Position_ID INT NOT NULL,
+    Alumni_ID   INT NOT NULL,
+    PRIMARY KEY (Position_ID, Alumni_ID),
+    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID)
 );
 
-INSERT INTO Application (id, Student_ID, Position_ID)
+CREATE TABLE Cycle
+(
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    cycle VARCHAR(50) NOT NULL
+);
+
+-- Create the Student table
+CREATE TABLE Student
+(
+    ID            INT AUTO_INCREMENT PRIMARY KEY,
+    First_Name    VARCHAR(255) NOT NULL,
+    Last_Name     VARCHAR(255) NOT NULL,
+    Prefered_Name VARCHAR(255),
+    GPA           DECIMAL(3, 2) CHECK (GPA >= 0 AND GPA <= 4.0),
+    College_ID    INT         NOT NULL,
+    FOREIGN KEY (College_ID) REFERENCES College (ID),
+    Grad_Year     INT          NOT NULL,
+    Cycle         INT NOT NULL,
+    Advisor_ID    INT          NOT NULL,
+    Eligibility   BOOLEAN,
+    Hired         BOOLEAN,
+    FOREIGN KEY (Advisor_ID) REFERENCES Advisor (ID),
+    FOREIGN KEY (Cycle) REFERENCES Cycle (ID),
+    Resume_Link VARCHAR(255),
+    Email VARCHAR(255),
+    Phone_Number VARCHAR(255),
+    Description TEXT,
+);
+
+CREATE TABLE Student_Majors (
+    Student_ID INT NOT NULL,
+    Major_ID INT NOT NULL,
+    PRIMARY KEY (Student_ID, Major_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
+    FOREIGN KEY (Major_ID) REFERENCES Major(ID)
+);
+
+CREATE TABLE Student_Minors (
+    Student_ID INT NOT NULL,
+    Minor_ID INT NOT NULL,
+    PRIMARY KEY (Student_ID, Minor_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
+    FOREIGN KEY (Minor_ID) REFERENCES Minor(ID)
+);
+
+
+
+-- Create the Posting_Skills table (junction table)
+CREATE TABLE Posting_Skills
+(
+    Position_ID INT NOT NULL,
+    Skill_ID    INT NOT NULL,
+    PRIMARY KEY (Position_ID, Skill_ID),
+    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
+    FOREIGN KEY (Skill_ID) REFERENCES Skill (ID)
+);
+
+-- Create the Student_Skills table (junction table)
+CREATE TABLE Student_Skills
+(
+    Student_ID INT NOT NULL,
+    Skill_ID   INT NOT NULL,
+    PRIMARY KEY (Student_ID, Skill_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
+    FOREIGN KEY (Skill_ID) REFERENCES Skill (ID)
+);
+
+-- Create the Application table
+CREATE TABLE Application
+(
+    ID          INT AUTO_INCREMENT PRIMARY KEY,
+    Student_ID  INT NOT NULL,
+    Position_ID INT NOT NULL,
+    Accepted BOOLEAN,
+    Resume_Link VARCHAR(255),
+    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
+    FOREIGN KEY (Position_ID) REFERENCES Posting (ID)
+
+);
+
+CREATE TABLE Question
+(
+    ID             INT AUTO_INCREMENT PRIMARY KEY,
+    Question       TEXT NOT NULL,
+    Answer         TEXT,
+    Application_ID INT  NOT NULL,
+    FOREIGN KEY (Application_ID) REFERENCES Application (ID)
+);
+
+
+CREATE TABLE Ticket
+(
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Reporter_ID INT NOT NULL,
+    Buggy_Entity_ID INT,
+    FOREIGN KEY (Reporter_ID) REFERENCES System_Admin (ID),
+    Message VARCHAR(255),
+    Completed BOOLEAN
+);
+
+CREATE TABLE Message
+(
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    RE INT,
+    FOREIGN KEY (RE) REFERENCES Message (ID),
+    Student_ID INT NOT NULL,
+    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
+    Message    TEXT,
+    Alumni_ID  INT NOT NULL,
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID)
+);
+
+
+
+# Insert Statements 
+
+# System_Admin Insert Statements
+INSERT INTO System_Admin (First_Name, Last_Name, Prefered_Name)
 VALUES
-(1, 35, 21),
-(2, 15, 11),
-(3, 8, 14),
-(4, 20, 5),
-(5, 4, 3),
-(6, 28, 1),
-(7, 32, 26),
-(8, 39, 37),
-(9, 25, 20),
-(10, 29, 30),
-(11, 14, 19),
-(12, 13, 40),
-(13, 26, 35),
-(14, 9, 7),
-(15, 5, 13),
-(16, 37, 12),
-(17, 2, 15),
-(18, 23, 6),
-(19, 15, 4),
-(20, 6, 29),
-(21, 19, 37),
-(22, 11, 12),
-(23, 16, 20),
-(24, 38, 9),
-(25, 7, 33),
-(26, 18, 39),
-(27, 8, 22),
-(28, 4, 37),
-(29, 33, 12),
-(30, 5, 11),
-(31, 2, 14),
-(32, 30, 10),
-(33, 22, 22),
-(34, 12, 14),
-(35, 36, 27),
-(36, 38, 19),
-(37, 1, 28),
-(38, 12, 1),
-(39, 28, 29),
-(40, 24, 37),
-(41, 14, 16),
-(42, 19, 19),
-(43, 22, 30),
-(44, 24, 20),
-(45, 38, 27),
-(46, 39, 33),
-(47, 23, 40),
-(48, 33, 22),
-(49, 5, 9),
-(50, 11, 14),
-(51, 35, 27),
-(52, 17, 36),
-(53, 9, 14),
-(54, 28, 13),
-(55, 15, 10),
-(56, 28, 3),
-(57, 6, 26),
-(58, 18, 5),
-(59, 14, 16),
-(60, 30, 33),
-(61, 22, 35),
-(62, 23, 19),
-(63, 37, 36),
-(64, 14, 2),
-(65, 3, 33),
-(66, 23, 20),
-(67, 6, 24),
-(68, 20, 38),
-(69, 39, 16),
-(70, 39, 40),
-(71, 28, 11),
-(72, 20, 31),
-(73, 18, 28),
-(74, 38, 21),
-(75, 2, 32),
-(76, 12, 14),
-(77, 2, 13),
-(78, 40, 34),
-(79, 14, 21),
-(80, 25, 32),
-(81, 9, 22),
-(82, 28, 18),
-(83, 38, 16),
-(84, 15, 10),
-(85, 2, 14),
-(86, 11, 23),
-(87, 24, 26),
-(88, 6, 20),
-(89, 24, 36),
-(90, 9, 8),
-(91, 19, 5),
-(92, 2, 31),
-(93, 9, 15),
-(94, 6, 5),
-(95, 16, 16),
-(96, 37, 12),
-(97, 13, 30),
-(98, 4, 35),
-(99, 36, 23),
-(100, 28, 36);
+INSERT INTO System_Admin (First_Name, Last_Name, Prefered_Name)
+VALUES
+('John', 'Doe', 'Johnny'),
+('Jane', 'Smith', 'Janie'),
+('Michael', 'Johnson', 'Mike'),
+('Emily', 'Brown', 'Em'),
+('Chris', 'Evans', 'Chrisy'),
+('Anna', 'Taylor', 'Annie'),
+('David', 'Wilson', 'Dave'),
+('Sarah', 'Moore', 'Sarah'),
+('Daniel', 'Anderson', 'Dan'),
+('Laura', 'White', 'Laurie'),
+('James', 'Harris', 'Jim'),
+('Olivia', 'Martin', 'Liv'),
+('Robert', 'Thompson', 'Rob'),
+('Sophia', 'Garcia', 'Soph'),
+('William', 'Martinez', 'Will'),
+('Isabella', 'Rodriguez', 'Bella'),
+('Benjamin', 'Lee', 'Ben'),
+('Mia', 'Perez', 'Mimi'),
+('Charles', 'Clark', 'Charlie'),
+('Charlotte', 'Lewis', 'Charlie'),
+('Joseph', 'Walker', 'Joe'),
+('Amelia', 'Young', 'Amy'),
+('Thomas', 'Allen', 'Tom'),
+('Harper', 'King', 'Harpy'),
+('Henry', 'Wright', 'Hank'),
+('Evelyn', 'Scott', 'Evy'),
+('Alexander', 'Hill', 'Alex'),
+('Abigail', 'Green', 'Abby'),
+('Jackson', 'Adams', 'Jack'),
+('Emily', 'Baker', 'Emmy'),
+('Lucas', 'Nelson', 'Luke'),
+('Grace', 'Carter', 'Gracie'),
+('Matthew', 'Mitchell', 'Matt'),
+('Chloe', 'Perez', 'Chloe'),
+('Sebastian', 'Roberts', 'Seb'),
+('Victoria', 'Turner', 'Vicky'),
+('Owen', 'Phillips', 'Oweny'),
+('Ella', 'Campbell', 'Ellie'),
+('Jacob', 'Parker', 'Jake'),
+('Scarlett', 'Evans', 'Scar'),
+('Jack', 'Edwards', 'Jacky'),
+('Madison', 'Collins', 'Maddie'),
+('Liam', 'Stewart', 'Liam'),
+('Zoey', 'Sanchez', 'Zoe'),
+('Aiden', 'Morris', 'Aid'),
+('Hannah', 'Rogers', 'Hanny'),
+('Ethan', 'Reed', 'Ethan'),
+('Lily', 'Cook', 'Lil'),
+('Noah', 'Morgan', 'Noah'),
+('Emily', 'Bailey', 'Emy');
 
+
+# Company Insert Statements
+INSERT INTO Company (Name, Industry, Description)
+VALUES
+INSERT INTO Company (Name, Industry, Description)
+VALUES
+('Tech Innovators', 'Software Engineer', 'A leading technology firm focused on developing innovative AI-driven solutions for businesses, governments, and educational institutions.'),
+('Green Future Inc.', 'Renewable Energy Expert', 'Dedicated to creating sustainable energy solutions, including solar farms and wind energy, to help reduce carbon emissions globally.'),
+('Urban Creators Co.', 'Architect', 'Specializing in modern, eco-friendly urban designs, focusing on maximizing space while maintaining environmental sustainability.'),
+('Health First LLC', 'Medical Researcher', 'A cutting-edge medical research organization working on innovative treatments for chronic diseases and advancing telemedicine technologies.'),
+('EduTrackers Inc.', 'Data Scientist', 'A leader in education technology, creating tools for tracking student performance and personalizing learning experiences through AI.'),
+('BuildIt Ltd.', 'Construction Manager', 'An innovative construction company with a mission to design and build sustainable, resilient infrastructure for smart cities.'),
+('NextGen AI', 'AI Specialist', 'A trailblazer in artificial intelligence, offering machine learning tools and services that empower industries to automate complex tasks.'),
+('Marketing Masters', 'Digital Marketer', 'An agency that crafts unique digital marketing strategies using big data and analytics to drive customer engagement and growth.'),
+('CodeCrafts LLC', 'Backend Developer', 'Building robust and scalable backend systems for applications in finance, healthcare, and e-commerce industries.'),
+('Global Connect', 'Business Consultant', 'Connecting businesses across borders with strategic insights, market research, and operational optimization.'),
+('DesignWorks Studio', 'Graphic Designer', 'Creating visually stunning brand identities, marketing materials, and web designs for companies in diverse sectors.'),
+('MediCare Plus', 'Healthcare Admin', 'Providing advanced patient management systems and streamlining healthcare operations with innovative IT solutions.'),
+('RenewEnergy Corp.', 'Solar Engineer', 'Pioneering solar power technology to create affordable and efficient energy solutions for residential and commercial use.'),
+('AgriTech Solutions', 'Agricultural Engineer', 'Innovating the agriculture sector with smart irrigation, precision farming, and advanced crop monitoring systems.'),
+('FinWise LLC', 'Financial Analyst', 'Helping businesses make informed financial decisions through comprehensive data-driven analysis and strategic planning.'),
+('EcoBuilders Co.', 'Eco Consultant', 'Providing consultancy on sustainable building practices and green certifications to reduce environmental footprints.'),
+('TranspoNet', 'Logistics Specialist', 'Optimizing global supply chains by integrating AI and IoT solutions for better efficiency and transparency.'),
+('CleanWater Initiative', 'Environmental Specialist', 'Committed to providing clean water access to underserved communities using sustainable water purification technologies.'),
+('Edutech World', 'Instructional Designer', 'Developing innovative e-learning platforms and tools to revolutionize education for all age groups.'),
+('Innovatech Labs', 'Data Engineer', 'Designing large-scale data pipelines and implementing data warehouse solutions for multinational corporations.'),
+('FutureFoods Inc.', 'Food Scientist', 'Advancing the food industry by creating sustainable and nutrient-rich food alternatives to address global food security.'),
+('SmartHome Ltd.', 'IoT Specialist', 'Transforming homes with smart IoT devices that enhance security, energy efficiency, and everyday convenience.'),
+('GreenLeaf Solutions', 'Sustainability Expert', 'Helping organizations implement eco-friendly practices to meet their sustainability goals and reduce waste.'),
+('LegalTech LLC', 'Legal Consultant', 'Empowering law firms with AI tools for contract analysis, case prediction, and streamlined legal workflows.'),
+('HealthTrackers Co.', 'Healthcare Analyst', 'Specializing in predictive analytics to improve patient outcomes and streamline hospital operations.'),
+('FinanceWorks', 'Accountant', 'Providing financial planning, auditing, and tax advisory services tailored for small and medium enterprises.'),
+('CodeBuddies', 'Frontend Developer', 'Creating responsive and visually appealing front-end designs for web and mobile applications across industries.'),
+('Creative Minds', 'UX Designer', 'Delivering user-centric design solutions that enhance digital experiences and drive customer satisfaction.'),
+('SecureTech', 'Cybersecurity Analyst', 'Providing state-of-the-art cybersecurity services to protect businesses from ever-evolving digital threats.'),
+('MediaWorks', 'Media Consultant', 'Helping brands navigate the digital media landscape with strategic campaigns and content development.'),
+('SocializeNow', 'Social Media Manager', 'Creating data-driven social media campaigns to increase brand visibility and engage target audiences.'),
+('FastTrack Logistics', 'Transport Manager', 'Offering seamless shipping and transportation services by leveraging advanced route optimization technologies.'),
+('SolarWise', 'Renewable Energy Consultant', 'Promoting clean energy solutions by designing and implementing large-scale solar power projects worldwide.'),
+('GreenZone', 'Environmental Planner', 'Focused on developing urban green spaces and sustainable city planning for healthier communities.'),
+('SmartNet', 'Network Engineer', 'Designing and maintaining reliable, high-speed network infrastructures for corporate and public sectors.'),
+('BrightFuture', 'Teacher', 'Innovating classroom education with interactive and personalized teaching methods to inspire future generations.'),
+('AppWorks', 'Mobile Developer', 'Developing user-friendly mobile applications that cater to a variety of needs, from fitness tracking to e-commerce.'),
+('TravelSmart', 'Tourism Specialist', 'Crafting personalized travel experiences that combine adventure with sustainability for global explorers.'),
+('DataDynamics', 'Data Analyst', 'Helping organizations uncover actionable insights from big data through advanced visualization and analytics tools.'),
+('RetailBoost', 'Merchandiser', 'Assisting retailers in optimizing inventory and boosting sales with tailored merchandising strategies.'),
+('PowerGrid Corp.', 'Electrical Engineer', 'Enhancing energy distribution systems with smart grid technologies for a more reliable power supply.'),
+('NextStep', 'Career Coach', 'Providing career guidance and professional development resources to help individuals achieve their goals.'),
+('HealthConnect', 'Health IT Specialist', 'Developing health IT solutions to improve communication and data management in healthcare systems.'),
+('FarmTech', 'Agricultural Technician', 'Revolutionizing agriculture with drone technology and automated machinery for efficient farming.'),
+('CodeSavvy', 'Software Tester', 'Ensuring software quality through rigorous testing and debugging processes to deliver reliable applications.'),
+('Innovative Labs', 'Research Scientist', 'Driving groundbreaking scientific discoveries in pharmaceuticals, AI, and renewable energy sectors.'),
+('BrightEnergy Co.', 'Renewable Energy Analyst', 'Leading the way in renewable energy adoption by analyzing and implementing solar and wind energy solutions.'),
+('HomeCare Inc.', 'Care Specialist', 'Providing compassionate home care services for elderly and disabled individuals to improve their quality of life.'),
+('NetSecure', 'Cybersecurity Consultant', 'Protecting businesses from cyber threats with cutting-edge security solutions and risk management strategies.');
+
+# College Insert Statements
+INSERT INTO College (Name)
+VALUES
+('Harvard University'),
+('Stanford University'),
+('Massachusetts Institute of Technology');
+
+
+# Major Insert Statements
+INSERT INTO Major (Name)
+VALUES
+('Computer Science'),
+('Mechanical Engineering'),
+('Business Administration');
+
+# Minor Insert Statements
+INSERT INTO Minor (Name)
+VALUES
+('Data Science'),
+('Mathematics'),
+('Environmental Studies');
+
+# Skill Insert Stattements
+INSERT INTO Skill (Name, Description, Industry)
+VALUES
+('Python', 'Programming language used for data science and software development.', 'Technology'),
+('Leadership', 'Ability to lead teams and manage projects.', 'Management'),
+('Machine Learning', 'Expertise in building AI-driven systems.', 'Artificial Intelligence');
+
+# Advisor Insert Statements
+INSERT INTO Advisor (First_Name, Last_Name, Prefered_Name, College_ID)
+VALUES
+('Emily', 'Brown', 'Em', 1),
+('Chris', 'Evans', 'CE', 2),
+('Anna', 'White', NULL, 3);
+
+
+# Posting_Location Insert Statements
+INSERT INTO Posting_Location (Region, State, Zip_Code, Address_Number, Street, City, Country)
+VALUES
+('Northeast', 'Massachusetts', '02139', 123, 'Main St', 'Cambridge', 'USA'),
+('West Coast', 'California', '94016', 456, 'Market St', 'San Francisco', 'USA'),
+('Midwest', 'Illinois', '60601', 789, 'Lake Shore Dr', 'Chicago', 'USA');
+
+
+# Posting Insert Statements
+INSERT INTO Posting (Name, Company_ID, Industry, Location, Date_Start, Date_End, Filled, Minimum_GPA, Title, Description, Pay)
+VALUES
+('Software Engineer Intern', 1, 'Technology', 1, '2024-06-01', '2024-08-31', FALSE, 3.5, 'Internship', 'Assist with developing ML models.', 6000),
+('Project Manager Intern', 2, 'Management', 2, '2024-06-01', '2024-08-31', FALSE, 3.2, 'Internship', 'Support project management tasks.', 5000),
+('Data Analyst Intern', 3, 'Data Science', 3, '2024-06-01', '2024-08-31', TRUE, 3.8, 'Internship', 'Analyze large datasets for insights.', 5500);
+
+
+# Alumni Insert Statements
+INSERT INTO Alumni (ID, Title, Grad_Year, First_Name, Last_Name, Email, NUID, College_ID, Opt_out)
+VALUES
+(1, 'Dr.', 2020, 'Sarah', 'Connor', 'sconnor@example.com', 123456, 1, FALSE),
+(2, 'Mr.', 2018, 'James', 'Carter', 'jcarter@example.com', 234567, 2, TRUE),
+(3, 'Ms.', 2021, 'Laura', 'Adams', 'ladams@example.com', 345678, 3, FALSE);
+
+
+# Alumni_Position Insert Statements
+INSERT INTO Alumni_Position (Position_ID, Alumni_ID)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+
+# Student Insert Statements
+INSERT INTO Student (First_Name, Last_Name, Prefered_Name, Major, Minor, GPA, College_ID, Grad_Year, Cycle, Advisor_ID, Eligibility, Hired, Resume_Link, Email, Phone_Number, Description, NUID)
+VALUES
+('Alex', 'Johnson', 'AJ', 1, 2, 3.8, 1, 2025, 'Fall', 1, TRUE, FALSE, 'link1.pdf', 'ajohnson@example.com', '123-456-7890', 'Looking for a software engineering internship.', 456789),
+('Taylor', 'Smith', 'Tay', 2, 1, 3.6, 2, 2026, 'Spring', 2, TRUE, TRUE, 'link2.pdf', 'tsmith@example.com', '987-654-3210', 'Interested in data science roles.', 567890),
+('Jordan', 'Lee', NULL, 3, NULL, 3.9, 3, 2027, 'Summer', 3, TRUE, FALSE, 'link3.pdf', 'jlee@example.com', '456-789-1230', 'Aspiring business analyst.', 678901);
+
+# Posting_Skills Insert Statements
+INSERT INTO Posting_Skills (Position_ID, Skill_ID)
+VALUES
+(1, 1),
+(1, 3),
+(2, 2),
+(3, 1),
+(3, 3);
+
+# Student_Skills Insert Statements
+INSERT INTO Student_Skills (Student_ID, Skill_ID)
+VALUES
+(1, 1),
+(1, 3),
+(2, 2),
+(3, 1),
+(3, 3);
+
+
+# Application Insert Statements
+INSERT INTO Application (Student_ID, Position_ID, Accepted, Resume_Link)
+VALUES
+(1, 1, TRUE, 'link1.pdf'),
+(2, 2, FALSE, 'link2.pdf'),
+(3, 3, TRUE, 'link3.pdf');
+
+
+# Question Insert Statements
+INSERT INTO Question (Question, Answer, Application_ID)
+VALUES
+('Why do you want this internship?', 'To gain real-world experience in software engineering.', 1),
+('What is your greatest strength?', 'Problem-solving and teamwork.', 2),
+('Describe a challenging project you worked on.', 'Developed a data pipeline for analyzing large datasets.', 3);
+
+
+# Ticket Insert Statements
+INSERT INTO Ticket (Reporter_ID, Buggy_Entity_ID, Message, Completed)
+VALUES
+(1, 2, 'Error in application submission.', FALSE),
+(2, 1, 'Duplicate entries in the alumni table.', TRUE),
+(3, 3, 'Skill data not populating correctly.', FALSE);
+
+# Message Insert Statements
+INSERT INTO Message (RE, Student_ID, Message, Alumni_ID)
+VALUES
+(NULL, 1, 'Congratulations on your application!', 1),
+(1, 2, 'Thank you for the update!', 2),
+(NULL, 3, 'Welcome to the platform!', 3);
