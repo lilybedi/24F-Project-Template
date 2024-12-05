@@ -1718,9 +1718,74 @@ VALUES
 (49, 'Incorrect query result for student applications.', FALSE),
 (50, 'Bug in sorting alumni by graduation year.', TRUE);
 
-# Message Insert Statements
 INSERT INTO Message (RE, Student_ID, Message, Alumni_ID)
 VALUES
+-- Conversation 1
 (NULL, 1, 'Congratulations on your application!', 1),
-(1, 2, 'Thank you for the update!', 2),
-(NULL, 3, 'Welcome to the platform!', 3);
+(1, 1, 'Thank you! I am excited about this opportunity.', 1),
+(2, 1, 'Do you have any tips for the interview process?', 1),
+(3, 1, 'Be confident and prepare examples from past experiences.', 1),
+(4, 1, 'Thank you for the advice!', 1),
+
+-- Conversation 2
+(NULL, 2, 'Welcome to the platform!', 2),
+(6, 2, 'Thank you! Can you tell me more about the internship program?', 2),
+(7, 2, 'Sure! The program focuses on hands-on projects and mentorship.', 2),
+(8, 2, 'That sounds amazing! I look forward to applying.', 2),
+(9, 2, 'Feel free to reach out if you have questions.', 2),
+
+-- Conversation 3
+(NULL, 3, 'We noticed your interest in data analytics.', 3),
+(11, 3, 'Yes, I am passionate about exploring insights from data.', 3),
+(12, 3, 'Great! I recommend practicing SQL and Python.', 3),
+(13, 3, 'Thank you! Do you have any resources to share?', 3),
+(14, 3, 'Yes, I will send you some links shortly.', 3),
+
+-- Conversation 4
+(NULL, 4, 'How can I assist you with your application?', 4),
+(16, 4, 'I need help refining my resume.', 4),
+(17, 4, 'Focus on highlighting your technical skills and achievements.', 4),
+(18, 4, 'Thank you! Can I send you a draft for review?', 4),
+(19, 4, 'Of course, feel free to send it anytime.', 4),
+
+-- Conversation 5
+(NULL, 5, 'Have you completed your profile on the platform?', 5),
+(21, 5, 'Not yet, but I plan to finish it this weekend.', 5),
+(22, 5, 'Let me know if you need any guidance.', 5),
+(23, 5, 'Thank you! Is there anything specific I should include?', 5),
+(24, 5, 'Include any relevant projects and certifications.', 5),
+
+-- Conversation 6
+(NULL, 6, 'What do you enjoy most about software development?', 6),
+(26, 6, 'I enjoy solving challenging problems and building useful tools.', 6),
+(27, 6, 'That’s great! Have you tried working on open-source projects?', 6),
+(28, 6, 'Not yet, but I’d like to explore that soon.', 6),
+(29, 6, 'It’s a good way to learn and collaborate with others.', 6),
+
+-- Conversation 7
+(NULL, 7, 'Have you started applying for internships?', 7),
+(31, 7, 'Yes, I have applied to three positions so far.', 7),
+(32, 7, 'Good luck! Keep track of application deadlines.', 7),
+(33, 7, 'Thank you! Do you know how long it takes to hear back?', 7),
+(34, 7, 'Usually a few weeks, but it varies by company.', 7),
+
+-- Conversation 8
+(NULL, 8, 'What are your career goals in AI?', 8),
+(36, 8, 'I want to specialize in natural language processing.', 8),
+(37, 8, 'That’s a fascinating field! Have you started any projects?', 8),
+(38, 8, 'Yes, I built a chatbot as a personal project.', 8),
+(39, 8, 'Impressive! Keep working on those skills.', 8),
+
+-- Conversation 9
+(NULL, 9, 'Did you find the resources I sent helpful?', 9),
+(41, 9, 'Yes, they were very informative. Thank you!', 9),
+(42, 9, 'Glad to hear that! Let me know if you need more.', 9),
+(43, 9, 'I will! Are there any other tools I should learn?', 9),
+(44, 9, 'Consider exploring Tableau for data visualization.', 9),
+
+-- Conversation 10
+(NULL, 10, 'How are your preparations going for the interview?', 10),
+(46, 10, 'I’m reviewing common questions and practicing my answers.', 10),
+(47, 10, 'Good! Don’t forget to research the company.', 10),
+(48, 10, 'I’ve noted that. Thank you for the reminder!', 10),
+(49, 10, 'You’re welcome. Best of luck!', 10);
