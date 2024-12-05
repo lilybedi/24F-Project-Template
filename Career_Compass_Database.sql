@@ -199,12 +199,20 @@ CREATE TABLE Application
     ID          INT AUTO_INCREMENT PRIMARY KEY,
     Student_ID  INT NOT NULL,
     Position_ID INT NOT NULL,
-    Accepted BOOLEAN,
-    Resume_Link VARCHAR(255),
+    applyBy DATETIME NOT NULL, 
+    Status_ID INT NOT NULL, 
     FOREIGN KEY (Student_ID) REFERENCES Student (ID),
-    FOREIGN KEY (Position_ID) REFERENCES Posting (ID)
-
+    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
+    FOREIGN KEY (Status_ID) REFERENCES Status (ID)
 );
+
+-- Create the Status table
+CREATE TABLE Status
+(
+    ID          INT AUTO_INCREMENT PRIMARY KEY,
+    Status_Description VARCHAR(50) NOT NULL,
+);
+
 
 CREATE TABLE Question
 (
@@ -1470,13 +1478,86 @@ INSERT INTO Student_Skills (Student_ID, Skill_ID) VALUES
 (50, 18)  -- Data Science
 ;
 
+# Status INSERT statements
+INSERT INTO Status (Status_Description)
+VALUES
+('Under Review'),
+('Rejected'),
+('Accepted');
 
 # Application Insert Statements
-INSERT INTO Application (Student_ID, Position_ID, Accepted, Resume_Link)
+INSERT INTO Application (Student_ID, Position_ID, Status_ID, applyBy, )
 VALUES
-(1, 1, TRUE, 'link1.pdf'),
-(2, 2, FALSE, 'link2.pdf'),
-(3, 3, TRUE, 'link3.pdf');
+-- AI/ML focused students
+(1, 3, '2024-02-15', 'Under Review', 1),    -- Emma Johnson -> ML Engineer Intern
+(41, 52, '2024-02-16', 'Pending', 1),       -- Gabriel Diaz -> AI Research Scientist
+(49, 51, '2024-02-15', 'Under Review', 2),  -- Elliot Moore -> AI Research Intern
+(25, 3, '2024-02-17', 'Rejected', 1),       -- Victoria Sanchez -> ML Engineer Intern
+(10, 52, '2024-02-18', 'Under Review', 1),  -- Ethan Rodriguez -> AI Research Scientist
+
+-- Software Development focused
+(8, 1, '2024-02-15', 'Under Review', 1),    -- Lucas Garcia -> Backend Developer Intern
+(30, 31, '2024-02-16', 'Pending', 2),       -- Logan Evans -> Backend Developer
+(4, 2, '2024-02-17', 'Under Review', 1),    -- Noah Taylor -> Frontend Developer
+(42, 14, '2024-02-18', 'Pending', 1),       -- Ella Ramirez -> UI Developer Intern
+(36, 15, '2024-02-19', 'Under Review', 2),  -- Andrew Parker -> Full Stack Developer
+
+-- Data Science/Analytics
+(3, 4, '2024-02-15', 'Under Review', 1),    -- Sophia Brown -> Data Scientist
+(39, 33, '2024-02-16', 'Pending', 1),       -- Nathan Green -> Data Analyst
+(24, 34, '2024-02-17', 'Under Review', 2),  -- Henry Adams -> Analytics Intern
+(12, 4, '2024-02-18', 'Rejected', 1),       -- Benjamin Thomas -> Data Scientist
+(38, 33, '2024-02-19', 'Under Review', 1),  -- Chloe Morgan -> Data Analyst
+
+-- Cybersecurity/DevOps
+(2, 6, '2024-02-15', 'Under Review', 1),    -- Liam Smith -> DevOps Engineer
+(34, 25, '2024-02-16', 'Pending', 2),       -- Ethan Wright -> Security Engineer
+(44, 54, '2024-02-17', 'Under Review', 1),  -- Aiden Lee -> DevOps Manager
+(46, 26, '2024-02-18', 'Under Review', 1),  -- Logan Clark -> Security Analyst Intern
+(28, 12, '2024-02-19', 'Pending', 2),       -- Jackson Phillips -> Cloud Engineer Intern
+
+-- Marketing/Content
+(5, 9, '2024-02-15', 'Under Review', 1),    -- Isabella Davis -> Marketing Intern
+(21, 10, '2024-02-16', 'Pending', 1),       -- Zoey Clark -> Content Strategist
+(40, 40, '2024-02-17', 'Under Review', 2),  -- Lila Perez -> Digital Marketing Intern
+(27, 39, '2024-02-18', 'Under Review', 1),  -- Ella Turner -> Marketing Manager
+(33, 9, '2024-02-19', 'Pending', 1),        -- Samantha Morris -> Marketing Intern
+
+-- Design/UX
+(11, 13, '2024-02-15', 'Under Review', 1),  -- Emily Lopez -> UX Designer
+(23, 36, '2024-02-16', 'Pending', 2),       -- Scarlett Brown -> Product Designer
+(43, 14, '2024-02-17', 'Under Review', 1),  -- Zoe Martinez -> UI Developer Intern
+(29, 56, '2024-02-18', 'Under Review', 1),  -- Zoe Campbell -> UX Research Intern
+(35, 13, '2024-02-19', 'Pending', 2),       -- Olivia King -> UX Designer
+
+-- Business/Finance
+(6, 17, '2024-02-15', 'Under Review', 1),   -- Oliver Jones -> Finance Analyst
+(17, 8, '2024-02-16', 'Pending', 1),        -- Grace Young -> Business Analyst Intern
+(18, 29, '2024-02-17', 'Under Review', 2),  -- Jack White -> Sales Representative
+(31, 28, '2024-02-18', 'Rejected', 1),      -- Leah Murphy -> Operations Intern
+(48, 37, '2024-02-19', 'Under Review', 1),  -- Sophia Walker -> Project Coordinator
+
+-- Environmental/Sustainability
+(7, 11, '2024-02-15', 'Under Review', 1),   -- Mia Wilson -> Data Engineer
+(19, 28, '2024-02-16', 'Pending', 2),       -- Harper Lee -> Operations Intern
+(22, 11, '2024-02-17', 'Under Review', 1),  -- Daniel Hall -> Data Engineer
+(32, 28, '2024-02-18', 'Under Review', 1),  -- Liam Stewart -> Operations Intern
+(47, 37, '2024-02-19', 'Pending', 2),       -- Nora Thompson -> Project Coordinator
+
+-- Technology/Engineering
+(45, 1, '2024-02-15', 'Under Review', 1),   -- Madison Harris -> Backend Developer Intern
+(26, 16, '2024-02-16', 'Pending', 1),       -- Owen Roberts -> Systems Engineer Intern
+(37, 5, '2024-02-17', 'Under Review', 2),   -- Avery Collins -> Software QA Intern
+(14, 31, '2024-02-18', 'Under Review', 1),  -- James Hernandez -> Backend Developer
+(16, 3, '2024-02-19', 'Pending', 1),        -- Matthew Martinez -> ML Engineer Intern
+
+-- Research/Academic
+(15, 24, '2024-02-15', 'Under Review', 1),  -- Lily Moore -> Research Assistant
+(20, 43, '2024-02-16', 'Pending', 2),       -- Alexander Harris -> BI Intern
+(13, 37, '2024-02-17', 'Under Review', 1),  -- Ella Anderson -> Project Coordinator
+(9, 10, '2024-02-18', 'Under Review', 1),   -- Ava Martinez -> Content Strategist
+(50, 33, '2024-02-19', 'Pending', 2)        -- Violet Brooks -> Data Analyst
+;
 
 
 # Question Insert Statements
