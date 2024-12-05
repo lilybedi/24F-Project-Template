@@ -48,7 +48,7 @@ if st.button("Act as John, a Political Strategy Advisor",
     # when user clicks the button, they are now considered authenticated
     st.session_state['authenticated'] = True
     # we set the role of the current user
-    st.session_state['role'] = 'pol_strat_advisor'
+    st.session_state['role'] = 'student'
     # we add the first name of the user (so it can be displayed on 
     # subsequent pages). 
     st.session_state['first_name'] = 'John'
@@ -61,9 +61,18 @@ if st.button('Job Apps',
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
-    st.session_state['role'] = 'usaid_worker'
-    st.session_state['first_name'] = 'Mohammad'
-    st.switch_page('pages/32_Job_Apps.py')
+    st.session_state['role'] = 'company'
+    st.session_state['first_name'] = 'Anya'
+    logger.info("Logging in as companmy persona")
+    st.switch_page('pages/Company_Home.py')
+
+if st.button('Act as Kalina, a co-op advisor for students', 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'advisor'
+    st.session_state['first_name'] = 'Kalina'
+    st.switch_page('pages/Advisor_Home.py')
 
 if st.button('Student profile', 
             type = 'primary', 
