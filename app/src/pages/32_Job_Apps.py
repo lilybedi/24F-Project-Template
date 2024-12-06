@@ -1,6 +1,7 @@
 import streamlit as st
 # Sample Data - connect to backend
 cat_photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
+
 job_postings = [
     {
         "id": 1,

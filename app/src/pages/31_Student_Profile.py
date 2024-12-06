@@ -103,6 +103,7 @@ col1, col2 = st.columns([2, 3])
 
 with col1:
     st.image(photo_link, width=150) 
+    edit_mode = st.button("Edit Profile")
 
 with col2:
     st.write(student_name)
@@ -151,3 +152,41 @@ with team_col:
     for alumnus in list(alumni.keys()):
         st.markdown("#### " + alumnus)
         st.write(alumni.get(alumnus))
+
+
+if edit_mode:
+    # Editable fields for editing profile
+    first_name = st.text_input("First Name", value=student.get('First_Name', ''))
+    last_name = st.text_input("Last Name", value=student.get('Last_Name', ''))
+    preferred_name = st.text_input("Preferred Name", value=student.get('Preferred_Name', ''))
+    email = st.text_input("Email", value=student.get('Email', ''))
+    phone_number = st.text_input("Phone Number", value=student.get('Phone_Number', ''))
+    gpa_value = student.get('GPA', "3.0") if student.get('GPA') else "3.0"
+    gpa = st.text_input("GPA", value=student.get('GPA', ''))
+    grad_year = st.text_input("Graduation Year", value=student.get('Grad_Year', 2024))
+    description = st.text_area("Description", value=student.get('Description', ''))
+    resume_link = st.text_input("Resume Link", value=student.get('Resume_Link', ''))
+    majors = st.text_input("Majors (comma-separated)", value=", ".join(student.get('Majors', [])))
+    minors = st.text_input("Minors (comma-separated)", value=", ".join(student.get('Minors', [])))
+
+    # Save changes button
+    if st.button("Save Changes"):
+        updated_data = {
+            "First_Name": first_name,
+            "Last_Name": last_name,
+            "Preferred_Name": preferred_name,
+            "Email": email,
+            "Phone_Number": phone_number,
+            "GPA": gpa,
+            "Grad_Year": grad_year,
+            "Description": description,
+            "Resume_Link": resume_link,
+            "Majors": [major.strip() for major in majors.split(",") if major.strip()],
+            "Minors": [minor.strip() for minor in minors.split(",") if minor.strip()],
+        }
+
+        response = requests.put(f"{BASE_URL}/s/edit_profile/{student_id}", json=updated_data)
+        if response.status_code == 200:
+            st.success("Profile updated successfully!")
+        else:
+            st.error(f"Failed to update profile: {response.status_code}")
