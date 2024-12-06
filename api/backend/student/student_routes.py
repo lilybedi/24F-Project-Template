@@ -45,6 +45,16 @@ def get_students():
 def create_student_profile():
     data = request.get_json()
     cursor = db.get_db().cursor()
+
+    # Get College ID from name
+    college_query = 'SELECT ID FROM College WHERE Name = %s'
+    cursor.execute(college_query, (data['College'],))
+    college_result = cursor.fetchone()
+    
+    if not college_result:
+        return jsonify({"error": "College not found"}), 404
+    
+    college_id = college_result['ID']
     
     # Insert student base info
     student_query = '''
@@ -55,32 +65,15 @@ def create_student_profile():
     '''
     cursor.execute(student_query, (
         data['First_Name'], data['Last_Name'], data.get('Preferred_Name'),
-        data['Email'], data['Phone_Number'], data['GPA'], data['College_ID'],
         data['Grad_Year'], data['Cycle'], data['Advisor_ID'],
         data.get('Resume_Link'), data.get('Description')
     ))
     student_id = cursor.lastrowid
-    
-    # Insert majors
-    if 'Majors' in data:
-        major_query = '''
-            INSERT INTO Student_Majors (Student_ID, FieldOfStudy_ID)
-            VALUES (%s, %s)
-        '''
-        for major_id in data['Majors']:
-            cursor.execute(major_query, (student_id, major_id))
-    
-    # Insert minors
-    if 'Minors' in data:
-        minor_query = '''
-            INSERT INTO Student_Minors (Student_ID, FieldOfStudy_ID)
-            VALUES (%s, %s)
-        '''
-        for minor_id in data['Minors']:
-            cursor.execute(minor_query, (student_id, minor_id))
+ 
             
     db.get_db().commit()
     return jsonify({"message": "Student profile created", "id": student_id}), 201
+
 
 @students.route('/edit_profile/<int:student_id>', methods=['PUT'])
 def edit_student_profile(student_id):
@@ -124,8 +117,7 @@ def filter_postings_by_pay():
         JOIN Company c ON p.Company_ID = c.ID
         JOIN Posting_Location pl ON p.Location = pl.ID
         WHERE p.Pay >= %s AND p.Filled = FALSE
-        AND p.Date_End >= CURRENT_DATE()
-    '''
+
     cursor = db.get_db().cursor()
     cursor.execute(query, (min_pay,))
     return jsonify(cursor.fetchall()), 200
@@ -181,34 +173,4 @@ def upload_resume():
     cursor = db.get_db().cursor()
     cursor.execute(query, (filepath, student_id))
     db.get_db().commit()
-    return jsonify({"message": "Resume uploaded successfully"}), 200
 
-@students.route('/<int:student_id>', methods=['GET'])
-def get_student(student_id):
-    query = '''
-        SELECT s.ID as Student_ID, s.First_Name, s.Last_Name, s.Email, s.GPA, 
-        s.Grad_Year, c.Name as College_Name, cy.cycle as Cycle, GROUP_CONCAT(DISTINCT f1.Name) as Majors,
-        GROUP_CONCAT(DISTINCT f2.Name) as Minors
-        FROM Student s
-        JOIN College c ON s.College_ID = c.ID
-        JOIN Cycle cy ON s.Cycle = cy.ID
-        LEFT JOIN Student_Majors sm ON s.ID = sm.Student_ID
-        LEFT JOIN Student_Minors sn ON s.ID = sn.Student_ID
-        LEFT JOIN FieldOfStudy f1 ON sm.FieldOfStudy_ID = f1.ID
-        LEFT JOIN FieldOfStudy f2 ON sn.FieldOfStudy_ID = f2.ID
-        WHERE s.ID = %s
-        GROUP BY s.ID
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query, (student_id,))
-    
-    # Retrieve the column names and fetch the result
-    columns = [desc[0] for desc in cursor.description]
-    result = cursor.fetchone()
-    
-    if result:
-        # Convert result into a dictionary using column names
-        student = dict(zip(columns, result))
-        return jsonify(student), 200
-    else:
-        return jsonify({"error": "Student not found"}), 404
