@@ -151,12 +151,11 @@ def get_messages(alumni_id):
 def view_postings():
     query = '''
         SELECT p.*, c.Name as Company_Name,
-               pl.City, pl.State, pl.Country,
-               c.Industry, c.Description as Company_Description
+            pl.City, pl.State, pl.Country,
+            c.Industry, c.Description as Company_Description
         FROM Posting p
         JOIN Company c ON p.Company_ID = c.ID
         JOIN Posting_Location pl ON p.Location = pl.ID
-        WHERE p.Date_End >= CURRENT_DATE()
         ORDER BY p.Date_Start DESC
     '''
     cursor = db.get_db().cursor()
