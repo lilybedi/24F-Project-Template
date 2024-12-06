@@ -13,39 +13,62 @@ def AboutPageNav():
     st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
 
 
-#### ------------------------ Examples for Role of pol_strat_advisor ------------------------
-def PolStratAdvHomeNav():
+#### ------------------------ Examples for Student ------------------------
+def Student_Profile():
     st.sidebar.page_link(
-        "pages/00_Pol_Strat_Home.py", label="Political Strategist Home", icon="👤"
+        "pages/31_Student_Profile.py", label="Student Profile", icon="👤"
     )
 
 
-def WorldBankVizNav():
+# def WorldBankVizNav():
+#     st.sidebar.page_link(
+#         "pages/01_World_Bank_Viz.py", label="World Bank Visualization", icon="🏦"
+#     )
+
+
+# def MapDemoNav():
+#     st.sidebar.page_link("pages/02_Map_Demo.py", label="Map Demonstration", icon="🗺️")
+
+#### ------------------------ Examples for Alumn ------------------------
+def Alumn_Profile():
     st.sidebar.page_link(
-        "pages/01_World_Bank_Viz.py", label="World Bank Visualization", icon="🏦"
+        "pages/33_Alumn_Profile.py", label="Alumn Profile", icon="👤"
     )
 
 
-def MapDemoNav():
-    st.sidebar.page_link("pages/02_Map_Demo.py", label="Map Demonstration", icon="🗺️")
+# def WorldBankVizNav():
+#     st.sidebar.page_link(
+#         "pages/01_World_Bank_Viz.py", label="World Bank Visualization", icon="🏦"
+#     )
 
 
-## ------------------------ Examples for Role of usaid_worker ------------------------
-def ApiTestNav():
+# def MapDemoNav():
+#     st.sidebar.page_link("pages/02_Map_Demo.py", label="Map Demonstration", icon="🗺️")
+
+
+## ------------------------ Examples Company employee ------------------------
+def Company():
     st.sidebar.page_link("pages/12_API_Test.py", label="Test the API", icon="🛜")
 
 
-def PredictionNav():
+def PostJob():
     st.sidebar.page_link(
-        "pages/11_Prediction.py", label="Regression Prediction", icon="📈"
+        "pages/11_Post_Job.py", label="PostJob", icon="📈"
     )
 
 
-def ClassificationNav():
-    st.sidebar.page_link(
-        "pages/13_Classification.py", label="Classification Demo", icon="🌺"
-    )
+# def ClassificationNav():
+#     st.sidebar.page_link(
+#         "pages/13_Classification.py", label="Classification Demo", icon="🌺"
+#     )
 
+
+#### ------------------------ Advisor ------------------------
+# def AdminPageNav():
+#     st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
+#     # st.sidebar.page_link(
+#     #     "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
+#     # )
 
 #### ------------------------ System Admin Role ------------------------
 def AdminPageNav():
@@ -53,6 +76,7 @@ def AdminPageNav():
     # st.sidebar.page_link(
     #     "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
     # )
+
 
 
 # --------------------------------Links Function -----------------------------------------------
@@ -79,23 +103,28 @@ def SideBarLinks(show_home=False):
     if st.session_state["authenticated"]:
         
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
-        if st.session_state["role"] == "pol_strat_advisor":
+        if st.session_state["role"] == "student":
             st.write('\n\n')
-            PolStratAdvHomeNav()
-            WorldBankVizNav()
-            MapDemoNav()
+            Student_Profile()
+            # WorldBankVizNav()
+            # MapDemoNav()
 
         # If the user role is usaid worker, show the Api Testing page
-        if st.session_state["role"] == "usaid_worker":
+        if st.session_state["role"] == "company":
             st.write('\n\n')
-            PredictionNav()
-            ApiTestNav()
-            ClassificationNav()
+            PostJob()
+            # ApiTestNav()
+            # ClassificationNav()
 
         # If the user is an administrator, give them access to the administrator pages
-        if st.session_state["role"] == "administrator":
+        if st.session_state["role"] == "alumn":
             st.write('\n\n')
-            AdminPageNav()
+            Alumn_Profile()
+
+         # If the user is an administrator, give them access to the administrator pages
+        # if st.session_state["role"] == "alumn":
+        #     st.write('\n\n')
+        #     AdminPageNav()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()

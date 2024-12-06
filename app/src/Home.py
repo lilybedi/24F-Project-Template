@@ -1,4 +1,4 @@
-    ##################################################
+##################################################
 # This is the main/entry-point file for the 
 # sample application for your project
 ##################################################
@@ -48,14 +48,14 @@ if st.button("Act as Lily, a student applying to co-ops",
     # when user clicks the button, they are now considered authenticated
     st.session_state['authenticated'] = True
     # we set the role of the current user
-    st.session_state['role'] = 'srudent'
+    st.session_state['role'] = 'student'
     # we add the first name of the user (so it can be displayed on 
     # subsequent pages). 
     st.session_state['first_name'] = 'Lily'
     # finally, we ask streamlit to switch to another page, in this case, the 
     # landing page for this particular user type
     logger.info("Logging in as student persona")
-    st.switch_page('pages/31_Student_Profile.py')
+    st.switch_page('pages/Student_Home.py')
 
 if st.button('Act as Anya, a company employee managing the co-op hiring process', 
             type = 'primary', 
@@ -63,6 +63,7 @@ if st.button('Act as Anya, a company employee managing the co-op hiring process'
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'company'
     st.session_state['first_name'] = 'Anya'
+    logger.info("Logging in as companmy persona")
     st.switch_page('pages/Company_Home.py')
 
 if st.button('Act as Kalina, a co-op advisor for students', 
@@ -88,7 +89,3 @@ if st.button('Act as Tarini, a system administrator of Career Compass',
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'Tarini'
     st.switch_page('pages/20_Admin_Home.py')
-    
-
-    
-
