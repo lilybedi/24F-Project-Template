@@ -1,0 +1,51 @@
+id,Reporter_ID,Message,Completed
+1,22,"Users report missing items in their order history.,",0
+2,33,"The registration form is not accepting valid email addresses.,",0
+3,17,"The analytics dashboard is showing incorrect metrics.,",1
+4,30,"The analytics dashboard is showing incorrect metrics.,",1
+5,28,"Some users are reporting duplicate charges.,",1
+6,10,"Product images are not loading on the mobile app.,",1
+7,3,"The website is slow during peak hours.,",0
+8,5,"Some users are reporting duplicate charges.,",1
+9,9,Admin users are unable to access certain,1
+10,3,"Push notifications are delayed by several hours.,",0
+11,8,"Users are unable to update their account information.,",0
+12,5,"The referral program is not tracking new sign-ups.,",1
+13,31,"Emails for order confirmations are not being sent.,",1
+14,7,"Product images are not loading on the mobile app.,",1
+15,7,"Some users are reporting duplicate charges.,",0
+16,12,"Live chat transcripts are not being saved.,",1
+17,31,"Order tracking numbers are not updating in real-time.,",0
+18,37,"Error 500 appears when accessing the dashboard.,",1
+19,12,"Social media login options are not working.,",1
+20,16,"The support chat feature is not connecting.,",0
+21,14,"Filters on the search page are not working.,",0
+22,14,"Live chat transcripts are not being saved.,",0
+23,11,Admin users are unable to access certain,1
+24,40,"Some users are reporting duplicate charges.,",0
+25,31,"Emails for order confirmations are not being sent.,",0
+26,19,"Notifications are not being sent to users.,",1
+27,31,"Users report missing items in their order history.,",1
+28,9,"Password reset emails are being flagged as spam.,",0
+29,40,"Mobile app freezes after the latest update.,",0
+30,39,"The website is slow during peak hours.,",1
+31,32,"Filters on the search page are not working.,",1
+32,13,"Admin panel is not saving changes to user roles.,",0
+33,40,"Notifications are not being sent to users.,",0
+34,7,"The analytics dashboard is showing incorrect metrics.,",1
+35,23,"Some users are reporting duplicate charges.,",1
+36,29,"The system is not syncing data between devices.,",0
+37,21,"Social media login options are not working.,",1
+38,26,"Coupon codes are not being applied at checkout.,",0
+39,3,"Transaction history is showing incorrect amounts.,",1
+40,31,"Error messages are not descriptive enough to debug issues.,",1
+41,4,"Live chat transcripts are not being saved.,",1
+42,8,"The payment gateway is not processing transactions.,",1
+43,12,"Users are unable to update their account information.,",1
+44,27,"Search functionality is returning incorrect results.,",1
+45,28,"Push notifications are delayed by several hours.,",0
+46,14,"Notifications are not being sent to users.,",0
+47,24,"The payment gateway is not processing transactions.,",0
+48,37,"Checkout page is stuck on loading.,",1
+49,35,"Product images are not loading on the mobile app.,",0
+50,6,"Password reset emails are being flagged as spam.,",1
