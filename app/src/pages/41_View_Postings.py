@@ -45,7 +45,7 @@ st.divider()
 col1, col2, col3 = st.columns([1, 3, 1])
 
 with col1:
-    st.image(company_logo, caption="Logo", width=100)
+    st.image(company_logo, width=100)
 with col2:
     st.markdown(f"### {company_name}")
     st.write(company_description)
