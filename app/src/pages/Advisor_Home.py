@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger(__name__)
-
+import requests
 import streamlit as st
 from modules.nav import SideBarLinks
 import pandas as pd
@@ -9,24 +9,23 @@ st.set_page_config(layout = 'wide')
 
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
-# Fetch data from Flask API
-# @st.cache_data
-# def fetch_students_data():
-#     try:
-#         # Replace with the URL of your Flask API
-#         api_url =  "/api/backend/students_routes"
-#         response = requests.get(api_url)
-#         response.raise_for_status()  # Raise an error for bad responses
-#         data = response.json()
+#Fetch data from Flask API
+@st.cache_data
+def fetch_students_data():
+    try:
+        api_url =  "http://localhost:8502/s/students/"
+        response = requests.get(api_url)
+        response.raise_for_status()  # Raise an error for bad responses
+        data = response.json()
 
-#         # Convert to DataFrame
-#         df = pd.DataFrame(data, columns=["Name", "Section", "Applications", "Status"])
-#         return df
+        # Convert to DataFrame
+        df = pd.DataFrame(data, columns=["Name", "Section", "Applications", "Status"])
+        return df
 
-#     except Exception as e:
-#         logger.error(f"Error fetching data from API: {e}")
-#         st.error("Failed to fetch data. Please check the API connection.")
-#         return pd.DataFrame(columns=["Name", "Section", "Applications", "Status"])
+    except Exception as e:
+        logger.error(f"Error fetching data from API: {e}")
+        st.error("Failed to fetch data. Please check the API connection.")
+        return pd.DataFrame(columns=["Name", "Section", "Applications", "Status"])
 
 
 # Main Streamlit app
