@@ -1,9 +1,21 @@
 import streamlit as st
+import requests
 
 
 # Sample Data - connect to backend - generated with ChatGPT
 
 cat_photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
+
+BASE_URL = "http://web-api:4000"
+
+def fetch_all_jobs():
+    response = requests.get(f"{BASE_URL}/s/postings/by_pay")
+    if response.status_code == 200:
+        return response.json()
+    else:
+        st.error(f"Error fetching student: {response.status_code}")
+        return None
+    
 job_postings = [
     {
         "id": 1,

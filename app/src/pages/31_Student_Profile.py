@@ -13,7 +13,6 @@ SideBarLinks()
 #
 # Todo when routes are done- wherever there is something that say TODO: do it
 #
-#
 
 BASE_URL = "http://web-api:4000"
 

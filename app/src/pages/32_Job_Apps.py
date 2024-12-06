@@ -74,7 +74,7 @@ with tabs[0]:
     job_col, details_col = st.columns([2, 3])
     # Job Postings
     with job_col:
-        st.markdown("### Job Postings")
+        st.markdown("### Job Applications")
         for job in job_postings:
             if st.button(job["title"], key=job["id"]):  # Each job title is a button
                 st.session_state["selected_job"] = job  # Update session state with the selected job
