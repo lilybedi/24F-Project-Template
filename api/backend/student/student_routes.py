@@ -11,6 +11,7 @@ import logging
 # routes.
 students = Blueprint('students', __name__) 
 
+
 @students.route('/', methods=['GET'])
 def test_db_connection():
     try:
@@ -46,6 +47,16 @@ def create_student_profile():
     data = request.get_json()
     cursor = db.get_db().cursor()
     
+    # Get College ID from name
+    college_query = 'SELECT ID FROM College WHERE Name = %s'
+    cursor.execute(college_query, (data['College'],))
+    college_result = cursor.fetchone()
+    
+    if not college_result:
+        return jsonify({"error": "College not found"}), 404
+    
+    college_id = college_result['ID']
+    
     # Insert student base info
     student_query = '''
         INSERT INTO Student (First_Name, Last_Name, Preferred_Name, Email, 
@@ -55,32 +66,32 @@ def create_student_profile():
     '''
     cursor.execute(student_query, (
         data['First_Name'], data['Last_Name'], data.get('Preferred_Name'),
-        data['Email'], data['Phone_Number'], data['GPA'], data['College_ID'],
+        data['Email'], data['Phone_Number'], data['GPA'], college_id,
         data['Grad_Year'], data['Cycle'], data['Advisor_ID'],
         data.get('Resume_Link'), data.get('Description')
     ))
     student_id = cursor.lastrowid
     
-    # Insert majors
+    # Handle majors and minors (assuming they're passed as names)
     if 'Majors' in data:
-        major_query = '''
-            INSERT INTO Student_Majors (Student_ID, FieldOfStudy_ID)
-            VALUES (%s, %s)
-        '''
-        for major_id in data['Majors']:
-            cursor.execute(major_query, (student_id, major_id))
+        for major_name in data['Majors']:
+            cursor.execute('SELECT ID FROM FieldOfStudy WHERE Name = %s', (major_name,))
+            major_result = cursor.fetchone()
+            if major_result:
+                cursor.execute('INSERT INTO Student_Majors VALUES (%s, %s)', 
+                             (student_id, major_result['ID']))
     
-    # Insert minors
     if 'Minors' in data:
-        minor_query = '''
-            INSERT INTO Student_Minors (Student_ID, FieldOfStudy_ID)
-            VALUES (%s, %s)
-        '''
-        for minor_id in data['Minors']:
-            cursor.execute(minor_query, (student_id, minor_id))
+        for minor_name in data['Minors']:
+            cursor.execute('SELECT ID FROM FieldOfStudy WHERE Name = %s', (minor_name,))
+            minor_result = cursor.fetchone()
+            if minor_result:
+                cursor.execute('INSERT INTO Student_Minors VALUES (%s, %s)', 
+                             (student_id, minor_result['ID']))
             
     db.get_db().commit()
     return jsonify({"message": "Student profile created", "id": student_id}), 201
+
 
 @students.route('/edit_profile/<int:student_id>', methods=['PUT'])
 def edit_student_profile(student_id):
@@ -124,7 +135,6 @@ def filter_postings_by_pay():
         JOIN Company c ON p.Company_ID = c.ID
         JOIN Posting_Location pl ON p.Location = pl.ID
         WHERE p.Pay >= %s AND p.Filled = FALSE
-        AND p.Date_End >= CURRENT_DATE()
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query, (min_pay,))
