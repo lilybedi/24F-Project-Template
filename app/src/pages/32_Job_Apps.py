@@ -27,6 +27,7 @@ job_postings = [
         "image": cat_photo
     }
 ]
+
 # Header Section: Navbar
 st.markdown(
     """

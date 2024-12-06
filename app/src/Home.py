@@ -57,9 +57,6 @@ if st.button("Act as Lily, a student applying to co-ops",
     logger.info("Logging in as student persona")
     st.switch_page('pages/Student_Home.py')
 
-<<<<<<< HEAD
-if st.button('Student profile', 
-=======
 if st.button('Act as Anya, a company employee managing the co-op hiring process', 
             type = 'primary', 
             use_container_width=True):
@@ -86,40 +83,9 @@ if st.button('Act as Neel, an alumn of Northeastern',
     st.switch_page('pages/Alumn_Home.py')
 
 if st.button('Act as Tarini, a system administrator of Career Compass', 
->>>>>>> origin/main
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
-<<<<<<< HEAD
-    st.session_state['first_name'] = 'SysAdmin'
-    st.switch_page('pages/31_Student_Profile.py')
-
-
-if st.button('Job Search', 
-            type = 'primary', 
-            use_container_width=True):
-        st.switch_page('pages/32_Job_Search.py')
-
-if st.button('Job Applications', 
-            type = 'primary', 
-            use_container_width=True):
-
-    st.switch_page('pages/33_Job_Applications.py')
-
-if st.button('Add Posting', 
-            type = 'primary', 
-            use_container_width=True):
-    
-    st.switch_page('pages/40_Add_Posting.py')
-
-if st.button('View Postings', 
-            type = 'primary', 
-            use_container_width=True):
-    
-    st.switch_page('pages/41_View_Postings.py')
-
-=======
     st.session_state['first_name'] = 'Tarini'
     st.switch_page('pages/20_Admin_Home.py')
->>>>>>> origin/main
