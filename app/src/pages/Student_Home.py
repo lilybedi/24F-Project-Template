@@ -113,10 +113,6 @@ with filter_col:
         elif selected_filter == "Location":
             st.selectbox("Select Location", ["City, State 1", "City, State 2"], key="location_filter")
 
-# "Sort By"
-with sort_col:
-    st.markdown("**Sort By**")
-    st.selectbox("Sort By", ["Relevance", "Date Applied", "Company"], key="sort_by")
 
 st.divider()
 

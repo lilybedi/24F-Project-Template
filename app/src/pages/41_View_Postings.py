@@ -1,9 +1,15 @@
+from modules.nav import SideBarLinks
 import streamlit as st
+
+st.set_page_config(layout="wide")
+
+# Show appropriate sidebar links for the role of the currently logged in user
+SideBarLinks()
 
 # Company details
 company_logo = "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg"  #cat photo
 company_name = "Company Name"
-company_description = "Short description of the company..."
+company_description = "Description"
 
 # Job positions data - generated with ChatGPT
 positions = [
@@ -42,15 +48,13 @@ st.markdown("## Career Compass")
 st.divider()
 
 # Company Info
-col1, col2, col3 = st.columns([1, 3, 1])
+col1, col2 = st.columns([1, 3])
 
 with col1:
     st.image(company_logo, width=100)
 with col2:
     st.markdown(f"### {company_name}")
     st.write(company_description)
-with col3:
-    st.button("Edit Profile →")
 
 st.divider()
 
@@ -89,7 +93,6 @@ st.markdown(
         <div style="flex: 2;"># Closed Applications</div>
         <div style="flex: 2;"># Position Views</div>
         <div style="flex: 1;">Filled?</div>
-        <div style="flex: 1;">Details</div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -105,7 +108,6 @@ for position in positions:
             <div style="flex: 2;">{position['closed_applications']} Closed Applications</div>
             <div style="flex: 2;">{position['position_views']} Views</div>
             <div style="flex: 1;">{position['filled']}</div>
-            <div style="flex: 1;"><button style="background-color: #add8e6; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">See details →</button></div>
         </div>
         """,
         unsafe_allow_html=True,
