@@ -3,27 +3,39 @@ logger = logging.getLogger(__name__)
 
 import streamlit as st
 from modules.nav import SideBarLinks
+import pandas as pd
 
 st.set_page_config(layout = 'wide')
 
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
+# Fetch data from Flask API
+# @st.cache_data
+# def fetch_students_data():
+#     try:
+#         # Replace with the URL of your Flask API
+#         api_url =  "/api/backend/students_routes"
+#         response = requests.get(api_url)
+#         response.raise_for_status()  # Raise an error for bad responses
+#         data = response.json()
 
+#         # Convert to DataFrame
+#         df = pd.DataFrame(data, columns=["Name", "Section", "Applications", "Status"])
+#         return df
+
+#     except Exception as e:
+#         logger.error(f"Error fetching data from API: {e}")
+#         st.error("Failed to fetch data. Please check the API connection.")
+#         return pd.DataFrame(columns=["Name", "Section", "Applications", "Status"])
+
+
+# Main Streamlit app
 st.title(f"Welcome Advisor, {st.session_state['first_name']}.")
-import streamlit as st
-import pandas as pd
 
+# Fetch data from API
 
-# Sample data
-data = {
-"Name": ["Adam McStudent", "Kalina Monova", "Lily McStudent", "Anya McStudent"],
-"Section": [1, 1, 1, 1],
-"Applications": [300, 2, 5, 6],
-"Status": ["Received offer", "Received offer", "Still Searching", "Received offer"],
-}
-
-# Convert data to a DataFrame
-df = pd.DataFrame(data)
+# needs to connect to the backend
+df = fetch_students_data()
 
 # Search bar
 search_query = st.text_input("Search by name", value="")
