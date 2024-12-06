@@ -1757,7 +1757,7 @@ VALUES
 (29, 6, 'It’s a good way to learn and collaborate with others.', 6),
 
 -- Conversation 7
-(NULL, 7, 'Have you started applying for internships?', 7),
+(NULL, 7, 'Have you started applying for internships yet?', 7),
 (31, 7, 'Yes, I have applied to three positions so far.', 7),
 (32, 7, 'Good luck! Keep track of application deadlines.', 7),
 (33, 7, 'Thank you! Do you know how long it takes to hear back?', 7),
