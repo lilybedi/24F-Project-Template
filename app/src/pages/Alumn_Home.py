@@ -21,33 +21,33 @@ SideBarLinks()
 import requests
 import streamlit as st
 
-# Example Streamlit page
-st.title("Filter Postings by Location")
+# # Example Streamlit page
+# st.title("Filter Postings by Location")
 
-# Input field for location
-location = st.text_input("Enter location (city, state, or country):")
+# # Input field for location
+# location = st.text_input("Enter location (city, state, or country):")
 
-# Button to trigger API call
-if st.button("Search"):
-    if location:
-        try:
-            # Make the API call
-            response = requests.get(
-                "http://api:4000/s/postings/by_location",
-                params={"location": location},
-            )
+# # Button to trigger API call
+# if st.button("Search"):
+#     if location:
+#         try:
+#             # Make the API call
+#             response = requests.get(
+#                 "http://api:4000/s/postings/by_location",
+#                 params={"location": location},
+#             )
             
-            # Raise error for bad status codes
-            response.raise_for_status()
+#             # Raise error for bad status codes
+#             response.raise_for_status()
             
-            # Parse and display the data
-            data = response.json()
-            st.write(f"Results for location: {location}")
-            st.dataframe(data)
-        except requests.RequestException as e:
-            st.error(f"Error fetching data: {e}")
-    else:
-        st.error("Please enter a location before searching.")
+#             # Parse and display the data
+#             data = response.json()
+#             st.write(f"Results for location: {location}")
+#             st.dataframe(data)
+#         except requests.RequestException as e:
+#             st.error(f"Error fetching data: {e}")
+#     else:
+#         st.error("Please enter a location before searching.")
 
 
 # st.title(f"Welcome Alumni , {st.session_state['first_name']}.")
@@ -63,3 +63,27 @@ if st.button("Search"):
 #   data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
 
 # st.dataframe(data)
+
+st.title(f"Welcome Alumni , {st.session_state['first_name']}.")
+
+# Placeholder for student ID (replace with dynamic value in real implementation)
+student_id = st.session_state.get("student_id", 1)  # Replace '1' with actual student ID
+
+st.write('')
+st.write('')
+st.write('### Your Applications')
+
+# Fetch applications from the API
+try:
+    # Make API call to fetch applications for the student
+    response = requests.get(f"http://api:4000/s/applications/{student_id}")
+    response.raise_for_status()  # Raise an exception for HTTP errors
+    applications = response.json()
+
+    # Display the applications in a table
+    if applications:
+        st.dataframe(applications)
+    else:
+        st.write("No applications found.")
+except requests.RequestException as e:
+    st.error(f"Error fetching applications: {e}")

@@ -139,7 +139,7 @@ def filter_postings_by_location():
         JOIN Company c ON p.Company_ID = c.ID
         JOIN Posting_Location pl ON p.Location = pl.ID
         WHERE (pl.City LIKE %s OR pl.State LIKE %s OR pl.Country LIKE %s)
-        AND p.Filled = FALSE AND p.Date_End >= CURRENT_DATE()
+        AND p.Filled = FALSE
     '''
     search = f"%{location}%"
     cursor = db.get_db().cursor()
