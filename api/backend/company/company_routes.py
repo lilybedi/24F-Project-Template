@@ -250,3 +250,27 @@ def get_student_contact(student_id):
         return jsonify({"error": "Student not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+
+@companies.route('/profile/<int:company_id>', methods=['GET'])
+def get_company_profile(company_id):
+    """Get a company's profile information"""
+    try:
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT c.ID, c.Name, c.Industry, c.Description,
+                   COUNT(DISTINCT p.ID) as Active_Postings
+            FROM Company c
+            LEFT JOIN Posting p ON c.ID = p.Company_ID
+            WHERE c.ID = %s
+            GROUP BY c.ID
+        '''
+        cursor.execute(query, (company_id,))
+        result = cursor.fetchone()
+        
+        if not result:
+            return jsonify({"error": "Company not found"}), 404
+            
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400

@@ -192,3 +192,35 @@ def upload_resume():
     cursor.execute(query, (filepath, student_id))
     db.get_db().commit()
     return jsonify({"message": "Resume uploaded successfully"}), 200
+
+
+@students.route('/profile/<int:student_id>', methods=['GET'])
+def get_student_profile(student_id):
+    query = '''
+        SELECT s.ID, s.First_Name, s.Last_Name, s.Preferred_Name, s.Email, 
+               s.Phone_Number, s.GPA, s.Grad_Year, s.Resume_Link, s.Description,
+               c.Name as College_Name, cy.cycle,
+               GROUP_CONCAT(DISTINCT f1.Name) as Majors,
+               GROUP_CONCAT(DISTINCT f2.Name) as Minors,
+               a.First_Name as Advisor_First_Name,
+               a.Last_Name as Advisor_Last_Name
+        FROM Student s
+        JOIN College c ON s.College_ID = c.ID
+        JOIN Cycle cy ON s.Cycle = cy.ID
+        LEFT JOIN Student_Majors sm ON s.ID = sm.Student_ID
+        LEFT JOIN Student_Minors sn ON s.ID = sn.Student_ID
+        LEFT JOIN FieldOfStudy f1 ON sm.FieldOfStudy_ID = f1.ID
+        LEFT JOIN FieldOfStudy f2 ON sn.FieldOfStudy_ID = f2.ID
+        LEFT JOIN Advisor a ON s.Advisor_ID = a.ID
+        WHERE s.ID = %s
+        GROUP BY s.ID
+    '''
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (student_id,))
+    result = cursor.fetchone()
+    
+    if not result:
+        return jsonify({"error": "Student not found"}), 404
+        
+    return jsonify(result), 200
