@@ -1,4 +1,11 @@
 import streamlit as st
+from modules.nav import SideBarLinks
+
+
+st.set_page_config(layout = 'wide')
+
+# Show appropriate sidebar links for the role of the currently logged in user
+SideBarLinks()
 
 # Initialize w/ position
 if "position_title" not in st.session_state:
@@ -24,7 +31,12 @@ st.markdown("## Career Compass")
 st.divider()
 
 # Title and Action Buttons
-st.markdown(f"### {st.session_state['position_title']}")
+if "position_title" not in st.session_state:
+    st.session_state["position_title"] = "Default Title"
+
+# Ensure value is managed consistently through session state
+position_title = st.text_input("Position Title", key="position_title")
+
 col1, col2 = st.columns([1, 1])
 
 with col1:
@@ -38,7 +50,6 @@ st.divider()
 left_col, right_col = st.columns([1.5, 3.5])
 
 with left_col:
-    st.text_input("Editable title:", value=st.session_state["position_title"], key="position_title")
 
     # Required skills
     st.markdown("**Required Skills:**")
