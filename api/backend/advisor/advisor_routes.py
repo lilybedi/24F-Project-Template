@@ -91,3 +91,35 @@ def get_advisor_statistics(advisor_id):
         }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+
+
+@advisors.route('/positions/filled/<int:advisor_id>', methods=['GET'])
+def get_filled_positions(advisor_id):
+    """Get information about filled positions (Story 4)"""
+    try:
+        query = '''
+            SELECT 
+                p.ID, 
+                p.Name, 
+                p.Title, 
+                c.Name AS Company_Name,
+                p.Filled, 
+                p.Date_Start, 
+                p.Date_End,
+                COUNT(DISTINCT a.ID) AS Total_Applications,
+                COUNT(DISTINCT CASE WHEN st.Status_Description = 'Accepted' 
+                    THEN a.ID END) AS Accepted_Applications
+            FROM Posting p
+            JOIN Company c ON p.Company_ID = c.ID
+            LEFT JOIN Application a ON p.ID = a.Position_ID
+            LEFT JOIN Status st ON a.Status_ID = st.ID
+            WHERE p.Filled = TRUE
+            GROUP BY p.ID
+            ORDER BY p.Date_End DESC;
+        '''
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        return jsonify(cursor.fetchall()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
