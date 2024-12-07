@@ -328,8 +328,7 @@ def add_alumni_position(alumni_id):
     try:
         data = request.get_json()
         cursor = db.get_db().cursor()
-        logging.info(f"Payload received: {data}")
-
+        
         # First verify the alumni exists
         cursor.execute('SELECT ID FROM Alumni WHERE ID = %s', (alumni_id,))
         if not cursor.fetchone():
@@ -380,18 +379,23 @@ def add_alumni_position(alumni_id):
             # Create new posting
             posting_query = '''
                 INSERT INTO Posting (
-                    Title, Company_ID, Location, Date_Start, Date_End,
-                    Description, Pay
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    Name, Title, Company_ID, Location, Date_Start, Date_End,
+                    Description, Pay, Industry
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             '''
+            # Use title as the Name if not explicitly provided
+            posting_name = data.get('name', data['title'])
+            
             cursor.execute(posting_query, (
+                posting_name,
                 data['title'],
                 company_id,
                 location_id,
                 data['date_start'],
                 data.get('date_end'),
                 data.get('description'),
-                data['pay']
+                data['pay'],
+                data.get('industry')
             ))
             position_id = cursor.lastrowid
             

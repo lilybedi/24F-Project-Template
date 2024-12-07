@@ -72,6 +72,7 @@ st.markdown("### Position Details")
 # Input Fields
 st.text_input("Position Title", key="position_title")
 st.text_input("Company Name", key="company_name")
+st.text_input("Industry", key="industry")  # New field for industry
 st.number_input("Pay (in USD)", min_value=0, step=1, key="pay")
 st.date_input("Start Date", key="date_start", value=st.session_state["date_start"] or datetime.date.today())
 st.date_input("End Date (Optional)", key="date_end", value=st.session_state["date_end"])
@@ -81,21 +82,24 @@ st.text_input("Country", key="country")
 st.text_area("Description", key="description")
 st.text_input("Required Skills (comma-separated)", key="skills")
 
-# Submit Button
-if st.button("Add Position"):
-    position_data = {
+# Submit button
+if st.button("Add to Profile"):
+    job_data = {
         "title": st.session_state["position_title"],
         "company_name": st.session_state["company_name"],
+        "industry": st.session_state.get("industry", ""),  # Add industry
         "pay": st.session_state["pay"],
-        "date_start": str(st.session_state["date_start"]),
-        "date_end": str(st.session_state["date_end"]) if st.session_state["date_end"] else None,
+        "date_start": st.session_state["date_start"].strftime('%Y-%m-%d'),
+        "date_end": st.session_state["date_end"].strftime('%Y-%m-%d'),
         "city": st.session_state["city"],
         "state": st.session_state["state"],
         "country": st.session_state["country"],
         "description": st.session_state["description"],
-        "skills": [skill.strip() for skill in st.session_state["skills"].split(",") if skill.strip()],
+        "skills": st.session_state["skills"].split(",") if st.session_state["skills"] else []
     }
-    add_alumni_position(alumni_id, position_data)
+    add_alumni_position(alumni_id, job_data)
+    st.switch_page("pages/Alumn_Home.py")
+
 
 # Divider
 st.divider()
