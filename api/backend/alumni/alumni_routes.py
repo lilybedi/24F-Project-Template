@@ -230,3 +230,38 @@ def create_alumni_profile():
     
     db.get_db().commit()
     return jsonify({"message": "Alumni profile created", "id": alumni_id}), 201
+
+
+@alumni.route('/<int:alumni_id>/students', methods=['GET'])
+def get_alumni_students(alumni_id):
+    """
+    Get all students related to an alumni (via Alumni_Student table)
+    """
+    try:
+        query = '''
+            SELECT 
+                s.ID as Student_ID,
+                s.First_Name,
+                s.Last_Name,
+                s.GPA,
+                c.Name as College_Name,
+                GROUP_CONCAT(DISTINCT f.Name) as Majors
+            FROM Alumni_Student al
+            JOIN Student s ON al.Student_ID = s.ID
+            JOIN College c ON s.College_ID = c.ID
+            LEFT JOIN Student_Majors sm ON s.ID = sm.Student_ID
+            LEFT JOIN FieldOfStudy f ON sm.FieldOfStudy_ID = f.ID
+            WHERE al.Alumni_ID = %s
+            GROUP BY s.ID
+        '''
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (alumni_id,))
+        results = cursor.fetchall()
+        
+        if not results:
+            return jsonify({"message": "No related students found for this alumni"}), 404
+        
+        return jsonify(results), 200
+    except Exception as e:
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
