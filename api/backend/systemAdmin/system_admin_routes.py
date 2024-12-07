@@ -197,3 +197,26 @@ def delete_account(account_type, account_id):
         logging.error(f"Error occurred during account deletion: {str(e)}")
         
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+
+
+
+@system_admin.route('/accounts/<string:account_type>/<int:account_id>/restrict', methods=['POST'])
+def restrict_account(account_type, account_id):
+    try:
+        cursor = db.get_db().cursor()
+        
+        if account_type == 'student':
+            query = '''
+                UPDATE Student
+                SET Eligibility = FALSE
+                WHERE ID = %s
+            '''
+            cursor.execute(query, (account_id,))
+        else:
+            return jsonify({"error": "Account type not supported for restriction"}), 400
+            
+        db.get_db().commit()
+        return jsonify({"message": f"{account_type} account restricted successfully"}), 200
+    except Exception as e:
+        db.get_db().rollback()
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
