@@ -33,6 +33,9 @@ if "pay" not in st.session_state:
 if "location" not in st.session_state:
     st.session_state["location"] = "City, State"
 
+if "minimum_gpa" not in st.session_state:
+    st.session_state["minimum_gpa"] = 3.0  # Default minimum GPA value
+
 # Header Section
 st.markdown("## Create Job Posting")
 st.divider()
@@ -44,6 +47,11 @@ st.markdown("### Job Details")
 st.text_input("Position Title", key="position_title")
 st.number_input("Pay (in USD)", min_value=0, step=1, key="pay")
 st.text_input("Location (City, State)", key="location")
+
+# Minimum GPA Requirement
+st.number_input(
+    "Minimum GPA Requirement", min_value=0.0, max_value=4.0, step=0.1, key="minimum_gpa"
+)
 
 # Required Skills
 st.markdown("**Required Skills:**")
@@ -81,6 +89,7 @@ if st.button("Submit Job Posting"):
         "location": st.session_state["location"],
         "required_skills": st.session_state["required_skills"],
         "description": st.session_state["description"],
+        "minimum_gpa": st.session_state["minimum_gpa"],  # Added Minimum GPA Requirement
     }
     create_job_posting(job_data)
 

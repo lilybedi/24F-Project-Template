@@ -3692,5 +3692,8 @@ VALUES
 (48, 10, 'I’ve noted that. Thank you for the reminder!', 10),
 (49, 10, 'You’re welcome. Best of luck!', 10);
 
+SELECT *
+FROM Alumni_Student;
+
 Show TABLES;
 

@@ -47,21 +47,26 @@ def Alumn_Profile():
 
 
 ## ------------------------ Examples Company employee ------------------------
-def Company():
-    st.sidebar.page_link("pages/12_API_Test.py", label="Test the API", icon="🛜")
-
 
 def PostJob():
     st.sidebar.page_link(
-        "pages/11_Post_Job.py", label="PostJob", icon="📈"
+        "pages/40_Add_Postings.py", label="Add Posting", icon="📈"
     )
 
+def View_Applications():
+    st.sidebar.page_link(
+        "pages/42_View_Applications.py", label="View Applications", icon="📄"
+    )
 
-# def ClassificationNav():
-#     st.sidebar.page_link(
-#         "pages/13_Classification.py", label="Classification Demo", icon="🌺"
-#     )
+def Edit_Postings():
+    st.sidebar.page_link(
+        "pages/41_Edit_Postings.py", label="Edit Postings", icon="✏️"
+    )
 
+def Company_Home():
+    st.sidebar.page_link(
+        "pages/Company_Home.py", label="Company Home Page", icon="🏠"
+    )
 
 #### ------------------------ Advisor ------------------------
 def AdvisorHome():
@@ -123,8 +128,9 @@ def SideBarLinks(show_home=False):
         if st.session_state["role"] == "company":
             st.write('\n\n')
             PostJob()
-            # ApiTestNav()
-            # ClassificationNav()
+            View_Applications()
+            Edit_Postings()
+            Company_Home()
 
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "alumn":
