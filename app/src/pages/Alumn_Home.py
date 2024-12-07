@@ -668,34 +668,75 @@ import streamlit as st
 
 
 
-# Set the Streamlit page title
-st.title("Test Filled Positions Route")
+# # Set the Streamlit page title
+# st.title("Test Filled Positions Route")
 
-# Button to trigger API request
-if st.button("Get Filled Positions"):
-    try:
-        # Define the API URL for the route
-        url = f"http://api:4000/ad/positions/filled/25"
+# # Button to trigger API request
+# if st.button("Get Filled Positions"):
+#     try:
+#         # Define the API URL for the route
+#         url = f"http://api:4000/ad/positions/filled/25"
         
-        # Make the GET request
-        response = requests.get(url)
+#         # Make the GET request
+#         response = requests.get(url)
         
-        # Check the response status code
-        if response.status_code == 200:
-            # Parse the JSON response
-            data = response.json()
+#         # Check the response status code
+#         if response.status_code == 200:
+#             # Parse the JSON response
+#             data = response.json()
             
-            # Display the results
-            st.subheader("Filled Positions")
-            if data:
-                # Create a data table
-                st.dataframe(data)
-            else:
-                st.write("No filled positions found.")
+#             # Display the results
+#             st.subheader("Filled Positions")
+#             if data:
+#                 # Create a data table
+#                 st.dataframe(data)
+#             else:
+#                 st.write("No filled positions found.")
         
+#         else:
+#             # Display error message if the request fails
+#             st.error(f"Failed to fetch filled positions: {response.status_code} {response.reason}")
+#             st.write(response.text)
+#     except Exception as e:
+#         st.error(f"An error occurred: {str(e)}")
+
+
+
+# Streamlit app title
+st.title("Filter Students by Co-op Status")
+
+# Inputs for Advisor ID and Hired status
+advisor_id = st.number_input("Enter Advisor ID:", min_value=1, step=1)
+hired_status = st.selectbox("Filter by Hired Status:", options=["Hired", "Not Hired"])
+
+# Map user-friendly options to boolean values
+status_map = {
+    "Hired": True,
+    "Not Hired": False
+}
+hired = status_map[hired_status]
+
+# Button to fetch filtered students
+if st.button("Get Filtered Students"):
+    try:
+        # Construct the API URL
+        base_url = "http://api:4000/ad"  # Replace with your actual base URL
+        params = {"hired": hired}  # Pass the hired parameter explicitly
+        response = requests.get(f"{base_url}/students/{advisor_id}/filter", params=params)
+
+        # Check if the response is successful
+        if response.status_code == 200:
+            students = response.json()
+            if students:
+                # Display results in a table
+                st.write("Filtered Students:")
+                st.dataframe(students)
+            else:
+                st.write("No students found matching the criteria.")
         else:
-            # Display error message if the request fails
-            st.error(f"Failed to fetch filled positions: {response.status_code} {response.reason}")
-            st.write(response.text)
+            st.error(f"Failed to fetch students: {response.status_code} {response.reason}")
+            st.write(response.json())
     except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
+        st.error(f"An error occurred: {e}")
+
+        st.error(f"An error occurred: {e}")

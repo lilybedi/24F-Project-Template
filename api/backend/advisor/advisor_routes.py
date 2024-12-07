@@ -123,3 +123,39 @@ def get_filled_positions(advisor_id):
         return jsonify(cursor.fetchall()), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+
+
+
+@advisors.route('/students/<int:advisor_id>/filter', methods=['GET'])
+def filter_students_by_status(advisor_id):
+    """Filter advisees based on co-op status (Story 5)"""
+    try:
+        hired = request.args.get('hired')
+        if hired is not None:
+            hired = hired.lower() == 'true'
+
+        current_app.logger.info(f"Advisor ID: {advisor_id}, Hired Filter: {hired}")
+
+        query = '''
+            SELECT 
+                s.ID, s.First_Name, s.Last_Name, s.GPA,
+                c.Name as College_Name,
+                GROUP_CONCAT(DISTINCT f.Name) as Majors
+            FROM Student s
+            JOIN College c ON s.College_ID = c.ID
+            LEFT JOIN Student_Majors sm ON s.ID = sm.Student_ID
+            LEFT JOIN FieldOfStudy f ON sm.FieldOfStudy_ID = f.ID
+            WHERE s.Advisor_ID = %s AND s.Hired = %s AND s.Eligibility = TRUE
+            GROUP BY s.ID
+        '''
+        current_app.logger.info(f"Executing query: {query} with parameters: {(advisor_id, hired)}")
+
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (advisor_id, hired))
+        results = cursor.fetchall()
+        current_app.logger.info(f"Query Results: {results}")
+        return jsonify(results), 200
+    except Exception as e:
+        current_app.logger.error(f"Error: {str(e)}")
+        return jsonify({"error": str(e)}), 400
