@@ -48,6 +48,8 @@ st.text_area("Job Description", value=st.session_state["description"], key="desc
 # Job review
 st.text_area("Job review (what did you think?)", value=st.session_state["review"], key="review")
 
+def add_alumni_position(alumn_id, position_data): response = requests.post(f"{BASE_URL}/alumni/{alumn_id}/add_position", json=position_data) if response.status_code == 200: st.success("Position added to alumnus profile!") else: st.error(f"Failed to add position: {response.status_code} - {response.json().get('error', 'Unknown error')}")
+
 # Submit Button
 if st.button("Add to profile"):
     job_data = {
@@ -58,7 +60,7 @@ if st.button("Add to profile"):
         "required_skills": st.session_state["required_skills"],
         "description": st.session_state["description"],
     }
-    add_experience(job_data)
+    add_alumni_position(job_data)
 
 # Divider
 st.divider()
