@@ -175,15 +175,15 @@ def upload_resume():
     cursor.execute(query, (filepath, student_id))
     db.get_db().commit()
 
-
-@students.route('/getJobPostings', methods=['GET'])
+@students.route('/jobs', methods=['GET'])
 def get_all_jobs():
+    """Get all job postings with optional location and salary filters"""
     try:
         # Get query parameters
-        location = request.args.get('location')  # Example: "New York"
-        min_pay = request.args.get('min_pay', type=int)  # Example: 50000
+        location = request.args.get('location', '')
+        min_pay = request.args.get('min_pay', type=int, default=0)
 
-        # Base query
+        # Base query - removed trailing comma after Position_Title
         query = '''
             SELECT 
                 p.ID AS Posting_ID,
@@ -198,40 +198,40 @@ def get_all_jobs():
                 p.Date_End AS End_Date,
                 p.Minimum_GPA AS Minimum_GPA,
                 p.Pay AS Salary,
-                p.Title AS Position_Title,
+                p.Title AS Position_Title
             FROM Posting p
             JOIN Company c ON p.Company_ID = c.ID
             JOIN Posting_Location pl ON p.Location = pl.ID
             WHERE p.Filled = FALSE
         '''
 
-        # Add filters dynamically
-        filters = []
         params = []
+        conditions = []
 
+        # Only add location filter if location parameter is not empty
         if location:
-            filters.append("(pl.City LIKE %s OR pl.State LIKE %s OR pl.Country LIKE %s)")
+            conditions.append("(pl.City LIKE %s OR pl.State LIKE %s OR pl.Country LIKE %s)")
             search = f"%{location}%"
             params.extend([search, search, search])
 
-        if min_pay:
-            filters.append("p.Pay >= %s")
+        # Only add pay filter if min_pay is greater than 0
+        if min_pay > 0:
+            conditions.append("p.Pay >= %s")
             params.append(min_pay)
 
-        if filters:
-            query += " AND " + " AND ".join(filters)
+        # Add filters to query if any conditions exist
+        if conditions:
+            query += " AND " + " AND ".join(conditions)
 
         query += " ORDER BY p.Date_End DESC"
 
-        # Execute the query with parameters
         cursor = db.get_db().cursor()
-        cursor.execute(query, tuple(params))
+        cursor.execute(query, tuple(params) if params else None)
         results = cursor.fetchall()
 
         return jsonify(results), 200
     except Exception as e:
-        current_app.logger.error(f"Error retrieving job postings: {str(e)}")
-        return jsonify({"error": "Unable to fetch job postings"}), 500
+        return jsonify({"error": str(e)}), 400
 
 
 @students.route('/profile/<int:student_id>', methods=['GET'])

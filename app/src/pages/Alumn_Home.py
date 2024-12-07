@@ -107,13 +107,48 @@ import streamlit as st
 #     except requests.RequestException as e:
 #         st.error(f"Failed to fetch student details: {e}")
 
-st.title("Job Postings")
+# st.title("Job Postings")
 
-try:
-    response = requests.get("http://api:4000/s/getJobPostings")
-    response.raise_for_status()
-    job_postings = response.json()
-    st.write("Available Job Postings")
-    st.dataframe(job_postings)
-except requests.RequestException as e:
-    st.error(f"Failed to fetch job postings: {e}")
+# try:
+#     response = requests.get("http://api:4000/s/getJobPostings")
+#     response.raise_for_status()
+#     job_postings = response.json()
+#     st.write("Available Job Postings")
+#     st.dataframe(job_postings)
+# except requests.RequestException as e:
+#     st.error(f"Failed to fetch job postings: {e}")
+
+
+
+# Streamlit App Configuration
+# st.title("Job Postings")
+# st.write("Search and filter job postings with optional location and salary filters.")
+
+# # Input fields for filters
+# location = st.text_input("Location (City, State, or Country):")
+# min_pay = st.number_input("Minimum Pay:", min_value=0, step=1000)
+
+# # Button to trigger the API call
+# if st.button("Search Jobs"):
+#     try:
+#         # Prepare query parameters
+#         params = {}
+#         if location:
+#             params["location"] = location
+#         if min_pay > 0:
+#             params["min_pay"] = min_pay
+
+#         # API Request
+#         response = requests.get("http://api:4000/s/jobs", params=params)
+#         response.raise_for_status()  # Raise exception for HTTP errors
+#         job_postings = response.json()
+
+#         # Check if results are returned
+#         if job_postings:
+#             st.success(f"Found {len(job_postings)} job postings.")
+#             # Convert results to DataFrame and display
+#             st.dataframe(job_postings)
+#         else:
+#             st.warning("No job postings match your criteria.")
+#     except requests.RequestException as e:
+#         st.error(f"An error occurred while fetching job postings: {e}")
