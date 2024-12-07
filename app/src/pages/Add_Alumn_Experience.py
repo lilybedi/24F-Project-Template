@@ -45,10 +45,15 @@ st.text_input("Location (City, State)", key="location")
 # Job Description
 st.text_area("Job Description", value=st.session_state["description"], key="description")
 
-# Job review
-st.text_area("Job review (what did you think?)", value=st.session_state["review"], key="review")
+# # Job review
+# st.text_area("Job review (what did you think?)", value=st.session_state["review"], key="review")
 
-def add_alumni_position(alumn_id, position_data): response = requests.post(f"{BASE_URL}/alumni/{alumn_id}/add_position", json=position_data) if response.status_code == 200: st.success("Position added to alumnus profile!") else: st.error(f"Failed to add position: {response.status_code} - {response.json().get('error', 'Unknown error')}")
+def add_alumni_position(alumn_id, position_data): 
+    response = requests.post(f"{BASE_URL}/alumni/{alumn_id}/add_position", json=position_data) 
+    if response.status_code == 200: 
+        st.success("Position added to alumnus profile!") 
+    else: 
+        st.error(f"Failed to add position: {response.status_code} - {response.json().get('error', 'Unknown error')}")
 
 # Submit Button
 if st.button("Add to profile"):
