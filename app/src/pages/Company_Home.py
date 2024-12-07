@@ -13,21 +13,15 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('Add postings', 
+if st.button('View World Bank Data Visualization', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/40_Add_Postings.py')
+  st.switch_page('pages/01_World_Bank_Viz.py')
 
-if st.button('Edit Postings', 
+if st.button('View World Map Demo', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/41_View_Postings.py')
-
-if st.button('View Applications', 
-             type='primary',
-             use_container_width=True):
-  st.switch_page('pages/42_View_Applications.py')
-
+  st.switch_page('pages/02_Map_Demo.py')
 # 
 # import logging
 # logger = logging.getLogger(__name__)

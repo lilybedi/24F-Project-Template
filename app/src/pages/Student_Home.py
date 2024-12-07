@@ -1,57 +1,44 @@
-import streamlit as st
-import requests
+import logging
+logger = logging.getLogger(__name__)
 
+import streamlit as st
 from modules.nav import SideBarLinks
 
 st.set_page_config(layout = 'wide')
 
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
-# Sample Data - connect to backend - generated with ChatGPT
 
+st.title(f"Welcome Student, {st.session_state['first_name']}.")
+import streamlit as st
+# Sample Data - connect to backend
 cat_photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
-
-#TODO: FIX ERROR 404 ON FETCHING JOBS
-BASE_URL = "http://web-api:4000"
-
-# Function to fetch job postings from the backend
-def fetch_jobs(min_pay=None):
-    params = {}
-    if min_pay is not None:
-        params["min_pay"] = min_pay
-    response = requests.get(f"{BASE_URL}/postings/by_pay", params=params)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        st.error(f"Error fetching jobs: {response.status_code}")
-        return []
-
-# Fetch initial job postings (default)
-job_postings = fetch_jobs()
-
 job_postings = [
     {
         "id": 1,
         "title": "Software Engineer",
         "company": "domp",
         "description": "Develop and maintain software applications.",
+        "match": "85%", # Idk how to implement match
+        "image": cat_photo
     },
     {
         "id": 2,
         "title": "Software Engineer",
         "company": "blep",
         "description": "glorp",
+        "match": "44%",
+        "image": cat_photo
     },
         {
         "id": 3,
         "title": "Software Engineer",
         "company": "domp",
-        "description": "glep"
+        "description": "Develop and maintain software applications.",
+        "match": "85%",
+        "image": cat_photo
     }
 ]
-
-
-
 # Header Section: Navbar
 st.markdown(
     """
@@ -68,72 +55,75 @@ st.markdown(
     .navbar div {
         display: inline-block;
     }
-
     .search-bar {
         flex-grow: 1;
         margin: 0 20px;
         display: flex;
         align-items: center;
     }
-
-    .button-row {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-    .button-row button {
-        border: none;
-        margin: 10px 20px;
-        font-size: 16px;
-        border-radius: 5px;
-    }
     </style>
-
+    """,
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
     <div class="navbar">
         <div>Career Compass</div>
         <div class="search-bar"><input type="text" placeholder="Search..." style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></div>
     </div>
-    
-
     """,
     unsafe_allow_html=True,
 )
-
-filter_col, sort_col = st.columns([2, 1])
-
-# "Filter By"
-with filter_col:
-    st.markdown("**Filter**")
-    with st.expander("Filter by"):
-        selected_filter = st.selectbox("Choose a filter", ["Status", "Location"], key="filter_select")
-        
-        if selected_filter == "Status":
-            st.selectbox("Select Status", ["Pending", "Accepted", "Rejected"], key="status_filter")
-        
-        elif selected_filter == "Location":
-            st.selectbox("Select Location", ["City, State 1", "City, State 2"], key="location_filter")
-
-
 st.divider()
+# Tab Navigation
+tabs = st.tabs(["Job Search", "Job Applications", "Alumni Network"])
+with tabs[0]:
+    # Get first job
+    if "selected_job" not in st.session_state:
+        st.session_state["selected_job"] = job_postings[0] 
+    job_col, details_col = st.columns([2, 3])
+    # Job Postings
+    with job_col:
+        st.markdown("### Job Postings")
+        for job in job_postings:
+            if st.button(job["title"], key=job["id"]):  # Each job title is a button
+                st.session_state["selected_job"] = job  # Update session state with the selected job
+    # Right Column: Job Details
+    with details_col:
+        selected_job = st.session_state["selected_job"]  # Get the selected job from session state
+        st.markdown("### Job Details")
+        st.image(selected_job["image"], use_container_width=True)
+        st.markdown(f"**Job Title:** {selected_job['title']}")
+        st.write(f"**Company Name:** {selected_job['company']}")
+        st.write(f"**Percentage Match:** {selected_job['match']}")
+        st.button("Click to see full breakdown")  # Static button for additional breakdown functionality
+        st.write(f"**Job Description:** {selected_job['description']}")
+# st.write('')
+# st.write('')
+# st.write('### What would you like to do today?')
 
-# Get first job
-if "selected_job" not in st.session_state:
-    st.session_state["selected_job"] = job_postings[0] 
+# if st.button('Job Apps', 
+#             type = 'primary', 
+#             use_container_width=True):
+#     st.session_state['authenticated'] = True
+#     st.session_state['role'] = 'usaid_worker'
+#     st.session_state['first_name'] = 'Mohammad'
+#     st.switch_page('pages/32_Job_Apps.py')
 
-job_col, details_col = st.columns([2, 3])
+# if st.button('Student profile', 
+#             type = 'primary', 
+#             use_container_width=True):
+#     st.session_state['authenticated'] = True
+#     st.session_state['role'] = 'administrator'
+#     st.session_state['first_name'] = 'SysAdmin'
+#     st.switch_page('pages/31_Student_Profile.py')
 
-# Job Postings
-with job_col:
-    st.markdown("### Job Postings")
-    for job in job_postings:
-        if st.button(job["title"], key=job["id"]):  # Each job title is a button
-            st.session_state["selected_job"] = job  # Update session state with the selected job
+# if st.button('View World Bank Data Visualization', 
+#              type='primary',
+#              use_container_width=True):
+#   st.switch_page('pages/01_World_Bank_Viz.py')
 
-# Job Details
-with details_col:
-    selected_job = st.session_state["selected_job"]  # Get the selected job from session state
-    st.markdown("### Job Details")
-    st.markdown(f"**Job Title:** {selected_job['title']}")
-    st.write(f"**Company Name:** {selected_job['company']}")
-    st.write(f"**Job Description:** {selected_job['description']}")
-
+# if st.button('View World Map Demo', 
+#              type='primary',
+#              use_container_width=True):
+#   st.switch_page('pages/02_Map_Demo.py')
