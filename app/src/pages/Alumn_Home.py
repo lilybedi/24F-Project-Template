@@ -152,3 +152,6 @@ import streamlit as st
 #             st.warning("No job postings match your criteria.")
 #     except requests.RequestException as e:
 #         st.error(f"An error occurred while fetching job postings: {e}")
+
+
+
