@@ -10,29 +10,29 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 #Fetch data from Flask API
-@st.cache_data
-def fetch_students_data():
-    try:
-        api_url =  "http://localhost:8502/s/students/"
-        response = requests.get(api_url)
-        response.raise_for_status()  # Raise an error for bad responses
-        data = response.json()
-
-        # Convert to DataFrame
-        df = pd.DataFrame(data, columns=["Name", "Section", "Applications", "Status"])
-        return df
-
-    except Exception as e:
-        logger.error(f"Error fetching data from API: {e}")
-        st.error("Failed to fetch data. Please check the API connection.")
-        return pd.DataFrame(columns=["Name", "Section", "Applications", "Status"])
-
 
 # Main Streamlit app
 st.title(f"Welcome Advisor, {st.session_state['first_name']}.")
 
 # Fetch data from API
 
+BASE_URL = "http://web-api:4000"
+
+@st.cache_data
+def fetch_students_data():
+    try:
+        response = requests.get(f"http://api:4000/ad/allStudents")
+        response.raise_for_status() 
+        #response = requests.post(f"{BASE_URL}/ad/allStudents", json=())
+        data = response.json()
+        if data:
+            df = st.DataFrame(data)
+        else:
+            st.write("No students found.")
+        return df
+
+    except:
+        st.write("**ERROR**: Could not connect to sample api.")
 # needs to connect to the backend
 df = fetch_students_data()
 
