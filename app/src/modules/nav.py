@@ -64,11 +64,14 @@ def PostJob():
 
 
 #### ------------------------ Advisor ------------------------
-# def AdminPageNav():
-#     st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
-#     # st.sidebar.page_link(
-#     #     "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
-#     # )
+def AdvisorHome():
+    st.sidebar.page_link(
+        "pages/Advisor_Home.py", label="Advisor Home", icon="🏠"
+    )
+def AdvisorProfile():
+    st.sidebar.page_link(
+        "pages/Advisor_Profile.py", label="Advisor Profile", icon="👤"
+    )
 
 #### ------------------------ System Admin Role ------------------------
 def Admin_Profile():
@@ -134,6 +137,13 @@ def SideBarLinks(show_home=False):
             Admin_Profile()
             See_Tickets()
             See_All_Users()
+
+        # If the user is an advisor, give them access to the advisor pages 
+        if st.session_state["role"] == "advisor":
+            st.write('\n\n')
+            AdvisorProfile()
+            AdvisorHome()
+
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
