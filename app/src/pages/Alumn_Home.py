@@ -702,41 +702,42 @@ import streamlit as st
 
 
 
-# Streamlit app title
-st.title("Filter Students by Co-op Status")
+# # Streamlit app title
+# st.title("Filter Students by Co-op Status")
 
-# Inputs for Advisor ID and Hired status
-advisor_id = st.number_input("Enter Advisor ID:", min_value=1, step=1)
-hired_status = st.selectbox("Filter by Hired Status:", options=["Hired", "Not Hired"])
+# # Inputs for Advisor ID and Hired status
+# advisor_id = st.number_input("Enter Advisor ID:", min_value=1, step=1)
+# hired_status = st.selectbox("Filter by Hired Status:", options=["Hired", "Not Hired"])
 
-# Map user-friendly options to boolean values
-status_map = {
-    "Hired": True,
-    "Not Hired": False
-}
-hired = status_map[hired_status]
+# # Map user-friendly options to boolean values
+# status_map = {
+#     "Hired": True,
+#     "Not Hired": False
+# }
+# hired = status_map[hired_status]
 
-# Button to fetch filtered students
-if st.button("Get Filtered Students"):
-    try:
-        # Construct the API URL
-        base_url = "http://api:4000/ad"  # Replace with your actual base URL
-        params = {"hired": hired}  # Pass the hired parameter explicitly
-        response = requests.get(f"{base_url}/students/{advisor_id}/filter", params=params)
+# # Button to fetch filtered students
+# if st.button("Get Filtered Students"):
+#     try:
+#         # Construct the API URL
+#         base_url = "http://api:4000/ad"  # Replace with your actual base URL
+#         params = {"hired": hired}  # Pass the hired parameter explicitly
+#         response = requests.get(f"{base_url}/students/{advisor_id}/filter", params=params)
 
-        # Check if the response is successful
-        if response.status_code == 200:
-            students = response.json()
-            if students:
-                # Display results in a table
-                st.write("Filtered Students:")
-                st.dataframe(students)
-            else:
-                st.write("No students found matching the criteria.")
-        else:
-            st.error(f"Failed to fetch students: {response.status_code} {response.reason}")
-            st.write(response.json())
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
+#         # Check if the response is successful
+#         if response.status_code == 200:
+#             students = response.json()
+#             if students:
+#                 # Display results in a table
+#                 st.write("Filtered Students:")
+#                 st.dataframe(students)
+#             else:
+#                 st.write("No students found matching the criteria.")
+#         else:
+#             st.error(f"Failed to fetch students: {response.status_code} {response.reason}")
+#             st.write(response.json())
+#     except Exception as e:
+#         st.error(f"An error occurred: {e}")
 
-        st.error(f"An error occurred: {e}")
+#         st.error(f"An error occurred: {e}")
+

@@ -159,3 +159,50 @@ def filter_students_by_status(advisor_id):
     except Exception as e:
         current_app.logger.error(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 400
+
+
+@advisors.route('/term-summary/<int:advisor_id>', methods=['GET'])
+def get_term_summary(advisor_id):
+    """Get end-of-term summary data (Story 6)"""
+    try:
+        cursor = db.get_db().cursor()
+        
+        # Get placement statistics
+        placement_query = '''
+            SELECT 
+                cy.cycle,
+                COUNT(DISTINCT s.ID) as Total_Students,
+                SUM(CASE WHEN s.Hired = TRUE THEN 1 ELSE 0 END) as Placed_Students,
+                AVG(s.GPA) as Average_GPA,
+                COUNT(DISTINCT a.ID) as Total_Applications,
+                AVG(p.Pay) as Average_Salary
+            FROM Student s
+            JOIN Cycle cy ON s.Cycle = cy.ID
+            LEFT JOIN Application a ON s.ID = a.Student_ID
+            LEFT JOIN Posting p ON a.Position_ID = p.ID
+            WHERE s.Advisor_ID = %s AND s.Eligibility = TRUE
+            GROUP BY cy.cycle
+        '''
+        cursor.execute(placement_query, (advisor_id,))
+        placement_stats = cursor.fetchall()
+        
+        # Get industry distribution
+        industry_query = '''
+            SELECT 
+                p.Industry,
+                COUNT(DISTINCT s.ID) as Placed_Students
+            FROM Student s
+            JOIN Application a ON s.ID = a.Student_ID
+            JOIN Posting p ON a.Position_ID = p.ID
+            WHERE s.Advisor_ID = %s AND s.Hired = TRUE
+            GROUP BY p.Industry
+        '''
+        cursor.execute(industry_query, (advisor_id,))
+        industry_stats = cursor.fetchall()
+        
+        return jsonify({
+            "placement_statistics": placement_stats,
+            "industry_distribution": industry_stats
+        }), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
