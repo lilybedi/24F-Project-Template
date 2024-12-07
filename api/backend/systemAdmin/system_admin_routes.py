@@ -34,3 +34,22 @@ def add_advisor():
     except Exception as e:
         db.get_db().rollback()
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
+
+@system_admin.route('/advisors/<int:advisor_id>', methods=['DELETE'])
+def remove_advisor(advisor_id):
+    try:
+        cursor = db.get_db().cursor()
+        
+        # Check if advisor exists
+        cursor.execute('SELECT ID FROM Advisor WHERE ID = %s', (advisor_id,))
+        if not cursor.fetchone():
+            return jsonify({"error": "Advisor not found"}), 404
+            
+        cursor.execute('DELETE FROM Advisor WHERE ID = %s', (advisor_id,))
+        db.get_db().commit()
+        
+        return jsonify({"message": "Advisor removed successfully"}), 200
+    except Exception as e:
+        db.get_db().rollback()
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500

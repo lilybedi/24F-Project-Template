@@ -745,35 +745,35 @@ import streamlit as st
 
 # System administration tests:
 
-# Base URL for your API
-BASE_URL = "http://localhost:4000/sys/advisors/add"
+# # Base URL for your API
+# BASE_URL = "http://api:4000/sys/advisors/add"
 
-# Title
-st.title("Add Advisor Test")
+# # Title
+# st.title("Add Advisor Test")
 
-# Input fields for the advisor details
-first_name = st.text_input("First Name")
-last_name = st.text_input("Last Name")
-preferred_name = st.text_input("Preferred Name (Optional)")
-college_id = st.number_input("College ID", min_value=1, step=1)
+# # Input fields for the advisor details
+# first_name = st.text_input("First Name")
+# last_name = st.text_input("Last Name")
+# preferred_name = st.text_input("Preferred Name (Optional)")
+# college_id = st.number_input("College ID", min_value=1, step=1)
 
-# Submit button
-if st.button("Add Advisor"):
-    # Prepare payload
-    payload = {
-        "First_Name": first_name,
-        "Last_Name": last_name,
-        "Preferred_Name": preferred_name if preferred_name else None,
-        "College_ID": college_id,
-    }
+# # Submit button
+# if st.button("Add Advisor"):
+#     # Prepare payload
+#     payload = {
+#         "First_Name": first_name,
+#         "Last_Name": last_name,
+#         "Preferred_Name": preferred_name if preferred_name else None,
+#         "College_ID": college_id,
+#     }
 
-    # Make the API request
-    try:
-        response = requests.post(BASE_URL, json=payload)
-        if response.status_code == 201:
-            data = response.json()
-            st.success(f"Advisor added successfully! Advisor ID: {data['id']}")
-        else:
-            st.error(f"Failed to add advisor: {response.json().get('error', 'Unknown error')}")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
+#     # Make the API request
+#     try:
+#         response = requests.post(BASE_URL, json=payload)
+#         if response.status_code == 201:
+#             data = response.json()
+#             st.success(f"Advisor added successfully! Advisor ID: {data['id']}")
+#         else:
+#             st.error(f"Failed to add advisor: {response.json().get('error', 'Unknown error')}")
+#     except Exception as e:
+#         st.error(f"An error occurred: {e}")
