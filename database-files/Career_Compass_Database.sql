@@ -252,15 +252,55 @@ CREATE TABLE Alumni_Student
 (
     Alumni_ID  INT NOT NULL,
     Student_ID INT NOT NULL,
+
     PRIMARY KEY (Alumni_ID, Student_ID),
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student (ID)
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID) ON DELETE CASCADE,
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE
 );
 
+
+ALTER TABLE Student_Skills DROP FOREIGN KEY Student_Skills_ibfk_1;
+ALTER TABLE Student_Skills ADD FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE;
+
+ALTER TABLE Student_Majors DROP FOREIGN KEY Student_Majors_ibfk_1;
+ALTER TABLE Student_Majors ADD FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE;
+
+ALTER TABLE Student_Minors DROP FOREIGN KEY Student_Minors_ibfk_1;
+ALTER TABLE Student_Minors ADD FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE;
+
+ALTER TABLE Application DROP FOREIGN KEY Application_ibfk_1;
+ALTER TABLE Application ADD FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE;
+
+ALTER TABLE Message DROP FOREIGN KEY Message_ibfk_2;
+ALTER TABLE Message ADD FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE;
+
+-- Modify Alumni-related foreign keys
+ALTER TABLE Alumni_Position DROP FOREIGN KEY Alumni_Position_ibfk_2;
+ALTER TABLE Alumni_Position ADD FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID) ON DELETE CASCADE;
+
+ALTER TABLE Alumni_Majors DROP FOREIGN KEY Alumni_Majors_ibfk_1;
+ALTER TABLE Alumni_Majors ADD FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID) ON DELETE CASCADE;
+
+ALTER TABLE Alumni_Minors DROP FOREIGN KEY Alumni_Minors_ibfk_1;
+ALTER TABLE Alumni_Minors ADD FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID) ON DELETE CASCADE;
+
+ALTER TABLE Message DROP FOREIGN KEY Message_ibfk_4;
+ALTER TABLE Message ADD FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID) ON DELETE CASCADE;
+
+-- Note: For Advisor, we need to handle the Student table since it references Advisor
+ALTER TABLE Student DROP FOREIGN KEY Student_ibfk_2;
+ALTER TABLE Student ADD FOREIGN KEY (Advisor_ID) REFERENCES Advisor(ID) ON DELETE CASCADE;
+
+
+ALTER TABLE Question DROP FOREIGN KEY Question_ibfk_1;
+ALTER TABLE Question 
+ADD CONSTRAINT Question_ibfk_1
+FOREIGN KEY (Application_ID) REFERENCES Application(ID) ON DELETE CASCADE;
+
+
  -- Insert Statements
+
  -- Skill Insert
-
-
 INSERT INTO Skill (Name, Description, Industry)
 VALUES
 ('Python', 'Programming language used for data science, web development, and AI.', 'Technology'),
@@ -1793,269 +1833,7 @@ VALUES
 (49, 10, 'You’re welcome. Best of luck!', 10);
 
 
-Show TABLES;
 
-DROP DATABASE IF EXISTS Career_Compass;
-
-CREATE DATABASE IF NOT EXISTS Career_Compass;
-
-USE Career_Compass;
-
-
--- Create the Skill table
-CREATE TABLE Skill
-(
-    ID          INT AUTO_INCREMENT PRIMARY KEY,
-    Name        VARCHAR(255) NOT NULL,
-    Description TEXT,
-    Industry    VARCHAR(255)
-);
-
-
-CREATE TABLE System_Admin
-(
-    ID            INT AUTO_INCREMENT PRIMARY KEY,
-    First_Name    VARCHAR(255),
-    Last_Name     VARCHAR(255),
-    Preferred_Name VARCHAR(255)
-);
-
--- Create the Company table
-CREATE TABLE Company
-(
-    ID                 INT AUTO_INCREMENT PRIMARY KEY,
-    Name               VARCHAR(255) NOT NULL,
-    Industry           VARCHAR(255),
-    Description        TEXT
-);
-
-CREATE TABLE College
-(
-    Name VARCHAR(255),
-    ID   INT AUTO_INCREMENT PRIMARY KEY
-);
-
-CREATE TABLE FieldOfStudy (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(255) NOT NULL,
-    Description TEXT
-);
-
--- Create the Advisor table
-CREATE TABLE Advisor
-(
-    ID            INT AUTO_INCREMENT PRIMARY KEY,
-    First_Name    VARCHAR(255),
-    Last_Name     VARCHAR(255),
-    Preferred_Name VARCHAR(255), -- optional
-    College_ID    INT NOT NULL,
-    FOREIGN KEY (College_ID) REFERENCES College (ID)
-);
-
-
-CREATE TABLE Alumni
-(
-    ID         INT AUTO_INCREMENT PRIMARY KEY,
-    Grad_Year  INT NOT NULL,
-    First_Name VARCHAR(255),
-    Last_Name  VARCHAR(255),
-    Email      VARCHAR(255),
-    College_ID INT NOT NULL,
-    FOREIGN KEY (College_ID) REFERENCES College (ID)
-);
-
-CREATE TABLE Alumni_Majors
-(
-    Alumni_ID INT NOT NULL,
-    FieldOfStudy_ID INT NOT NULL,
-    PRIMARY KEY (Alumni_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID),
-    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
-);
-
-CREATE TABLE Alumni_Minors
-(
-    Alumni_ID INT NOT NULL,
-    FieldOfStudy_ID INT NOT NULL,
-    PRIMARY KEY (Alumni_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID),
-    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
-);
-
-
-
-CREATE TABLE Posting_Location
-(
-    ID             INT AUTO_INCREMENT PRIMARY KEY,
-    Region         VARCHAR(255),
-    State          VARCHAR(100),
-    Zip_Code       CHAR(10),
-    Address_Number INT,
-    Street         VARCHAR(255),
-    City           VARCHAR(255),
-    Country        VARCHAR(100)
-);
-
-
-CREATE TABLE Posting
-(
-    ID          INT AUTO_INCREMENT PRIMARY KEY,
-    Name        VARCHAR(255) NOT NULL,
-    Company_ID  INT          NOT NULL,
-    Industry    VARCHAR(255),
-    Location    INT          NOT NULL,
-    FOREIGN KEY (Company_ID) REFERENCES Company (ID),
-    FOREIGN KEY (Location) REFERENCES Posting_Location (ID),
-    Date_Start  DATE,
-    Date_End    DATE,
-    Filled      BOOLEAN,
-    Minimum_GPA DECIMAL(3, 2) CHECK (Minimum_GPA >= 0 AND Minimum_GPA <= 4.0),
-    Title       VARCHAR(255),
-    Description TEXT,
-    Pay         INT          NOT NULL
-);
-
-
-CREATE TABLE Alumni_Position
-(
-    Position_ID INT NOT NULL,
-    Alumni_ID   INT NOT NULL,
-    PRIMARY KEY (Position_ID, Alumni_ID),
-    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID)
-);
-
-CREATE TABLE Cycle
-(
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    cycle VARCHAR(50) NOT NULL
-);
-
--- Create the Student table
-CREATE TABLE Student
-(
-    ID            INT AUTO_INCREMENT PRIMARY KEY,
-    First_Name    VARCHAR(255) NOT NULL,
-    Last_Name     VARCHAR(255) NOT NULL,
-    Preferred_Name VARCHAR(255),
-    GPA           DECIMAL(3, 2) CHECK (GPA >= 0 AND GPA <= 4.0),
-    College_ID    INT         NOT NULL,
-    FOREIGN KEY (College_ID) REFERENCES College (ID),
-    Grad_Year     INT          NOT NULL,
-    Cycle         INT NOT NULL,
-    Advisor_ID    INT          NOT NULL,
-    Eligibility   BOOLEAN,
-    Hired         BOOLEAN,
-    FOREIGN KEY (Advisor_ID) REFERENCES Advisor (ID),
-    FOREIGN KEY (Cycle) REFERENCES Cycle (ID),
-    Resume_Link VARCHAR(255),
-    Email VARCHAR(255),
-    Phone_Number VARCHAR(255),
-    Description TEXT
-);
-
-CREATE TABLE Student_Majors
-(
-    Student_ID INT NOT NULL,
-    FieldOfStudy_ID INT NOT NULL,
-    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
-    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
-);
-
-CREATE TABLE Student_Minors
-(
-    Student_ID INT NOT NULL,
-    FieldOfStudy_ID INT NOT NULL,
-    PRIMARY KEY (Student_ID, FieldOfStudy_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(ID),
-    FOREIGN KEY (FieldOfStudy_ID) REFERENCES FieldOfStudy(ID)
-);
-
--- Create the Posting_Skills table (junction table)
-CREATE TABLE Posting_Skills
-(
-    Position_ID INT NOT NULL,
-    Skill_ID    INT NOT NULL,
-    PRIMARY KEY (Position_ID, Skill_ID),
-    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
-    FOREIGN KEY (Skill_ID) REFERENCES Skill (ID)
-);
-
--- Create the Student_Skills table (junction table)
-CREATE TABLE Student_Skills
-(
-    Student_ID INT NOT NULL,
-    Skill_ID   INT NOT NULL,
-    PRIMARY KEY (Student_ID, Skill_ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
-    FOREIGN KEY (Skill_ID) REFERENCES Skill (ID)
-);
-
--- Create the Status table
-CREATE TABLE Status
-(
-    ID          INT AUTO_INCREMENT PRIMARY KEY,
-    Status_Description VARCHAR(50) NOT NULL
-);
-
-
--- Create the Application table
-CREATE TABLE Application
-(
-    ID          INT AUTO_INCREMENT PRIMARY KEY,
-    Student_ID  INT NOT NULL,
-    Position_ID INT NOT NULL,
-    submittedDate DATETIME NOT NULL,
-    Status_ID INT NOT NULL,
-    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
-    FOREIGN KEY (Position_ID) REFERENCES Posting (ID),
-    FOREIGN KEY (Status_ID) REFERENCES Status (ID)
-);
-
-
-CREATE TABLE Question
-(
-    ID             INT AUTO_INCREMENT PRIMARY KEY,
-    Question       TEXT NOT NULL,
-    Answer         TEXT,
-    Application_ID INT  NOT NULL,
-    FOREIGN KEY (Application_ID) REFERENCES Application (ID)
-);
-
-
-CREATE TABLE Ticket
-(
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Reporter_ID INT NOT NULL,
-    FOREIGN KEY (Reporter_ID) REFERENCES System_Admin (ID),
-    Message VARCHAR(255),
-    Completed BOOLEAN
-);
-
-CREATE TABLE Message
-(
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    RE INT,
-    FOREIGN KEY (RE) REFERENCES Message (ID),
-    Student_ID INT NOT NULL,
-    FOREIGN KEY (Student_ID) REFERENCES Student (ID),
-    Message    TEXT,
-    Alumni_ID  INT NOT NULL,
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID)
-);
-
-CREATE TABLE Alumni_Student
-(
-    Alumni_ID  INT NOT NULL,
-    Student_ID INT NOT NULL,
-
-    PRIMARY KEY (Alumni_ID, Student_ID),
-    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID),
-    FOREIGN KEY (Student_ID) REFERENCES Student(ID)
-);
-
- -- Insert Statements
 insert into Alumni_Student (Alumni_ID, Student_ID) values (17, 14);
 insert into Alumni_Student (Alumni_ID, Student_ID) values (49, 11);
 insert into Alumni_Student (Alumni_ID, Student_ID) values (45, 48);
@@ -3692,8 +3470,4 @@ VALUES
 (48, 10, 'I’ve noted that. Thank you for the reminder!', 10),
 (49, 10, 'You’re welcome. Best of luck!', 10);
 
-SELECT *
-FROM Alumni_Student;
-
 Show TABLES;
-
