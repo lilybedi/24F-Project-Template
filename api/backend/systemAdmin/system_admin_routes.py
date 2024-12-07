@@ -162,3 +162,38 @@ def update_ticket(ticket_id):
     except Exception as e:
         db.get_db().rollback()
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
+
+
+@system_admin.route('/accounts/<string:account_type>/<int:account_id>', methods=['DELETE'])
+def delete_account(account_type, account_id):
+    try:
+        cursor = db.get_db().cursor()
+        
+        # Determine the table based on the account type
+        if account_type == 'student':
+            table = 'Student'
+        elif account_type == 'advisor':
+            table = 'Advisor'
+        elif account_type == 'alumni':
+            table = 'Alumni'
+        else:
+            return jsonify({"error": "Invalid account type"}), 400
+            
+        # Check if the account exists
+        cursor.execute(f'SELECT ID FROM {table} WHERE ID = %s', (account_id,))
+        if not cursor.fetchone():
+            return jsonify({"error": f"{account_type} not found"}), 404
+        
+        # Attempt to delete the account
+        cursor.execute(f'DELETE FROM {table} WHERE ID = %s', (account_id,))
+        db.get_db().commit()
+        
+        return jsonify({"message": f"{account_type} account deleted successfully"}), 200
+    except Exception as e:
+        db.get_db().rollback()
+        
+        # Add detailed logging for debugging
+        logging.error(f"Error occurred during account deletion: {str(e)}")
+        
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
