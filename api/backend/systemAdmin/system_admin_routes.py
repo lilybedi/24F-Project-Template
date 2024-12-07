@@ -140,3 +140,25 @@ def get_tickets():
         return make_response(jsonify(cursor.fetchall()), 200)
     except Exception as e:
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+
+
+
+
+@system_admin.route('/tickets/<int:ticket_id>', methods=['PUT'])
+def update_ticket(ticket_id):
+    try:
+        data = request.get_json()
+        cursor = db.get_db().cursor()
+        
+        query = '''
+            UPDATE Ticket
+            SET Completed = %s
+            WHERE ID = %s
+        '''
+        cursor.execute(query, (data['completed'], ticket_id))
+        db.get_db().commit()
+
+        return jsonify({"message": "Ticket updated successfully"}), 200
+    except Exception as e:
+        db.get_db().rollback()
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
