@@ -21,7 +21,7 @@ if st.button('Add postings',
 if st.button('Edit Postings', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/41_View_Postings.py')
+  st.switch_page('pages/41_Edit_Postings.py')
 
 if st.button('View Applications', 
              type='primary',
