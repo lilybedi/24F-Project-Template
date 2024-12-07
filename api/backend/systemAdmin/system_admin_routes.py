@@ -87,3 +87,33 @@ def override_student_restrictions(student_id):
     except Exception as e:
         db.get_db().rollback()
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+
+
+
+
+@system_admin.route('/activity/applications', methods=['GET'])
+def get_application_activity():
+    try:
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT 
+                a.ID as Application_ID,
+                a.Student_ID,
+                s.First_Name as Student_First_Name,
+                s.Last_Name as Student_Last_Name,
+                p.Name as Position_Name,
+                c.Name as Company_Name,
+                a.submittedDate,
+                st.Status_Description
+            FROM Application a
+            JOIN Student s ON a.Student_ID = s.ID
+            JOIN Posting p ON a.Position_ID = p.ID
+            JOIN Company c ON p.Company_ID = c.ID
+            JOIN Status st ON a.Status_ID = st.ID
+            ORDER BY a.submittedDate DESC
+            LIMIT 100
+        '''
+        cursor.execute(query)
+        return make_response(jsonify(cursor.fetchall()), 200)
+    except Exception as e:
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
