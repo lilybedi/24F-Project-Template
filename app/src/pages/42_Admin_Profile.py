@@ -12,6 +12,7 @@ SideBarLinks()
 if 'first_name' not in st.session_state:
     st.session_state['first_name'] = 'Admin'  # Default value if not set
 
+
 # Admin Profile Information NEEDS TO BE CONNECTED TO BACKEND
 admin_profile = {
     "ID": "123243435",

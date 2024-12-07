@@ -366,7 +366,7 @@ VALUES
 -- System_Admin Insert Statements
 INSERT INTO System_Admin (First_Name, Last_Name, Preferred_Name)
 VALUES
-('John', 'Doe', 'Johnny'),
+('Tarini', 'McAdmin', 'Tarini'),
 ('Jane', 'Smith', 'Janie'),
 ('Michael', 'Johnson', 'Mike'),
 ('Emily', 'Brown', 'Em'),

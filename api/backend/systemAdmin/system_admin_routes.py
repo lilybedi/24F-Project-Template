@@ -157,7 +157,7 @@ def update_ticket(ticket_id):
         '''
         cursor.execute(query, (data['completed'], ticket_id))
         db.get_db().commit()
-
+        
         return jsonify({"message": "Ticket updated successfully"}), 200
     except Exception as e:
         db.get_db().rollback()
@@ -219,4 +219,37 @@ def restrict_account(account_type, account_id):
         return jsonify({"message": f"{account_type} account restricted successfully"}), 200
     except Exception as e:
         db.get_db().rollback()
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
+
+@system_admin.route('/admins/<int:admin_id>', methods=['GET'])
+def get_admin(admin_id):
+    try:
+        cursor = db.get_db().cursor()
+
+        # Query to fetch admin details by ID
+        query = '''
+            SELECT ID, First_Name, Last_Name, Preferred_Name
+            FROM System_Admin
+            WHERE ID = %s
+        '''
+        cursor.execute(query, (admin_id,))
+        admin = cursor.fetchone()
+
+        # If the admin doesn't exist
+        if not admin:
+            return jsonify({"error": "Admin not found"}), 404
+
+        # Format the result as JSON
+        admin_data = {
+            "ID": admin[0],
+            "First_Name": admin[1],
+            "Last_Name": admin[2],
+            "Preferred_Name": admin[3],
+        }
+        return jsonify(admin_data), 200
+
+    except Exception as e:
+        # Log error and return a response
+        logging.error(f"Error occurred while retrieving admin: {str(e)}")
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
