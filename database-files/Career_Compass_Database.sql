@@ -248,6 +248,17 @@ CREATE TABLE Message
     FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID)
 );
 
+CREATE TABLE Alumni_Student
+(
+    Alumni_ID  INT NOT NULL,
+    Student_ID INT NOT NULL,
+
+    PRIMARY KEY (Alumni_ID, Student_ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID) ON DELETE CASCADE,
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE
+);
+
+
 ALTER TABLE Student_Skills DROP FOREIGN KEY Student_Skills_ibfk_1;
 ALTER TABLE Student_Skills ADD FOREIGN KEY (Student_ID) REFERENCES Student(ID) ON DELETE CASCADE;
 
@@ -1820,6 +1831,108 @@ VALUES
 (47, 10, 'Good! Don’t forget to research the company.', 10),
 (48, 10, 'I’ve noted that. Thank you for the reminder!', 10),
 (49, 10, 'You’re welcome. Best of luck!', 10);
+
+
+
+insert into Alumni_Student (Alumni_ID, Student_ID) values (17, 14);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (49, 11);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (45, 48);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (48, 5);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (17, 24);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (25, 1);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (26, 43);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (30, 47);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (37, 1);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (13, 44);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (6, 8);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (41, 39);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (43, 28);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (7, 8);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (6, 11);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (47, 2);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (3, 43);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (22, 37);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (14, 20);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (19, 46);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (26, 31);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (44, 4);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (26, 16);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (11, 23);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (8, 14);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (32, 14);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (40, 16);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (32, 16);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (37, 6);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (10, 42);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (23, 13);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (37, 25);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (48, 50);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (38, 38);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (32, 28);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (44, 21);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (50, 17);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (22, 14);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (27, 5);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (38, 14);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (36, 38);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (9, 25);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (31, 41);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (44, 35);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (28, 49);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (38, 44);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (49, 48);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (22, 18);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (24, 42);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (26, 17);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (22, 47);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (17, 16);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (20, 17);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (37, 22);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (8, 9);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (36, 46);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (45, 38);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (11, 44);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (13, 43);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (20, 20);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (16, 43);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (47, 38);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (26, 46);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (22, 43);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (35, 29);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (7, 36);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (41, 29);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (41, 28);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (25, 26);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (49, 10);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (21, 43);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (32, 24);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (32, 5);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (49, 33);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (43, 11);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (36, 6);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (48, 43);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (16, 11);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (2, 4);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (21, 31);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (14, 17);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (44, 18);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (49, 50);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (34, 26);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (4, 21);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (10, 3);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (26, 22);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (44, 15);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (9, 39);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (36, 15);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (22, 28);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (44, 9);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (6, 28);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (23, 33);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (17, 26);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (6, 4);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (41, 30);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (41, 49);
+insert into Alumni_Student (Alumni_ID, Student_ID) values (9, 2);
 
 
 Show TABLES;
