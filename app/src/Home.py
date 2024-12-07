@@ -74,12 +74,12 @@ if st.button('Act as Kalina, a co-op advisor for students',
     st.session_state['first_name'] = 'Kalina'
     st.switch_page('pages/Advisor_Home.py')
 
-if st.button('Act as Neel, an alumn of Northeastern', 
+if st.button('Act as Emma, an alumn of Northeastern', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'alumn'
-    st.session_state['first_name'] = 'Neel'
+    st.session_state['first_name'] = 'Emma'
     st.switch_page('pages/Alumn_Home.py')
 
 if st.button('Act as Tarini, a system administrator of Career Compass', 
