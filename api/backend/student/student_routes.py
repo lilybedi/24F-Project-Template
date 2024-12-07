@@ -199,7 +199,6 @@ def get_all_jobs():
                 p.Minimum_GPA AS Minimum_GPA,
                 p.Pay AS Salary,
                 p.Title AS Position_Title,
-                p.Filled AS Is_Filled
             FROM Posting p
             JOIN Company c ON p.Company_ID = c.ID
             JOIN Posting_Location pl ON p.Location = pl.ID
@@ -229,25 +228,24 @@ def get_all_jobs():
         cursor.execute(query, tuple(params))
         results = cursor.fetchall()
 
-        # Convert results to JSON. We need this so the column names are displayed with their values.
-        column_names = [desc[0] for desc in cursor.description]
-        job_postings = [dict(zip(column_names, row)) for row in results]
-
-        return jsonify(job_postings), 200
+        return jsonify(results), 200
     except Exception as e:
         current_app.logger.error(f"Error retrieving job postings: {str(e)}")
         return jsonify({"error": "Unable to fetch job postings"}), 500
 
 
-@students.route('/getStudent/<int:student_id>', methods=['GET'])
-def get_student_by_id(student_id):
+@students.route('/profile/<int:student_id>', methods=['GET'])
+def get_student_profile(student_id):
+    """Get a student's profile information"""
     try:
-        # Query to get student details
         query = '''
-            SELECT s.ID, s.First_Name, s.Last_Name, s.Email, s.GPA, s.Grad_Year,
-                   c.Name AS College_Name, cy.cycle AS Cycle,
-                   GROUP_CONCAT(DISTINCT f1.Name) AS Majors,
-                   GROUP_CONCAT(DISTINCT f2.Name) AS Minors
+            SELECT s.ID, s.First_Name, s.Last_Name, s.Email, s.Phone_Number,
+                   s.GPA, s.Grad_Year, s.Resume_Link, s.Description,
+                   c.Name as College_Name, cy.cycle,
+                   GROUP_CONCAT(DISTINCT f1.Name) as Majors,
+                   GROUP_CONCAT(DISTINCT f2.Name) as Minors,
+                   a.First_Name as Advisor_First_Name,
+                   a.Last_Name as Advisor_Last_Name
             FROM Student s
             JOIN College c ON s.College_ID = c.ID
             JOIN Cycle cy ON s.Cycle = cy.ID
@@ -255,24 +253,18 @@ def get_student_by_id(student_id):
             LEFT JOIN Student_Minors sn ON s.ID = sn.Student_ID
             LEFT JOIN FieldOfStudy f1 ON sm.FieldOfStudy_ID = f1.ID
             LEFT JOIN FieldOfStudy f2 ON sn.FieldOfStudy_ID = f2.ID
+            LEFT JOIN Advisor a ON s.Advisor_ID = a.ID
             WHERE s.ID = %s
             GROUP BY s.ID
         '''
-
-        # Execute the query
+        
         cursor = db.get_db().cursor()
         cursor.execute(query, (student_id,))
         result = cursor.fetchone()
-
-        # Handle case where student is not found
+        
         if not result:
-            return jsonify({"error": f"Student with ID {student_id} not found"}), 404
-
-        # Convert the result to a dictionary
-        column_names = [desc[0] for desc in cursor.description]
-        student = dict(zip(column_names, result))
-
-        return jsonify(student), 200
+            return jsonify({"error": "Student not found"}), 404
+            
+        return jsonify(result), 200
     except Exception as e:
-        current_app.logger.error(f"Error retrieving student by ID: {str(e)}")
-        return jsonify({"error": "Unable to fetch student"}), 500
+        return jsonify({"error": str(e)}), 400

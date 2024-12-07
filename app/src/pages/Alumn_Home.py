@@ -64,26 +64,56 @@ import streamlit as st
 
 # st.dataframe(data)
 
-st.title(f"Welcome Alumni , {st.session_state['first_name']}.")
+# st.title(f"Welcome Alumni , {st.session_state['first_name']}.")
 
-# Placeholder for student ID (replace with dynamic value in real implementation)
-student_id = st.session_state.get("student_id", 1)  # Replace '1' with actual student ID
+# # Placeholder for student ID (replace with dynamic value in real implementation)
+# student_id = st.session_state.get("student_id", 1)  # Replace '1' with actual student ID
 
-st.write('')
-st.write('')
-st.write('### Your Applications')
+# st.write('')
+# st.write('')
+# st.write('### Your Applications')
 
-# Fetch applications from the API
+# # Fetch applications from the API
+# try:
+#     # Make API call to fetch applications for the student
+#     response = requests.get(f"http://api:4000/s/applications/{student_id}")
+#     response.raise_for_status()  # Raise an exception for HTTP errors
+#     applications = response.json()
+
+#     # Display the applications in a table
+#     if applications:
+#         st.dataframe(applications)
+#     else:
+#         st.write("No applications found.")
+# except requests.RequestException as e:
+#     st.error(f"Error fetching applications: {e}")
+
+
+# st.title("Get Student by ID")
+
+# # Input field for Student ID
+# student_id = st.number_input("Enter Student ID:", min_value=1, step=1)
+
+# # Fetch student details when button is clicked
+# if st.button("Get Student Details"):
+#     try:
+#         response = requests.get(f"http://api:4000/s/profile/{student_id}")
+#         response.raise_for_status()  # Raise an exception for HTTP errors
+#         student = response.json()
+
+#         # Display student details
+#         st.write("### Student Details")
+#         st.json(student)
+#     except requests.RequestException as e:
+#         st.error(f"Failed to fetch student details: {e}")
+
+st.title("Job Postings")
+
 try:
-    # Make API call to fetch applications for the student
-    response = requests.get(f"http://api:4000/s/applications/{student_id}")
-    response.raise_for_status()  # Raise an exception for HTTP errors
-    applications = response.json()
-
-    # Display the applications in a table
-    if applications:
-        st.dataframe(applications)
-    else:
-        st.write("No applications found.")
+    response = requests.get("http://api:4000/s/getJobPostings")
+    response.raise_for_status()
+    job_postings = response.json()
+    st.write("Available Job Postings")
+    st.dataframe(job_postings)
 except requests.RequestException as e:
-    st.error(f"Error fetching applications: {e}")
+    st.error(f"Failed to fetch job postings: {e}")
