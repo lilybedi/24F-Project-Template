@@ -9,7 +9,7 @@ import logging
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-students = Blueprint('alumni', __name__) 
+alumni = Blueprint('alumni', __name__) 
 
 
 @alumni.route('/<int:alumni_id>', methods=['GET'])
