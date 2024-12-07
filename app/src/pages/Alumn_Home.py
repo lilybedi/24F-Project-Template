@@ -163,7 +163,7 @@ import streamlit as st
 
 
 # Define the base API URL
-BASE_URL = "http://api:4000/cp"
+# BASE_URL = "http://api:4000/cp"
 
 # st.title("Test Create Company Profile")
 
@@ -360,33 +360,33 @@ BASE_URL = "http://api:4000/cp"
 
 
 
-st.title("Test Get Company Profile Endpoint")
+# st.title("Test Get Company Profile Endpoint")
 
-# Input for Company ID
-company_id = st.number_input("Enter Company ID:", min_value=1, step=1)
+# # Input for Company ID
+# company_id = st.number_input("Enter Company ID:", min_value=1, step=1)
 
-# Button to trigger the API call
-if st.button("Get Company Profile"):
-    if company_id:
-        try:
-            # Make the GET request to the endpoint
-            response = requests.get(f"http://api:4000/cp/profile/{company_id}")
-            response.raise_for_status()  # Raise an error for HTTP status codes >= 400
+# # Button to trigger the API call
+# if st.button("Get Company Profile"):
+#     if company_id:
+#         try:
+#             # Make the GET request to the endpoint
+#             response = requests.get(f"http://api:4000/cp/profile/{company_id}")
+#             response.raise_for_status()  # Raise an error for HTTP status codes >= 400
             
-            # Parse the response
-            data = response.json()
+#             # Parse the response
+#             data = response.json()
 
-            # Check if there is an error in the response
-            if "error" in data:
-                st.error(f"Error: {data['error']}")
-            else:
-                # Display the company profile
-                st.write("Company Profile:")
-                st.json(data)  # Nicely formats the JSON response
-        except requests.RequestException as e:
-            st.error(f"Failed to fetch company profile: {e}")
-    else:
-        st.error("Please enter a valid Company ID.")
+#             # Check if there is an error in the response
+#             if "error" in data:
+#                 st.error(f"Error: {data['error']}")
+#             else:
+#                 # Display the company profile
+#                 st.write("Company Profile:")
+#                 st.json(data)  # Nicely formats the JSON response
+#         except requests.RequestException as e:
+#             st.error(f"Failed to fetch company profile: {e}")
+#     else:
+#         st.error("Please enter a valid Company ID.")
 
 
 
@@ -581,3 +581,41 @@ if st.button("Get Company Profile"):
 #             st.json(response.json())
 #         except Exception as e:
 #             st.error(f"Error: {e}")
+
+
+
+
+
+
+
+# Tests for advisors
+
+st.title("Test Get Advisor's Students Endpoint")
+
+# Input for Advisor ID
+advisor_id = st.number_input("Enter Advisor ID:", min_value=1, step=1)
+
+# Button to trigger the API call
+if st.button("Get Students for Advisor"):
+    if advisor_id:
+        try:
+            # Make the GET request to the endpoint
+            response = requests.get(f"http://api:4000/ad/students/{advisor_id}")
+            response.raise_for_status()  # Raise an error for HTTP status codes >= 400
+            
+            # Parse the response
+            data = response.json()
+
+            # Check if data is empty or contains an error
+            if "error" in data:
+                st.error(f"Error: {data['error']}")
+            elif not data:
+                st.warning(f"No students found for Advisor ID: {advisor_id}")
+            else:
+                # Display the results in a nicely formatted DataFrame
+                st.write(f"Students under Advisor ID: {advisor_id}")
+                st.dataframe(data)
+        except requests.RequestException as e:
+            st.error(f"Failed to fetch students: {e}")
+    else:
+        st.error("Please enter a valid Advisor ID.")
