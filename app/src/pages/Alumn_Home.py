@@ -38,10 +38,10 @@ except requests.RequestException as e:
 
 # Buttons for profile actions
 if st.button("Edit Profile Details"):
-    st.switch_page("Alumn_Edit.py")
+    st.switch_page("pages/Alumn_Edit.py")
 
 if st.button("Add Co-op Experience"):
-    st.switch_page("Add_Alumn_Experience.py")
+    st.switch_page("pages/Add_Alumn_Experience.py")
 
 # Alumni Previous Positions
 st.markdown("### Previous Positions")
