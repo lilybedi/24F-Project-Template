@@ -138,6 +138,30 @@ def update_posting(posting_id):
         data = request.get_json()
         cursor = db.get_db().cursor()
         
+        # Fetch existing values
+        fetch_query = '''
+            SELECT Name, Industry, Date_Start, Date_End, Minimum_GPA, Title, Description, Pay
+            FROM Posting
+            WHERE ID = %s
+        '''
+        cursor.execute(fetch_query, (posting_id,))
+        existing_posting = cursor.fetchone()
+        
+        if not existing_posting:
+            return jsonify({"error": "Posting not found"}), 404
+        
+        # Merge existing values with updates
+        updated_posting = {
+            "name": data.get("name", existing_posting["Name"]),
+            "industry": data.get("industry", existing_posting["Industry"]),
+            "date_start": data.get("date_start", existing_posting["Date_Start"]),
+            "date_end": data.get("date_end", existing_posting["Date_End"]),
+            "minimum_gpa": data.get("minimum_gpa", existing_posting["Minimum_GPA"]),
+            "title": data.get("title", existing_posting["Title"]),
+            "description": data.get("description", existing_posting["Description"]),
+            "pay": data.get("pay", existing_posting["Pay"]),
+        }
+        
         # Update posting
         posting_query = '''
             UPDATE Posting
@@ -146,31 +170,32 @@ def update_posting(posting_id):
             WHERE ID = %s
         '''
         cursor.execute(posting_query, (
-            data['name'],
-            data['industry'],
-            data['date_start'],
-            data['date_end'],
-            data['minimum_gpa'],
-            data['title'],
-            data['description'],
-            data['pay'],
+            updated_posting["name"],
+            updated_posting["industry"],
+            updated_posting["date_start"],
+            updated_posting["date_end"],
+            updated_posting["minimum_gpa"],
+            updated_posting["title"],
+            updated_posting["description"],
+            updated_posting["pay"],
             posting_id
         ))
         
         # Update skills if provided
-        if 'skills' in data:
+        if "skills" in data:
             # Remove existing skills
             cursor.execute('DELETE FROM Posting_Skills WHERE Position_ID = %s', (posting_id,))
             
             # Add new skills
             skills_query = 'INSERT INTO Posting_Skills (Position_ID, Skill_ID) VALUES (%s, %s)'
-            for skill_id in data['skills']:
+            for skill_id in data["skills"]:
                 cursor.execute(skills_query, (posting_id, skill_id))
         
         db.get_db().commit()
         return jsonify({"message": "Posting updated successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
     
 
 @companies.route('/posting/<int:posting_id>/filled', methods=['PUT'])
