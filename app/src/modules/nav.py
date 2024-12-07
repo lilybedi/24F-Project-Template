@@ -73,6 +73,10 @@ def AdvisorHome():
     st.sidebar.page_link(
         "pages/Advisor_Home.py", label="Advisor Home", icon="🏠"
     )
+def ViewStudents():
+    st.sidebar.page_link(
+        "pages/45_Advisor_View_Students.py", label="View Students", icon="🏫"
+    )
 def AdvisorProfile():
     st.sidebar.page_link(
         "pages/Advisor_Profile.py", label="Advisor Profile", icon="👤"
