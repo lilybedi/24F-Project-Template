@@ -31,8 +31,9 @@ st.title(f"Welcome Alumni, {st.session_state['first_name']}.")
 
 import streamlit as st
 
-st.sidebar.button("Chat with Lily McStudent", on_click=lambda: st.experimental_set_query_params(page="Chat_Lily"))
-st.sidebar.button("Chat with Zara Studente", on_click=lambda: st.experimental_set_query_params(page="Chat_Zara"))
+if st.sidebar.button("Chat with Lily McStudent"):
+    st.switch_page("pages/Chat_Lily.py")
+st.sidebar.button("Chat with Other Student", on_click=lambda: st.switch_page("pages/Other_Student.py"))
 
 # Main content
 st.markdown("""
