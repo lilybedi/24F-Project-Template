@@ -20,7 +20,7 @@ def test_db_connection():
     except Exception as e:
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
     
-
+# Need for System Admin persona
 @students.route('/get_all', methods=['GET'])
 def get_students():
     query = '''
@@ -41,6 +41,7 @@ def get_students():
     cursor.execute(query)
     return make_response(jsonify(cursor.fetchall()), 200)
 
+# Creating a Profile. 
 @students.route('/create_profile', methods=['POST'])
 def create_student_profile():
     data = request.get_json()
@@ -74,7 +75,7 @@ def create_student_profile():
     db.get_db().commit()
     return jsonify({"message": "Student profile created", "id": student_id}), 201
 
-
+# 
 @students.route('/edit_profile/<int:student_id>', methods=['PUT'])
 def edit_student_profile(student_id):
     data = request.get_json()
@@ -174,3 +175,96 @@ def upload_resume():
     cursor.execute(query, (filepath, student_id))
     db.get_db().commit()
 
+@students.route('/jobs', methods=['GET'])
+def get_all_jobs():
+    """Get all job postings with optional location and salary filters"""
+    try:
+        # Get query parameters
+        location = request.args.get('location', '')
+        min_pay = request.args.get('min_pay', type=int, default=0)
+
+        # Base query - removed trailing comma after Position_Title
+        query = '''
+            SELECT 
+                p.ID AS Posting_ID,
+                p.Name AS Job_Title,
+                c.Name AS Company_Name,
+                p.Description AS Job_Description,
+                p.Industry AS Industry,
+                pl.City AS City,
+                pl.State AS State,
+                pl.Country AS Country,
+                p.Date_Start AS Start_Date,
+                p.Date_End AS End_Date,
+                p.Minimum_GPA AS Minimum_GPA,
+                p.Pay AS Salary,
+                p.Title AS Position_Title
+            FROM Posting p
+            JOIN Company c ON p.Company_ID = c.ID
+            JOIN Posting_Location pl ON p.Location = pl.ID
+            WHERE p.Filled = FALSE
+        '''
+
+        params = []
+        conditions = []
+
+        # Only add location filter if location parameter is not empty
+        if location:
+            conditions.append("(pl.City LIKE %s OR pl.State LIKE %s OR pl.Country LIKE %s)")
+            search = f"%{location}%"
+            params.extend([search, search, search])
+
+        # Only add pay filter if min_pay is greater than 0
+        if min_pay > 0:
+            conditions.append("p.Pay >= %s")
+            params.append(min_pay)
+
+        # Add filters to query if any conditions exist
+        if conditions:
+            query += " AND " + " AND ".join(conditions)
+
+        query += " ORDER BY p.Date_End DESC"
+
+        cursor = db.get_db().cursor()
+        cursor.execute(query, tuple(params) if params else None)
+        results = cursor.fetchall()
+
+        return jsonify(results), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@students.route('/profile/<int:student_id>', methods=['GET'])
+def get_student_profile(student_id):
+    """Get a student's profile information"""
+    try:
+        query = '''
+            SELECT s.ID, s.First_Name, s.Last_Name, s.Email, s.Phone_Number,
+                   s.GPA, s.Grad_Year, s.Resume_Link, s.Description,
+                   c.Name as College_Name, cy.cycle,
+                   GROUP_CONCAT(DISTINCT f1.Name) as Majors,
+                   GROUP_CONCAT(DISTINCT f2.Name) as Minors,
+                   a.First_Name as Advisor_First_Name,
+                   a.Last_Name as Advisor_Last_Name
+            FROM Student s
+            JOIN College c ON s.College_ID = c.ID
+            JOIN Cycle cy ON s.Cycle = cy.ID
+            LEFT JOIN Student_Majors sm ON s.ID = sm.Student_ID
+            LEFT JOIN Student_Minors sn ON s.ID = sn.Student_ID
+            LEFT JOIN FieldOfStudy f1 ON sm.FieldOfStudy_ID = f1.ID
+            LEFT JOIN FieldOfStudy f2 ON sn.FieldOfStudy_ID = f2.ID
+            LEFT JOIN Advisor a ON s.Advisor_ID = a.ID
+            WHERE s.ID = %s
+            GROUP BY s.ID
+        '''
+        
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (student_id,))
+        result = cursor.fetchone()
+        
+        if not result:
+            return jsonify({"error": "Student not found"}), 404
+            
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400

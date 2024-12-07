@@ -11,6 +11,7 @@ import logging
 # routes.
 alumni = Blueprint('alumni', __name__) 
 
+
 @alumni.route('/<int:alumni_id>', methods=['GET'])
 def get_alumni_profile(alumni_id):
     query = '''
@@ -99,20 +100,73 @@ def update_alumni_profile(alumni_id):
     db.get_db().commit()
     return jsonify({"message": "Profile updated successfully"}), 200
 
-@alumni.route('/<int:alumni_id>/positions', methods=['GET'])
-def get_alumni_positions(alumni_id):
+@alumni.route('/<int:alumni_id>/previous_positions', methods=['GET'])
+def get_alumni_previous_positions(alumni_id):
+    """
+    Get all previous positions held by an alumni with detailed information
+    about the company, location, and required skills.
+    """
     query = '''
-        SELECT p.*, c.Name as Company_Name, pl.City, pl.State, pl.Country
+        SELECT 
+            p.ID as Position_ID,
+            p.Title,
+            p.Description as Position_Description,
+            p.Pay,
+            p.Date_Start,
+            p.Date_End,
+            c.Name as Company_Name,
+            c.Industry,
+            c.Description as Company_Description,
+            pl.City,
+            pl.State,
+            pl.Country,
+            GROUP_CONCAT(DISTINCT s.Name) as Required_Skills
         FROM Alumni_Position ap
         JOIN Posting p ON ap.Position_ID = p.ID
         JOIN Company c ON p.Company_ID = c.ID
         JOIN Posting_Location pl ON p.Location = pl.ID
+        LEFT JOIN Posting_Skills ps ON p.ID = ps.Position_ID
+        LEFT JOIN Skill s ON ps.Skill_ID = s.ID
         WHERE ap.Alumni_ID = %s
+        GROUP BY p.ID
         ORDER BY p.Date_Start DESC
     '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query, (alumni_id,))
-    return jsonify(cursor.fetchall()), 200
+    
+    try:
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (alumni_id,))
+        positions = cursor.fetchall()
+        
+        if not positions:
+            return jsonify({
+                "message": "No previous positions found for this alumni",
+                "positions": []
+            }), 200
+            
+        # Format dates for JSON response
+        for position in positions:
+            if position['Date_Start']:
+                position['Date_Start'] = position['Date_Start'].strftime('%Y-%m-%d')
+            if position['Date_End']:
+                position['Date_End'] = position['Date_End'].strftime('%Y-%m-%d')
+            
+            # Convert skills string to list if not None
+            if position['Required_Skills']:
+                position['Required_Skills'] = position['Required_Skills'].split(',')
+            else:
+                position['Required_Skills'] = []
+        
+        return jsonify({
+            "positions": positions,
+            "count": len(positions)
+        }), 200
+        
+    except Exception as e:
+        current_app.logger.error(f"Error fetching alumni positions: {str(e)}")
+        return jsonify({
+            "error": "An error occurred while fetching positions",
+            "details": str(e)
+        }), 500
 
 @alumni.route('/messages/send', methods=['POST'])
 def send_message():
@@ -229,3 +283,38 @@ def create_alumni_profile():
     
     db.get_db().commit()
     return jsonify({"message": "Alumni profile created", "id": alumni_id}), 201
+
+
+@alumni.route('/<int:alumni_id>/students', methods=['GET'])
+def get_alumni_students(alumni_id):
+    """
+    Get all students related to an alumni (via Alumni_Student table)
+    """
+    try:
+        query = '''
+            SELECT 
+                s.ID as Student_ID,
+                s.First_Name,
+                s.Last_Name,
+                s.GPA,
+                c.Name as College_Name,
+                GROUP_CONCAT(DISTINCT f.Name) as Majors
+            FROM Alumni_Student al
+            JOIN Student s ON al.Student_ID = s.ID
+            JOIN College c ON s.College_ID = c.ID
+            LEFT JOIN Student_Majors sm ON s.ID = sm.Student_ID
+            LEFT JOIN FieldOfStudy f ON sm.FieldOfStudy_ID = f.ID
+            WHERE al.Alumni_ID = %s
+            GROUP BY s.ID
+        '''
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (alumni_id,))
+        results = cursor.fetchall()
+        
+        if not results:
+            return jsonify({"message": "No related students found for this alumni"}), 404
+        
+        return jsonify(results), 200
+    except Exception as e:
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
