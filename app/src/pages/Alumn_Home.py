@@ -329,37 +329,64 @@ BASE_URL = "http://api:4000/cp"
 
 
 
-st.title("Test View Applications Endpoint")
+# st.title("Test View Applications Endpoint")
 
-# Input for Posting ID
-posting_id = st.number_input("Enter Posting ID:", min_value=1, step=1)
+# # Input for Posting ID
+# posting_id = st.number_input("Enter Posting ID:", min_value=1, step=1)
+
+# # Button to trigger the API call
+# if st.button("View Applications"):
+#     if posting_id:
+#         try:
+#             # Make the GET request to the endpoint
+#             response = requests.get(f"http://api:4000/cp/posting/{posting_id}/applications")
+#             response.raise_for_status()  # Raise an error for HTTP status codes >= 400
+            
+#             # Parse the response
+#             data = response.json()
+
+#             # Display the results
+#             if data:
+#                 st.write(f"Applications for Posting ID: {posting_id}")
+#                 st.dataframe(data)
+#             else:
+#                 st.warning(f"No applications found for Posting ID: {posting_id}")
+#         except requests.RequestException as e:
+#             st.error(f"Failed to fetch applications: {e}")
+#     else:
+#         st.error("Please enter a valid Posting ID.")
+
+
+
+
+
+st.title("Test Get Company Profile Endpoint")
+
+# Input for Company ID
+company_id = st.number_input("Enter Company ID:", min_value=1, step=1)
 
 # Button to trigger the API call
-if st.button("View Applications"):
-    if posting_id:
+if st.button("Get Company Profile"):
+    if company_id:
         try:
             # Make the GET request to the endpoint
-            response = requests.get(f"http://api:4000/cp/posting/{posting_id}/applications")
+            response = requests.get(f"http://api:4000/cp/profile/{company_id}")
             response.raise_for_status()  # Raise an error for HTTP status codes >= 400
             
             # Parse the response
             data = response.json()
 
-            # Display the results
-            if data:
-                st.write(f"Applications for Posting ID: {posting_id}")
-                st.dataframe(data)
+            # Check if there is an error in the response
+            if "error" in data:
+                st.error(f"Error: {data['error']}")
             else:
-                st.warning(f"No applications found for Posting ID: {posting_id}")
+                # Display the company profile
+                st.write("Company Profile:")
+                st.json(data)  # Nicely formats the JSON response
         except requests.RequestException as e:
-            st.error(f"Failed to fetch applications: {e}")
+            st.error(f"Failed to fetch company profile: {e}")
     else:
-        st.error("Please enter a valid Posting ID.")
-
-
-
-
-
+        st.error("Please enter a valid Company ID.")
 
 
 
