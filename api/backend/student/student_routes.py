@@ -118,7 +118,6 @@ def filter_postings_by_pay():
         JOIN Posting_Location pl ON p.Location = pl.ID
         WHERE p.Pay >= %s AND p.Filled = FALSE
         '''
-
     cursor = db.get_db().cursor()
     cursor.execute(query, (min_pay,))
     return jsonify(cursor.fetchall()), 200
