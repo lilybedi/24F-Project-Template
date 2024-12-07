@@ -117,3 +117,26 @@ def get_application_activity():
         return make_response(jsonify(cursor.fetchall()), 200)
     except Exception as e:
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+
+
+
+
+@system_admin.route('/tickets', methods=['GET'])
+def get_tickets():
+    try:
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT 
+                t.ID,
+                t.Message,
+                t.Completed,
+                sa.First_Name as Reporter_First_Name,
+                sa.Last_Name as Reporter_Last_Name
+            FROM Ticket t
+            JOIN System_Admin sa ON t.Reporter_ID = sa.ID
+            ORDER BY t.ID DESC
+        '''
+        cursor.execute(query)
+        return make_response(jsonify(cursor.fetchall()), 200)
+    except Exception as e:
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
