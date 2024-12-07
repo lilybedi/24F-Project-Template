@@ -1,52 +1,45 @@
 import streamlit as st
 import requests
 
-from modules.nav import SideBarLinks
 
-st.set_page_config(layout = 'wide')
-
-# Show appropriate sidebar links for the role of the currently logged in user
-SideBarLinks()
 # Sample Data - connect to backend - generated with ChatGPT
 
 cat_photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
 
-#TODO: FIX ERROR 404 ON FETCHING JOBS
 BASE_URL = "http://web-api:4000"
 
-# Function to fetch job postings from the backend
-def fetch_jobs(min_pay=None):
-    params = {}
-    if min_pay is not None:
-        params["min_pay"] = min_pay
-    response = requests.get(f"{BASE_URL}/postings/by_pay", params=params)
+def fetch_all_jobs():
+    response = requests.get(f"{BASE_URL}/s/postings/by_pay")
     if response.status_code == 200:
         return response.json()
     else:
-        st.error(f"Error fetching jobs: {response.status_code}")
-        return []
-
-# Fetch initial job postings (default)
-job_postings = fetch_jobs()
-
+        st.error(f"Error fetching student: {response.status_code}")
+        return None
+    
 job_postings = [
     {
         "id": 1,
         "title": "Software Engineer",
         "company": "domp",
         "description": "Develop and maintain software applications.",
+        "match": "85%", # Idk how to implement match
+        "image": cat_photo
     },
     {
         "id": 2,
         "title": "Software Engineer",
         "company": "blep",
         "description": "glorp",
+        "match": "44%",
+        "image": cat_photo
     },
         {
         "id": 3,
         "title": "Software Engineer",
         "company": "domp",
-        "description": "glep"
+        "description": "Develop and maintain software applications.",
+        "match": "85%",
+        "image": cat_photo
     }
 ]
 
@@ -113,6 +106,10 @@ with filter_col:
         elif selected_filter == "Location":
             st.selectbox("Select Location", ["City, State 1", "City, State 2"], key="location_filter")
 
+# "Sort By"
+with sort_col:
+    st.markdown("**Sort By**")
+    st.selectbox("Sort By", ["Relevance", "Date Applied", "Company"], key="sort_by")
 
 st.divider()
 
@@ -133,7 +130,10 @@ with job_col:
 with details_col:
     selected_job = st.session_state["selected_job"]  # Get the selected job from session state
     st.markdown("### Job Details")
+    st.image(selected_job["image"], use_container_width=True)
     st.markdown(f"**Job Title:** {selected_job['title']}")
     st.write(f"**Company Name:** {selected_job['company']}")
+    st.write(f"**Percentage Match:** {selected_job['match']}")
+    st.button("Click to see full breakdown")  # Static button for additional breakdown functionality
     st.write(f"**Job Description:** {selected_job['description']}")
 
