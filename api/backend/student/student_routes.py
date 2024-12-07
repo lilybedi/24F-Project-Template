@@ -116,7 +116,8 @@ def filter_postings_by_pay():
         FROM Posting p
         JOIN Company c ON p.Company_ID = c.ID
         JOIN Posting_Location pl ON p.Location = pl.ID
-        WHERE p.Pay >= %s AND p.Filled = FALSE'''
+        WHERE p.Pay >= %s AND p.Filled = FALSE
+        '''
 
     cursor = db.get_db().cursor()
     cursor.execute(query, (min_pay,))
