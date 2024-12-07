@@ -248,11 +248,19 @@ CREATE TABLE Message
     FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID)
 );
 
-
+CREATE TABLE Alumni_Student
+(
+    Alumni_ID  INT NOT NULL,
+    Student_ID INT NOT NULL,
+    PRIMARY KEY (Alumni_ID, Student_ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student (ID)
+);
 
  -- Insert Statements
-
  -- Skill Insert
+
+
 INSERT INTO Skill (Name, Description, Industry)
 VALUES
 ('Python', 'Programming language used for data science, web development, and AI.', 'Technology'),
@@ -2037,7 +2045,15 @@ CREATE TABLE Message
     FOREIGN KEY (Alumni_ID) REFERENCES Alumni (ID)
 );
 
-
+CREATE TABLE Alumni_Student
+(
+    Alumni_ID  INT NOT NULL,
+    Student_ID INT NOT NULL,
+    
+    PRIMARY KEY (Alumni_ID, Student_ID),
+    FOREIGN KEY (Alumni_ID) REFERENCES Alumni(ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(ID)
+);
 
  -- Insert Statements
 
@@ -2491,6 +2507,7 @@ INSERT INTO Alumni_Majors (Alumni_ID, FieldOfStudy_ID) VALUES
 (48, 24), (48, 35),
 (49, 26),
 (50, 28);
+
 
 -- Alumni Minor Entries
 INSERT INTO Alumni_Minors (Alumni_ID, FieldOfStudy_ID) VALUES
@@ -3572,7 +3589,6 @@ VALUES
 (47, 10, 'Good! Don’t forget to research the company.', 10),
 (48, 10, 'I’ve noted that. Thank you for the reminder!', 10),
 (49, 10, 'You’re welcome. Best of luck!', 10);
-
 
 Show TABLES;
 
