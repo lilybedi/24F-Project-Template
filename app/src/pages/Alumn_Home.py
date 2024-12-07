@@ -590,32 +590,78 @@ import streamlit as st
 
 # Tests for advisors
 
-st.title("Test Get Advisor's Students Endpoint")
+# st.title("Test Get Advisor's Students Endpoint")
 
-# Input for Advisor ID
-advisor_id = st.number_input("Enter Advisor ID:", min_value=1, step=1)
+# # Input for Advisor ID
+# advisor_id = st.number_input("Enter Advisor ID:", min_value=1, step=1)
 
-# Button to trigger the API call
-if st.button("Get Students for Advisor"):
-    if advisor_id:
-        try:
-            # Make the GET request to the endpoint
-            response = requests.get(f"http://api:4000/ad/students/{advisor_id}")
-            response.raise_for_status()  # Raise an error for HTTP status codes >= 400
+# # Button to trigger the API call
+# if st.button("Get Students for Advisor"):
+#     if advisor_id:
+#         try:
+#             # Make the GET request to the endpoint
+#             response = requests.get(f"http://api:4000/ad/students/{advisor_id}")
+#             response.raise_for_status()  # Raise an error for HTTP status codes >= 400
             
-            # Parse the response
-            data = response.json()
+#             # Parse the response
+#             data = response.json()
 
-            # Check if data is empty or contains an error
-            if "error" in data:
-                st.error(f"Error: {data['error']}")
-            elif not data:
-                st.warning(f"No students found for Advisor ID: {advisor_id}")
+#             # Check if data is empty or contains an error
+#             if "error" in data:
+#                 st.error(f"Error: {data['error']}")
+#             elif not data:
+#                 st.warning(f"No students found for Advisor ID: {advisor_id}")
+#             else:
+#                 # Display the results in a nicely formatted DataFrame
+#                 st.write(f"Students under Advisor ID: {advisor_id}")
+#                 st.dataframe(data)
+#         except requests.RequestException as e:
+#             st.error(f"Failed to fetch students: {e}")
+#     else:
+#         st.error("Please enter a valid Advisor ID.")
+
+
+
+# Set the Streamlit page title
+st.title("Test Advisor Statistics Route")
+
+# Input field for advisor_id
+advisor_id = st.number_input("Enter Advisor ID:", min_value=1, step=1, value=1)
+
+# Button to trigger API request
+if st.button("Get Advisor Statistics"):
+    try:
+        # Define the API URL for the route
+        url = f"http://api:4000/ad/statistics/{advisor_id}"
+        
+        # Make the GET request
+        response = requests.get(url)
+        
+        # Check the response status code
+        if response.status_code == 200:
+            # Parse the JSON response
+            data = response.json()
+            
+            # Display status statistics
+            st.subheader("Status Statistics")
+            status_stats = data.get("status_statistics", {})
+            st.write(f"Total Students: {status_stats.get('Total_Students', 'N/A')}")
+            st.write(f"Placed Students: {status_stats.get('Placed_Students', 'N/A')}")
+            st.write(f"Searching Students: {status_stats.get('Searching_Students', 'N/A')}")
+            
+            # Display application statistics
+            st.subheader("Application Statistics")
+            app_stats = data.get("application_statistics", [])
+            if app_stats:
+                st.write(f"Total Applications: {sum([row['Applications_Count'] for row in app_stats])}")
+                st.write(f"Students Applied: {sum([row['Students_Applied'] for row in app_stats])}")
+                st.write(f"Avg Applications Per Student: {app_stats[0].get('Avg_Applications_Per_Student', 'N/A')}")
             else:
-                # Display the results in a nicely formatted DataFrame
-                st.write(f"Students under Advisor ID: {advisor_id}")
-                st.dataframe(data)
-        except requests.RequestException as e:
-            st.error(f"Failed to fetch students: {e}")
-    else:
-        st.error("Please enter a valid Advisor ID.")
+                st.write("No application statistics available.")
+        
+        else:
+            # Display error message if the request fails
+            st.error(f"Failed to fetch statistics: {response.status_code} {response.reason}")
+            st.write(response.text)
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
