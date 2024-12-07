@@ -102,17 +102,3 @@ if st.button("Send Message"):
         st.success("Message sent successfully!")
     except requests.RequestException as e:
         st.error(f"Failed to send message: {e}")
-
-# Job Postings
-st.markdown("### View Job Postings")
-try:
-    response = requests.get(f"{BASE_URL}/postings")
-    response.raise_for_status()
-    job_postings = response.json()
-
-    if job_postings:
-        st.dataframe(job_postings)
-    else:
-        st.info("No job postings found.")
-except requests.RequestException as e:
-    st.error(f"Failed to fetch job postings: {e}")
