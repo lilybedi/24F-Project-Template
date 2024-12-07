@@ -47,4 +47,4 @@ if st.button("Edit Profile Details"):
     st.switch_page("pages/Alumn_Edit.py")
 
 if st.button("Add co-op experience"):
-    st.switch_page("pages/Make_Experience.py")
+    st.switch_page("pages/Add_Alumn_Experience.py")
