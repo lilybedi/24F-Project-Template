@@ -53,3 +53,37 @@ def remove_advisor(advisor_id):
     except Exception as e:
         db.get_db().rollback()
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
+
+
+@system_admin.route('/students/<int:student_id>/override', methods=['PUT'])
+def override_student_restrictions(student_id):
+    try:
+        data = request.get_json()
+        cursor = db.get_db().cursor()
+        
+        # Update student eligibility
+        update_query = '''
+            UPDATE Student
+            SET Eligibility = %s
+            WHERE ID = %s
+        '''
+        cursor.execute(update_query, (data['eligibility'], student_id))
+        
+        # Add special application if provided
+        if 'position_id' in data:
+            app_query = '''
+                INSERT INTO Application (Student_ID, Position_ID, submittedDate, Status_ID)
+                VALUES (%s, %s, NOW(), %s)
+            '''
+            cursor.execute(app_query, (
+                student_id,
+                data['position_id'],
+                data.get('status_id', 1)  # Default to initial status
+            ))
+            
+        db.get_db().commit()
+        return jsonify({"message": "Student restrictions overridden successfully"}), 200
+    except Exception as e:
+        db.get_db().rollback()
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
