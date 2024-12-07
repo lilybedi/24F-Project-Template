@@ -155,3 +155,373 @@ import streamlit as st
 
 
 
+
+
+
+
+# Company testing!
+
+
+# Define the base API URL
+BASE_URL = "http://api:4000/cp/profile"
+
+# st.title("Test Create Company Profile")
+
+# # Input fields for the company profile
+# name = st.text_input("Company Name")
+# industry = st.text_input("Industry")
+# description = st.text_area("Description (Optional)")
+
+# # Button to trigger the API call
+# if st.button("Create Company Profile"):
+#     # Prepare the payload
+#     payload = {
+#         "name": name,
+#         "industry": industry,
+#         "description": description if description.strip() else None
+#     }
+    
+#     try:
+#         # Send the POST request
+#         response = requests.post(BASE_URL, json=payload)
+#         response.raise_for_status()  # Raise an exception for HTTP errors
+
+#         # Parse and display the response
+#         st.success("Company profile created successfully!")
+#         st.json(response.json())
+#     except requests.RequestException as e:
+#         # Display error message
+#         st.error(f"Failed to create company profile: {e}")
+
+
+
+# For this, we should be able to get the id of the current company to pass into the request.
+# import requests
+# import streamlit as st
+
+# st.title("Test Update Company Profile")
+
+# # Input fields for the company update
+# company_id = st.number_input("Company ID", min_value=1, step=1, key="update_company_id")
+# name = st.text_input("New Company Name")
+# industry = st.text_input("New Industry")
+# description = st.text_area("New Description (Optional)")
+
+# # Button to trigger the API call
+# if st.button("Update Company Profile"):
+#     # Prepare the payload
+#     payload = {
+#         "name": name,
+#         "industry": industry,
+#         "description": description if description.strip() else None
+#     }
+    
+#     try:
+#         # Send the PUT request
+#         response = requests.put(f"{BASE_URL}/{company_id}", json=payload)
+#         response.raise_for_status()  # Raise an exception for HTTP errors
+
+#         # Parse and display the response
+#         st.success("Company profile updated successfully!")
+#         st.json(response.json())
+#     except requests.RequestException as e:
+#         # Display error message
+#         st.error(f"Failed to update company profile: {e}")
+
+
+st.title("Test Job Posting Endpoints")
+
+# Tabs for the two endpoints
+tabs = st.tabs(["Create Job Posting", "Update Job Posting"])
+
+# -------- Create Job Posting -------- #
+with tabs[0]:
+    st.header("Create Job Posting")
+
+    # Input fields for job posting
+    name = st.text_input("Job Name")
+    company_id = st.number_input("Company ID", min_value=1, step=1, key="create_company_id")
+    industry = st.text_input("Industry")
+    date_start = st.date_input("Start Date")
+    date_end = st.date_input("End Date")
+    minimum_gpa = st.number_input("Minimum GPA", min_value=0.0, max_value=4.0, step=0.1, key="create_min_gpa")
+    title = st.text_input("Title")
+    description = st.text_area("Description")
+    pay = st.number_input("Pay", min_value=0, step=1, key="create_pay")
+
+    # Location fields
+    location = {
+        "region": st.text_input("Region"),
+        "state": st.text_input("State"),
+        "zip_code": st.text_input("ZIP Code"),
+        "address_number": st.number_input("Address Number", min_value=0, step=1, key="create_address_number"),
+        "street": st.text_input("Street"),
+        "city": st.text_input("City"),
+        "country": st.text_input("Country")
+    }
+
+    # Skills
+    skills = st.text_input("Skills (comma-separated IDs)", key="create_skills")
+
+    if st.button("Create Job Posting"):
+        # Prepare the payload
+        payload = {
+            "name": name,
+            "company_id": company_id,
+            "industry": industry,
+            "date_start": str(date_start),
+            "date_end": str(date_end),
+            "minimum_gpa": minimum_gpa,
+            "title": title,
+            "description": description,
+            "pay": pay,
+            "location": location,
+            "skills": [int(skill.strip()) for skill in skills.split(",") if skill.strip()]
+        }
+
+        # Send the POST request
+        try:
+            response = requests.post(BASE_URL, json=payload)
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            st.success("Job posting created successfully!")
+            st.json(response.json())
+        except requests.RequestException as e:
+            st.error(f"Failed to create job posting: {e}")
+
+# -------- Update Job Posting -------- #
+with tabs[1]:
+    st.header("Update Job Posting")
+
+    # Input fields for updating job posting
+    posting_id = st.number_input("Posting ID", min_value=1, step=1, key="update_posting_id")
+    name = st.text_input("New Job Name", key="update_name")
+    industry = st.text_input("New Industry", key="update_industry")
+    date_start = st.date_input("New Start Date", key="update_start_date")
+    date_end = st.date_input("New End Date", key="update_end_date")
+    minimum_gpa = st.number_input("New Minimum GPA", min_value=0.0, max_value=4.0, step=0.1, key="update_min_gpa")
+    title = st.text_input("New Title", key="update_title")
+    description = st.text_area("New Description", key="update_description")
+    pay = st.number_input("New Pay", min_value=0, step=1, key="update_pay")
+    skills = st.text_input("New Skills (comma-separated IDs)", key="update_skills")
+
+    if st.button("Update Job Posting"):
+        # Prepare the payload
+        payload = {
+            "name": name,
+            "industry": industry,
+            "date_start": str(date_start),
+            "date_end": str(date_end),
+            "minimum_gpa": minimum_gpa,
+            "title": title,
+            "description": description,
+            "pay": pay,
+            "skills": [int(skill.strip()) for skill in skills.split(",") if skill.strip()]
+        }
+
+        # Send the PUT request
+        try:
+            response = requests.put(f"{BASE_URL}/{posting_id}", json=payload)
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            st.success("Job posting updated successfully!")
+            st.json(response.json())
+        except requests.RequestException as e:
+            st.error(f"Failed to update job posting: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # ------- Company test time!
+# # This was tryna test all at once. I will come back to this maybe?
+
+# # Define the base API URL
+# BASE_URL = "http://api:4000/cp"
+
+# st.title("API Testing for Companies Blueprint")
+
+# # Tabs for different API functionalities
+# tabs = st.tabs([
+#     "Create Company Profile", "Update Company Profile", "Get Company Profile",
+#     "Create Job Posting", "Update Job Posting", "Mark Posting as Filled",
+#     "Delete Job Posting", "View Applications", "Get Student Contact"
+# ])
+
+# # -------- Create Company Profile -------- #
+# with tabs[0]:
+#     st.header("Create Company Profile")
+#     name = st.text_input("Company Name")
+#     industry = st.text_input("Industry")
+#     description = st.text_area("Description")
+
+#     if st.button("Create Company"):
+#         try:
+#             payload = {"name": name, "industry": industry, "description": description}
+#             response = requests.post(f"{BASE_URL}/profile", json=payload)
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- Update Company Profile -------- #
+# with tabs[1]:
+#     st.header("Update Company Profile")
+#     company_id = st.number_input("Company ID", min_value=1, step=1, key='update_company')
+#     name = st.text_input("New Company Name")
+#     industry = st.text_input("New Industry")
+#     description = st.text_area("New Description")
+
+#     if st.button("Update Company"):
+#         try:
+#             payload = {"name": name, "industry": industry, "description": description}
+#             response = requests.put(f"{BASE_URL}/profile/{company_id}", json=payload)
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- Get Company Profile -------- #
+# with tabs[2]:
+#     st.header("Get Company Profile")
+#     company_id = st.number_input("Company ID", min_value=1, step=1, key='get_company')
+
+#     if st.button("Fetch Company Profile"):
+#         try:
+#             response = requests.get(f"{BASE_URL}/profile/{company_id}")
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- Create Job Posting -------- #
+# with tabs[3]:
+#     st.header("Create Job Posting")
+#     name = st.text_input("Job Name")
+#     industry = st.text_input("Industry")
+#     location = {
+#         "region": st.text_input("Region"),
+#         "state": st.text_input("State"),
+#         "zip_code": st.text_input("ZIP Code"),
+#         "address_number": st.number_input("Address Number", step=1, key='address_number'),
+#         "street": st.text_input("Street"),
+#         "city": st.text_input("City"),
+#         "country": st.text_input("Country")
+#     }
+#     date_start = st.date_input("Start Date")
+#     date_end = st.date_input("End Date")
+#     minimum_gpa = st.number_input("Minimum GPA", min_value=0.0, max_value=4.0, step=0.1, key='gpa')
+#     title = st.text_input("Title")
+#     description = st.text_area("Description")
+#     pay = st.number_input("Pay", step=1, key='pay')
+#     skills = st.text_input("Skills (comma-separated)")
+
+#     if st.button("Create Posting"):
+#         try:
+#             payload = {
+#                 "company_id": company_id,
+#                 "name": name,
+#                 "industry": industry,
+#                 "location": location,
+#                 "date_start": str(date_start),
+#                 "date_end": str(date_end),
+#                 "minimum_gpa": minimum_gpa,
+#                 "title": title,
+#                 "description": description,
+#                 "pay": pay,
+#                 "skills": [int(skill.strip()) for skill in skills.split(",") if skill.strip()]
+#             }
+#             response = requests.post(f"{BASE_URL}/posting", json=payload)
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- Update Job Posting -------- #
+# with tabs[4]:
+#     st.header("Update Job Posting")
+#     posting_id = st.number_input("Posting ID", min_value=1, step=1, key='postingID')
+#     name = st.text_input("New Job Name")
+#     industry = st.text_input("New Industry")
+#     date_start = st.date_input("New Start Date")
+#     date_end = st.date_input("New End Date")
+#     minimum_gpa = st.number_input("New Minimum GPA", min_value=0.0, max_value=4.0, step=0.1, key='GPA2')
+#     title = st.text_input("New Title")
+#     description = st.text_area("New Description")
+#     pay = st.number_input("New Pay", step=1, key='PAY2')
+#     skills = st.text_input("New Skills (comma-separated)")
+
+#     if st.button("Update Posting"):
+#         try:
+#             payload = {
+#                 "name": name,
+#                 "industry": industry,
+#                 "date_start": str(date_start),
+#                 "date_end": str(date_end),
+#                 "minimum_gpa": minimum_gpa,
+#                 "title": title,
+#                 "description": description,
+#                 "pay": pay,
+#                 "skills": [int(skill.strip()) for skill in skills.split(",") if skill.strip()]
+#             }
+#             response = requests.put(f"{BASE_URL}/posting/{posting_id}", json=payload)
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- Mark Posting as Filled -------- #
+# with tabs[5]:
+#     st.header("Mark Posting as Filled")
+#     posting_id = st.number_input("Posting ID", min_value=1, step=1, key='POSTINGID2')
+
+#     if st.button("Mark as Filled"):
+#         try:
+#             response = requests.put(f"{BASE_URL}/posting/{posting_id}/filled")
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- Delete Job Posting -------- #
+# with tabs[6]:
+#     st.header("Delete Job Posting")
+#     posting_id = st.number_input("Posting ID", min_value=1, step=1, key='DeleteJob')
+
+#     if st.button("Delete Posting"):
+#         try:
+#             response = requests.delete(f"{BASE_URL}/posting/{posting_id}")
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- View Applications for a Posting -------- #
+# with tabs[7]:
+#     st.header("View Applications")
+#     posting_id = st.number_input("Posting ID", min_value=1, step=1, key='POSTINGID3')
+
+#     if st.button("View Applications"):
+#         try:
+#             response = requests.get(f"{BASE_URL}/posting/{posting_id}/applications")
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")
+
+# # -------- Get Student Contact -------- #
+# with tabs[8]:
+#     st.header("Get Student Contact")
+#     student_id = st.number_input("Student ID", min_value=1, step=1, key='student_contact')
+
+#     if st.button("Get Contact Info"):
+#         try:
+#             response = requests.get(f"{BASE_URL}/student/{student_id}/contact")
+#             st.json(response.json())
+#         except Exception as e:
+#             st.error(f"Error: {e}")

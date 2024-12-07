@@ -49,7 +49,7 @@ def create_app():
     app.register_blueprint(products,    url_prefix='/p')
     app.register_blueprint(students,    url_prefix='/s')
     app.register_blueprint(alumni,    url_prefix='/a')
-    app.register_blueprint(companies, url_prefix='cp')
+    app.register_blueprint(companies, url_prefix='/cp')
     # Don't forget to return the app object
     return app
 
