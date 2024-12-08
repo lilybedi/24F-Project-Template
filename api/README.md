@@ -1,4 +1,4 @@
-# Fall 2024 CS 3200 Project Template Repository
+# Career Compass Repository
 
 This repo is a template for your semester project.  It includes most of the infrastructure setup (containers) and sample code and data throughout.  Explore it fully and ask questions.
 
@@ -16,12 +16,6 @@ Currently, there are three major components which will each run in their own Doc
 - Streamlit App in the `./app` directory
 - Flask REST api in the `./api` directory
 - SQL files for your data model and data base in the `./database-files` directory
-
-## Suggestion for Learning the Project Code Base
-
-If you are not familiar with web app development, this code base might be confusing. You will probably want two versions though:
-1. One version for you to explore, try things, break things, etc. We'll call this your **Personal Repo** 
-1. One version of the repo that your team will share.  We'll call this the **Team Repo**. 
 
 
 ### Setting Up Your Personal Repo
@@ -65,14 +59,5 @@ Wrapping your head around this will take a little time and exploration of this c
 1. The pages are organized by Role.  Pages that start with a `0` are related to the *Political Strategist* role.  Pages that start with a `1` are related to the *USAID worker* role.  And, pages that start with a `2` are related to The *System Administrator* role. 
 
 
-## Deploying An ML Model (Totally Optional for CS3200 Project)
-
-*Note*: This project only contains the infrastructure for a hypothetical ML model. 
-
-1. Build, train, and test your ML model in a Jupyter Notebook. 
-1. Once you're happy with the model's performance, convert your Jupyter Notebook code for the ML model to a pure python script.  You can include the `training` and `testing` functionality as well as the `prediction` functionality.  You may or may not need to include data cleaning, though. 
-1. Check out the  `api/backend/ml_models` module.  In this folder, I've put a sample (read *fake*) ML model in `model01.py`.  The `predict` function will be called by the Flask REST API to perform '*real-time*' prediction based on model parameter values that are stored in the database.  **Important**: you would never want to hard code the model parameter weights directly in the prediction function.  tl;dr - take some time to look over the code in `model01.py`.  
-1. The prediction route for the REST API is in `api/backend/customers/customer_routes.py`. Basically, it accepts two URL parameters and passes them to the `prediction` function in the `ml_models` module. The `prediction` route/function packages up the value(s) it receives from the model's `predict` function and send its back to Streamlit as JSON. 
-1. Back in streamlit, check out `app/src/pages/11_Prediction.py`.  Here, I create two numeric input fields.  When the button is pressed, it makes a request to the REST API URL `/c/prediction/.../...` function and passes the values from the two inputs as URL parameters.  It gets back the results from the route and displays them. Nothing fancy here. 
 
  

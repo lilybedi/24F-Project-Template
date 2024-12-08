@@ -301,3 +301,26 @@ def get_company_profile(company_id):
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+@companies.route('/company/<int:company_id>/postings', methods=['GET'])
+def get_all_postings_for_company(company_id):
+    """Get all job postings for a specific company"""
+    try:
+        cursor = db.get_db().cursor()
+        
+        # Query to fetch all job postings for the given company ID
+        query = '''
+            SELECT p.ID, p.Name, p.Industry, p.Date_Start, p.Date_End, p.Minimum_GPA, 
+                   p.Title, p.Description, p.Pay, p.Filled
+            FROM Posting p
+            WHERE p.Company_ID = %s
+        '''
+        cursor.execute(query, (company_id,))
+        postings = cursor.fetchall()
+        
+        if not postings:
+            return jsonify({"message": "No postings found for this company"}), 404
+        
+        return jsonify(postings), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400

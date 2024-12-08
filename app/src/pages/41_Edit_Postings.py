@@ -1,18 +1,34 @@
 import streamlit as st
 from modules.nav import SideBarLinks
-
+import requests
 st.set_page_config(layout="wide")
 
 # Sidebar navigation
 SideBarLinks()
 
-# Sample job postings data
-job_postings = [
-    {"id": "#001", "job_title": "Data Analyst", "job_description": "Analyze data trends and insights", "min_gpa": "3.5", "grad_year": "2024", "college": "Engineering", "skills": "Python, SQL, Data Analysis"},
-    {"id": "#002", "job_title": "HR Coordinator", "job_description": "Coordinate HR processes and hiring", "min_gpa": "3.0", "grad_year": "2023", "college": "Business", "skills": "Communication, Recruitment, Leadership"},
-    {"id": "#003", "job_title": "CEO", "job_description": "Lead the organization strategically", "min_gpa": "3.7", "grad_year": "2025", "college": "Science", "skills": "Management, Strategy, Decision Making"},
-    {"id": "#004", "job_title": "CFO", "job_description": "Manage corporate financials", "min_gpa": "3.8", "grad_year": "2024", "college": "Engineering", "skills": "Accounting, Finance, Leadership"},
-]
+BASE_URL = "http://web-api:4000"
+
+# Function to retrieve job postings from the API
+def get_job_postings():
+    try:
+        response = requests.get(f"{BASE_URL}/c/company/")
+        response.raise_for_status()
+        return response.json()  # Return the job postings as JSON
+    except requests.exceptions.RequestException as e:
+        st.error(f"An error occurred while fetching job postings: {e}")
+        return []
+    
+job_postings = get_job_postings()
+
+# Function to update a job posting
+def update_job_posting(job_data):
+    try: 
+        response = requests.post(f"{BASE_URL}/postings/{job_data['id']}", json=job_data)
+        response.raise_for_status()
+        return response.json()  # Assuming the API returns the updated data as JSON
+    except requests.exceptions.RequestException as e:
+        st.error(f"An error occurred: {e}")
+        return None
 
 # UI Header Section
 st.markdown("## Manage Job Postings")
