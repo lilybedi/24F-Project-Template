@@ -9,10 +9,8 @@ st.set_page_config(layout = 'wide')
 SideBarLinks()
 # Sample Data - connect to backend - generated with ChatGPT
 
-cat_photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
-
 #TODO: FIX ERROR 404 ON FETCHING JOBS
-BASE_URL = "http://web-api:4000"
+BASE_URL = "http://api:4000"
 
 # Function to fetch job postings from the backend
 def fetch_jobs(min_pay=None):
