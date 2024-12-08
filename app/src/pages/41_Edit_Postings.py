@@ -1,6 +1,6 @@
 import streamlit as st
 from modules.nav import SideBarLinks
-
+import requests
 st.set_page_config(layout="wide")
 
 # Sidebar navigation
@@ -19,7 +19,7 @@ st.markdown("## Manage Job Postings")
 st.divider()
 
 # Display each job posting with fields defaulted to closed (unopened)
-for idx, job in enumerate(job_postings):
+for idx, job in enumerate(st.session_state.job_postings):
     # Each job's details are hidden by default until the user clicks to open
     with st.expander(job['job_title'], expanded=False):  # Default as closed
         # Editable fields for each job posting
@@ -67,3 +67,9 @@ for idx, job in enumerate(job_postings):
             job["college"] = new_college
             job["skills"] = new_skills
             st.success(f"Changes saved for: {job['job_title']}")
+
+        # Remove Job Posting Button
+        if st.button("Close posting", key=f"remove_{idx}"):
+            # Remove the job posting from the list
+            st.session_state.job_postings = [j for j in st.session_state.job_postings if j['id'] != job['id']]
+            st.success(f"Posting closed: {job['job_title']}")

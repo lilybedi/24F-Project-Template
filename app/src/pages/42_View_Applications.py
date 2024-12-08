@@ -1,5 +1,6 @@
 import streamlit as st
 from modules.nav import SideBarLinks
+from urllib.parse import quote
 
 st.set_page_config(layout="wide")
 
@@ -58,11 +59,7 @@ applications = [
 st.markdown("## View Job Applications")
 st.divider()
 
-# Initialize session state to track currently opened application
-if "view_app_id" not in st.session_state:
-    st.session_state.view_app_id = None  # No application view by default
-
-# Always render the application list above everything
+# Display the application list
 st.markdown("### Applications")
 for app in applications:
     app_col1, app_col2, app_col3, app_col4 = st.columns([1, 1, 1, 2])
@@ -73,27 +70,9 @@ for app in applications:
     with app_col3:
         st.write(app["job"])
     with app_col4:
-        # When a user clicks a button, set the state to show the application details
-        if st.button(
-            f"View {app['applicant_name']}'s Application →",
-            key=f"view_{app['id']}"
-        ):
-            st.session_state.view_app_id = app["id"]
-
-# Render application details only below the application list if a specific application is clicked
-if st.session_state.view_app_id:
-    selected_app = next(
-        (app for app in applications if app["id"] == st.session_state.view_app_id), None
-    )
-    if selected_app:
-        st.markdown("---")
-        st.markdown(f"### {selected_app['applicant_name']}'s Application")
-        st.write(f"**Major/College:** {selected_app['college']} / {selected_app['major']}")
-        st.write(f"**Graduation Year:** {selected_app['grad_year']}")
-        st.write(f"**GPA:** {selected_app['gpa']}")
-        st.write(f"**Cycle:** {selected_app['cycle']}")
-        st.write(f"[View Resume]({selected_app['resume_link']})")
-        
-        # Button to close detailed view
-        if st.button("Close Application View"):
-            st.session_state.view_app_id = None
+        # Create a button to navigate to the application details page
+        if st.button(f"View {app['applicant_name']}'s Application →", key=f"view_{app['id']}"):
+            # Store the selected application in session state
+            st.session_state["selected_application"] = app
+            # Navigate to the details page
+            st.switch_page("pages/application_details.py")
