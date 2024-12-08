@@ -1,139 +1,108 @@
 import streamlit as st
-import requests
+st.set_page_config(layout="wide")
 
 from modules.nav import SideBarLinks
 
-st.set_page_config(layout = 'wide')
-
-# Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
-# Sample Data - connect to backend - generated with ChatGPT
-
-cat_photo = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
 
 #TODO: FIX ERROR 404 ON FETCHING JOBS
-BASE_URL = "http://web-api:4000"
+BASE_URL = "http://api:4000"
 
-# Function to fetch job postings from the backend
-def fetch_jobs(min_pay=None):
-    params = {}
-    if min_pay is not None:
-        params["min_pay"] = min_pay
-    response = requests.get(f"{BASE_URL}/postings/by_pay", params=params)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        st.error(f"Error fetching jobs: {response.status_code}")
-        return []
+#
+# Information needed on load -- FIX
+#
+student_name = "John Kennedy"
+major = "English"
+grad_year = 2027 # skill / description?
+skills_experiences = {"Writing": "Advanced",
+               "Mathematics": "Basic"}
+gpa = 3.0
+photo_link = "./assets/profile_photo.png"
+status = 1
+resumes = {"Teaching Resume": "google.com",
+           "Lawyer Resume": "yahoo.com"}
+advisor_name = "Jeremy"
+advisor_contact = "gmail.com"
+alumni = {"Mary": "gmail2.com",
+          "Alice": "gmail3.com"}
 
-# Fetch initial job postings (default)
-job_postings = fetch_jobs()
-
-job_postings = [
-    {
-        "id": 1,
-        "title": "Software Engineer",
-        "company": "domp",
-        "description": "Develop and maintain software applications.",
-    },
-    {
-        "id": 2,
-        "title": "Software Engineer",
-        "company": "blep",
-        "description": "glorp",
-    },
-        {
-        "id": 3,
-        "title": "Software Engineer",
-        "company": "domp",
-        "description": "glep"
-    }
-]
-
-
-
-# Header Section: Navbar
-st.markdown(
-    """
-    <style>
-    .navbar {
-        background-color: #d3d3d3; /* Light gray background for the navbar */
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 18px;
-        font-weight: bold;
-    }
-    .navbar div {
-        display: inline-block;
-    }
-
-    .search-bar {
-        flex-grow: 1;
-        margin: 0 20px;
-        display: flex;
-        align-items: center;
-    }
-
-    .button-row {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-    .button-row button {
-        border: none;
-        margin: 10px 20px;
-        font-size: 16px;
-        border-radius: 5px;
-    }
-    </style>
-
-    <div class="navbar">
-        <div>Career Compass</div>
-        <div class="search-bar"><input type="text" placeholder="Search..." style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></div>
-    </div>
-    
-
-    """,
-    unsafe_allow_html=True,
-)
-
-filter_col, sort_col = st.columns([2, 1])
-
-# "Filter By"
-with filter_col:
-    st.markdown("**Filter**")
-    with st.expander("Filter by"):
-        selected_filter = st.selectbox("Choose a filter", ["Status", "Location"], key="filter_select")
-        
-        if selected_filter == "Status":
-            st.selectbox("Select Status", ["Pending", "Accepted", "Rejected"], key="status_filter")
-        
-        elif selected_filter == "Location":
-            st.selectbox("Select Location", ["City, State 1", "City, State 2"], key="location_filter")
-
-
+# Main Content
 st.divider()
-
-# Get first job
-if "selected_job" not in st.session_state:
-    st.session_state["selected_job"] = job_postings[0] 
-
-job_col, details_col = st.columns([2, 3])
-
-# Job Postings
-with job_col:
-    st.markdown("### Job Postings")
-    for job in job_postings:
-        if st.button(job["title"], key=job["id"]):  # Each job title is a button
-            st.session_state["selected_job"] = job  # Update session state with the selected job
-
-# Job Details
-with details_col:
-    selected_job = st.session_state["selected_job"]  # Get the selected job from session state
-    st.markdown("### Job Details")
-    st.markdown(f"**Job Title:** {selected_job['title']}")
-    st.write(f"**Company Name:** {selected_job['company']}")
-    st.write(f"**Job Description:** {selected_job['description']}")
-
+# Profile Section (Left)
+col1, col2 = st.columns([2, 3])
+with col1:
+    st.image(photo_link, width=150) 
+    if st.button("Edit Profile Details"):
+        st.switch_page("pages/Student_Edit.py")
+with col2:
+    st.write(student_name)
+    st.write(major + " / " + str(grad_year))
+    st.write("GPA: " + str(gpa))
+    # Default shows up first
+    if (status == 0):
+        st.selectbox("Status", ["Looking for co-op", "Not looking for co-op"]) 
+    else:
+        st.selectbox("Status", ["Not looking for co-op", "Looking for co-op"]) 
+# Resumes
+col3, col4 = st.columns([2, 3])
+with col4:
+    st.write("Links to Websites")
+    for name, link in resumes.items():
+        st.markdown(f"- [{name}]({link})")
+st.divider()
+exp_col, team_col = st.columns([3, 2]) 
+# Experiences and Skills
+with exp_col:
+    # st.markdown("### Add a Skill")
+    # new_skill = st.text_input("Skill Name", placeholder="Enter skill name")
+    # proficiency = st.selectbox("Proficiency Level", ["Basic", "Intermediate", "Advanced"])
+    # if st.button("Add Skill"):
+    #     if new_skill and proficiency:
+    #         skills_experiences[new_skill] = proficiency
+    #         st.success(f"Added skill: {new_skill} ({proficiency})")
+    #     else:
+    #         st.error("Please provide both a skill name and proficiency level.")
+    
+    # st.markdown("#### Experiences and Skills")
+    # for compets in list(skills_experiences.keys()):
+    #     skill_container = st.container()
+    #     st.markdown("**" + compets + "**")
+    #     st.write("• Level: " + skills_experiences.get(compets))
+    with exp_col:
+        st.markdown("#### Experiences and Skills")
+    
+    # Initialize session state for skills_experiences if it doesn't exist
+    if 'skills_experiences' not in st.session_state:
+        st.session_state.skills_experiences = skills_experiences
+    
+    # Display current skills
+    for skill, proficiency in st.session_state.skills_experiences.items():
+        st.markdown(f"**{skill}** - {proficiency}")
+    
+    # Add skill functionality
+    st.markdown("### Add a Skill")
+    new_skill = st.text_input("Skill Name", placeholder="Enter skill name")
+    proficiency = st.selectbox("Proficiency Level", ["Basic", "Intermediate", "Advanced"])
+    
+    if st.button("Add Skill"):
+        if new_skill:
+            # Add the new skill with proficiency to session state
+            st.session_state.skills_experiences[new_skill] = proficiency
+            st.success(f"Added skill: {new_skill} ({proficiency})")
+        else:
+            st.error("Please provide a skill name.")
+# Your Team
+with team_col:
+    st.markdown("#### Your Team")
+    st.markdown("##### Advisor")
+    st.write(advisor_name)
+    st.write(advisor_contact)
+    if st.button("Message " + advisor_name):
+        st.switch_page("pages/Student_Advisor_Message.py")
+    st.divider()
+    st.markdown("#### Alumni")
+    for alumnus in list(alumni.keys()):
+        st.markdown("#### " + alumnus)
+        st.write(alumni.get(alumnus))
+        if st.button("Message " + alumnus):
+            st.switch_page("pages/Student_Alumn_Message.py")

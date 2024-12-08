@@ -6,36 +6,20 @@ st.set_page_config(layout="wide")
 # Sidebar navigation
 SideBarLinks()
 
-BASE_URL = "http://web-api:4000"
-
-# Function to retrieve job postings from the API
-def get_job_postings():
-    try:
-        response = requests.get(f"{BASE_URL}/c/company/")
-        response.raise_for_status()
-        return response.json()  # Return the job postings as JSON
-    except requests.exceptions.RequestException as e:
-        st.error(f"An error occurred while fetching job postings: {e}")
-        return []
-    
-job_postings = get_job_postings()
-
-# Function to update a job posting
-def update_job_posting(job_data):
-    try: 
-        response = requests.post(f"{BASE_URL}/postings/{job_data['id']}", json=job_data)
-        response.raise_for_status()
-        return response.json()  # Assuming the API returns the updated data as JSON
-    except requests.exceptions.RequestException as e:
-        st.error(f"An error occurred: {e}")
-        return None
+# Sample job postings data
+job_postings = [
+    {"id": "#001", "job_title": "Data Analyst", "job_description": "Analyze data trends and insights", "min_gpa": "3.5", "grad_year": "2024", "college": "Engineering", "skills": "Python, SQL, Data Analysis"},
+    {"id": "#002", "job_title": "HR Coordinator", "job_description": "Coordinate HR processes and hiring", "min_gpa": "3.0", "grad_year": "2023", "college": "Business", "skills": "Communication, Recruitment, Leadership"},
+    {"id": "#003", "job_title": "CEO", "job_description": "Lead the organization strategically", "min_gpa": "3.7", "grad_year": "2025", "college": "Science", "skills": "Management, Strategy, Decision Making"},
+    {"id": "#004", "job_title": "CFO", "job_description": "Manage corporate financials", "min_gpa": "3.8", "grad_year": "2024", "college": "Engineering", "skills": "Accounting, Finance, Leadership"},
+]
 
 # UI Header Section
 st.markdown("## Manage Job Postings")
 st.divider()
 
 # Display each job posting with fields defaulted to closed (unopened)
-for idx, job in enumerate(job_postings):
+for idx, job in enumerate(st.session_state.job_postings):
     # Each job's details are hidden by default until the user clicks to open
     with st.expander(job['job_title'], expanded=False):  # Default as closed
         # Editable fields for each job posting
@@ -83,3 +67,10 @@ for idx, job in enumerate(job_postings):
             job["college"] = new_college
             job["skills"] = new_skills
             st.success(f"Changes saved for: {job['job_title']}")
+
+        # Remove Job Posting Button
+        if st.button("Close posting", key=f"remove_{idx}"):
+            # Remove the job posting from the list
+            st.session_state.job_postings = [j for j in st.session_state.job_postings if j['id'] != job['id']]
+            st.success(f"Posting closed: {job['job_title']}")
+

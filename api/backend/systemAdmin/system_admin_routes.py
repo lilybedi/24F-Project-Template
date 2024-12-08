@@ -220,3 +220,81 @@ def restrict_account(account_type, account_id):
     except Exception as e:
         db.get_db().rollback()
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+
+
+@system_admin.route('/<int:admin_id>', methods=['GET'])
+def get_system_admin(admin_id):
+    try:
+        cursor = db.get_db().cursor()
+        
+        query = '''
+            SELECT 
+                ID,
+                First_Name,
+                Last_Name,
+                Preferred_Name
+            FROM System_Admin
+            WHERE ID = %s
+        '''
+        cursor.execute(query, (admin_id,))
+        result = cursor.fetchone()
+        
+        if not result:
+            return jsonify({"error": "System admin not found"}), 404
+            
+        return jsonify(result), 200
+        
+    except Exception as e:
+        current_app.logger.error(f"Error fetching system admin: {str(e)}")
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
+@system_admin.route('/users', methods=['GET'])
+def get_all_users():
+    try:
+        cursor = db.get_db().cursor()
+        
+        # Fetch students
+        students_query = '''
+            SELECT 
+                ID,
+                First_Name,
+                Last_Name,
+                Preferred_Name,
+                'student' as Type
+            FROM Student
+        '''
+        cursor.execute(students_query)
+        students = cursor.fetchall()
+        
+        # Fetch alumni
+        alumni_query = '''
+            SELECT 
+                ID,
+                First_Name,
+                Last_Name,
+                'alumni' as Type
+            FROM Alumni
+        '''
+        cursor.execute(alumni_query)
+        alumni = cursor.fetchall()
+        
+        # Fetch advisors
+        advisors_query = '''
+            SELECT 
+                ID,
+                First_Name,
+                Last_Name,
+                Preferred_Name,
+                'advisor' as Type
+            FROM Advisor
+        '''
+        cursor.execute(advisors_query)
+        advisors = cursor.fetchall()
+        
+        # Combine all users
+        all_users = students + alumni + advisors
+        
+        return make_response(jsonify(all_users), 200)
+    except Exception as e:
+        current_app.logger.error(f"Error fetching users: {str(e)}")
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
