@@ -21,13 +21,19 @@ def fetch_data(endpoint):
     except requests.exceptions.RequestException as e:
         st.error(f"Error fetching data: {e}")
         return []
+    
+def fetch_advisor_details(advisor_id):
+    try:
+        response = requests.get(f"{API_BASE_URL}/{advisor_id}")
+        response.raise_for_status()  # Raise an error for bad responses
+        return response.json()  # Return advisor details as a dictionary
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error fetching advisor details: {e}")
+        return {}
 
-# Fetch data for Advisor ID 25
+# Fetch advisor details (replace `25` with the actual ID if dynamic)
 advisor_id = 25
-
-# Main Title
-advisor_first_name = st.session_state.get("first_name", "Guest")
-st.title(f"Welcome Advisor, {advisor_first_name}.")
+advisor_details = fetch_advisor_details(advisor_id)
 
 # Profile Section
 st.markdown("---")
@@ -38,11 +44,10 @@ with col1:
 
 with col2:
     st.markdown("<h3 style='text-align: left;'>Advisor Profile</h3>", unsafe_allow_html=True)
-    st.markdown("""
+    st.markdown(f"""
         <p style='font-size: 14px;'>
-        <strong>Name:</strong> Susan Advisor<br>
-        <strong>Email:</strong> susan.advisor@example.com<br>
-        <strong>Phone:</strong> +1 555-123-4567
+        <strong>Name:</strong> {advisor_details.get("Preferred_Name", advisor_details.get("First_Name", "Not Available"))} {advisor_details.get("Last_Name", "Not Available")}<br>
+        <strong>College:</strong> {advisor_details.get("College_Name", "Not Assigned")}
         </p>
     """, unsafe_allow_html=True)
 
