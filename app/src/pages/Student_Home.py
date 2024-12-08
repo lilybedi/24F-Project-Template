@@ -28,22 +28,6 @@ try:
 except requests.exceptions.RequestException as e:
     st.error(f"Failed to fetch locations: {e}")
 
-# Header Section: Navbar
-st.markdown(
-    """
-    <style>
-    .navbar {
-        background-color: #d3d3d3;
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 18px;
-        font-weight: bold;
-    }
-    .navbar div {
-        display: inline-block;
-    }
 
     .search-bar {
         flex-grow: 1;
