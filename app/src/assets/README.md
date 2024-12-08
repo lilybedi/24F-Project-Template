@@ -1,5 +1,3 @@
 # `assets` Directory
 
-A place for some static assets for your app.  Images, etc.
-
-TODO: Refactor assets folder into static folder per https://docs.streamlit.io/develop/concepts/configuration/serving-static-files
+This folder contains all of our photos used across the project inlcuding our logo and an empty profile picture. 
