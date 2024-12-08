@@ -1,5 +1,5 @@
 # Career Compass 
-Tarini Shanka
+Tarini Shankar, Lillian Bedichek, Kalina Monova, Neel Avancha and Anya Khemlani
 
 ## Final Presentation Video Link 
 
