@@ -12,11 +12,12 @@ DB_PORT=3306
 DB_NAME=Career_Compass
 MYSQL_ROOT_PASSWORD=MYSQLpassword
 
-## Runinng the Docker Containers
-- docker compose up -d to start all the containers in the background
-- docker compose down to shutdown and delete the containers
-- docker compose up db -d only start the database container 
-- docker compose stop to turn off the containers but not delete them.
+## Controlling the Containers
+
+- `docker compose up -d` to start all the containers in the background
+- `docker compose down` to shutdown and delete the containers
+- `docker compose up db -d` only start the database container (replace db with the other services as needed)
+- `docker compose stop` to "turn off" the containers but not delete them. 
 
 ## Project Overview 
 
@@ -32,30 +33,6 @@ Currently, there are three major components which will each run in their own Doc
 - Flask REST api in the `./api` directory
 - SQL files for your data model and data base in the `./database-files` directory
 
-
-### Setting Up Your Personal Repo
-
-1. In GitHub, click the **fork** button in the upper right corner of the repo screen. 
-1. When prompted, give the new repo a unique name, perhaps including your last name and the word 'personal'. 
-1. Once the fork has been created, clone YOUR forked version of the repo to your computer. 
-1. Set up the `.env` file in the `api` folder based on the `.env.template` file.
-1. Start the docker containers. 
-
-### Setting Up Your Team Repo 
-
-Before you start: As a team, one person needs to assume the role of *Team Project Repo Owner*. 
-
-1. The Team Project Repo Owner needs to fork this template repo into their own GitHub account **and give the repo a name consistent with your project's name**.  If you're worried that the repo is public, don't.  Every team is doing a different project. 
-1. In the newly forked team repo, the Team Project Repo Owner should go to the **Settings** tab, choose **Collaborators and Teams** on the left-side panel. Add each of your team members to the repository with Write access. 
-1. Each of the other team members will receive an invitation to join.  Obviously accept the invite. 
-1. Once that process is complete, each team member, including the repo owner, should clone the Team's Repo to their local machines (in a different location than your Personal Project Repo).  
-
-## Controlling the Containers
-
-- `docker compose up -d` to start all the containers in the background
-- `docker compose down` to shutdown and delete the containers
-- `docker compose up db -d` only start the database container (replace db with the other services as needed)
-- `docker compose stop` to "turn off" the containers but not delete them. 
 
 ## Users 
 
