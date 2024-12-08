@@ -83,19 +83,23 @@ elif sort_by == "Applications Descending":
 if filtered_df.empty:
     st.warning("No data matches the current filters.")
 else:
-    for _, row in filtered_df.iterrows():
-        col1, col2, col3 = st.columns([3, 2, 1])
+    # Add column headers
+    st.markdown("#### Students Overview")
+    st.write("Below is the list of students matching your filters:")
 
-        with col1:
-            if st.button(f"{row['First_Name']} {row['Last_Name']}", key=row['ID']):
-                st.session_state["selected_student"] = row.to_dict()
-                st.session_state["profile_open"] = True
-
-        with col2:
-            st.write(row["Hired"])
-
-        with col3:
-            st.write(row["Total_Applications"])
+    # Format the DataFrame to include clean headers
+    formatted_df = filtered_df[["First_Name", "Last_Name", "Hired", "Total_Applications", "GPA", "Latest_Application"]]
+    formatted_df.rename(columns={
+        "First_Name": "First Name",
+        "Last_Name": "Last Name",
+        "Hired": "Status",
+        "Total_Applications": "Total Applications",
+        "GPA": "GPA",
+        "Latest_Application": "Latest Application"
+    }, inplace=True)
+    
+    # Display the table
+    st.dataframe(formatted_df, use_container_width=True)
 
 # --- Display the Student Profile Panel ---
 if "profile_open" in st.session_state and st.session_state["profile_open"]:
