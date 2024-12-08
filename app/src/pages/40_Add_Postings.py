@@ -7,15 +7,29 @@ st.set_page_config(layout='wide')
 # Show appropriate sidebar links for the role of the currently logged-in user
 SideBarLinks()
 
-BASE_URL = "http://web-api:4000"
+BASE_URL = "http://web-api:4000/cp"
 
-# Function to create a job posting
 def create_job_posting(job_data):
-    response = requests.post(f"{BASE_URL}/postings/create", json=job_data)
+    response = requests.post(f"{BASE_URL}/posting", json=job_data)
     if response.status_code == 201:
         st.success("Job posting created successfully!")
     else:
-        st.error(f"Failed to create job posting: {response.status_code} - {response.json().get('error', 'Unknown error')}")
+        try:
+            st.write(f"Response JSON: {response.json()}")
+            error_message = response.json().get('error', 'Unknown error')
+        except ValueError:
+            st.write(f"Response Text: {response.text}")
+            error_message = response.text
+        st.error(f"Failed to create job posting: {response.status_code} - {error_message}")
+
+# # Function to create a job posting
+# def create_job_posting(job_data):
+#     response = requests.post(f"{BASE_URL}/posting", json=job_data)
+#     if response.status_code == 201:
+#         st.success("Job posting created successfully!")
+#     else:
+#         error_message = response.json().get('error', 'Unknown error')
+#         st.error(f"Failed to create job posting: {response.status_code} - {error_message}")
 
 # Initialize session state for job data
 if "position_title" not in st.session_state:
@@ -31,7 +45,7 @@ if "pay" not in st.session_state:
     st.session_state["pay"] = 0
 
 if "location" not in st.session_state:
-    st.session_state["location"] = "City, State"
+    st.session_state["location"] = "City"
 
 if "minimum_gpa" not in st.session_state:
     st.session_state["minimum_gpa"] = 3.0  # Default minimum GPA value
@@ -46,7 +60,7 @@ st.markdown("### Job Details")
 # Title and Pay
 st.text_input("Position Title", key="position_title")
 st.number_input("Pay (in USD)", min_value=0, step=1, key="pay")
-st.text_input("Location (City, State)", key="location")
+st.text_input("City", key="location")
 
 # Minimum GPA Requirement
 st.number_input(
@@ -56,7 +70,7 @@ st.number_input(
 # Required Skills
 st.markdown("**Required Skills:**")
 
-# Display each skill with a remove button
+# Skill with remove button
 skills_to_remove = []
 for i, skill in enumerate(st.session_state["required_skills"]):
     cols = st.columns([4, 1])  # Create two columns: one for skill, one for the button
@@ -85,11 +99,11 @@ st.text_area("Job Description", value=st.session_state["description"], key="desc
 if st.button("Submit Job Posting"):
     job_data = {
         "title": st.session_state["position_title"],
-        "pay": st.session_state["pay"],
+        "pay": int(st.session_state["pay"]),
         "location": st.session_state["location"],
         "required_skills": st.session_state["required_skills"],
         "description": st.session_state["description"],
-        "minimum_gpa": st.session_state["minimum_gpa"],  # Added Minimum GPA Requirement
+        "minimum_gpa": float(st.session_state["minimum_gpa"]),  # Added Minimum GPA Requirement
     }
     create_job_posting(job_data)
 

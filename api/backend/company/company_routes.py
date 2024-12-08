@@ -72,71 +72,66 @@ def update_company_profile(company_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-
 @companies.route('/posting', methods=['POST'])
 def create_posting():
-    """Create a new job posting with skills (User Story 1, 4, 9)"""
+    """Create a new job posting with skills"""
     try:
         data = request.get_json()
         cursor = db.get_db().cursor()
-        
-        # Create the posting location entity first.
+
+        # Create the posting location entity
         location_query = '''
-            INSERT INTO Posting_Location (Region, State, Zip_Code, Address_Number, 
-                                        Street, City, Country)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO Posting_Location (City, Country)
+            VALUES (%s, %s)
         '''
         cursor.execute(location_query, (
-            data['location']['region'],
-            data['location']['state'],
-            data['location']['zip_code'],
-            data['location']['address_number'],
-            data['location']['street'],
-            data['location']['city'],
-            data['location']['country']
+            data['location'],  # Assuming 'location' is the city name
+            "USA"  # Assuming a default country for simplicity
         ))
         location_id = cursor.lastrowid
-        
-        # Create the posting itself now.
+
+        # Create the posting
         posting_query = '''
             INSERT INTO Posting (Name, Company_ID, Industry, Location, Date_Start,
                                Date_End, Filled, Minimum_GPA, Title, Description, Pay)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         '''
         cursor.execute(posting_query, (
-            data['name'],
-            data['company_id'],
-            data['industry'],
+            data.get('name', 'Unknown'),         # Default name if not provided
+            data['company_id'],                  # Ensure 'company_id' is provided
+            data.get('industry', 'General'),     # Default industry if not provided
             location_id,
-            data['date_start'],
-            data['date_end'],
-            False, # Setting False because position can't be filled if its not even posted yet.
+            data.get('date_start', '2024-01-01'), # Default start date
+            data.get('date_end', '2024-12-31'),   # Default end date
+            False,                                # Not filled initially
             data['minimum_gpa'],
             data['title'],
             data['description'],
             data['pay']
         ))
         posting_id = cursor.lastrowid
-        
+
         # Add skills if provided
-        if 'skills' in data:
+        if 'required_skills' in data and isinstance(data['required_skills'], list):
             skills_query = '''
                 INSERT INTO Posting_Skills (Position_ID, Skill_ID)
                 VALUES (%s, %s)
             '''
-            for skill_id in data['skills']:
-                cursor.execute(skills_query, (posting_id, skill_id))
-        
+            for skill in data['required_skills']:
+                # Assuming skill is a Skill_ID directly
+                cursor.execute(skills_query, (posting_id, skill))
+
         db.get_db().commit()
         return jsonify({
             "message": "Posting created successfully",
             "posting_id": posting_id
         }), 201
+    except KeyError as e:
+        return jsonify({"error": f"Missing required field: {e}"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
-
-
+    
+    
 @companies.route('/posting/<int:posting_id>', methods=['PUT'])
 def update_posting(posting_id):
     """Update job posting details and skills (User Story 9)"""

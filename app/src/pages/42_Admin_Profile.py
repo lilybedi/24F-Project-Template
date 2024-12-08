@@ -33,12 +33,5 @@ with col1:
     st.write(f"**Role**: {admin_profile['role']}")
     st.write(f"**Last Login**: {admin_profile['last_login']}")
 
-# Button for System Settings
-with col2:
-    if st.button("System Settings"):
-        # This button could lead to a different page or trigger a system settings function
-        st.info("System settings would be implemented here!")
-        # You can redirect to another page or open a modal in the app with further options
-
 # --- Footer Section ---
 st.markdown("---")
