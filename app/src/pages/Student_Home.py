@@ -1,6 +1,5 @@
 import streamlit as st
 import requests
-
 from modules.nav import SideBarLinks
 
 st.set_page_config(layout='wide')
@@ -9,108 +8,79 @@ st.set_page_config(layout='wide')
 SideBarLinks()
 
 BASE_URL = "http://web-api:4000/st"
+BASE_URL = "http://web-api:4000/st/postings"
 
-# Initialize session state for locations, pay threshold, and selected parameters
-if "locations" not in st.session_state:
-    st.session_state["locations"] = []  # Initialize with an empty list
+# Function to fetch job data by location
+def fetch_jobs_by_location(location):
+    response = requests.get(f"{BASE_URL}/by_location?location={location}")
+    return response.json() if response.status_code == 200 else []
 
-if "pay_threshold" not in st.session_state:
-    st.session_state["pay_threshold"] = 15  # Default minimum pay
+# Function to fetch job data by minimum pay
+def fetch_jobs_by_pay(min_pay):
+    response = requests.get(f"{BASE_URL}/by_pay?min_pay={min_pay}")
+    return response.json() if response.status_code == 200 else []
 
-if "selected_location" not in st.session_state:
-    st.session_state["selected_location"] = "All Locations"  # Default location
+# Function to fetch a specific job by ID
+def fetch_job_by_id(job_id):
+    response = requests.get(f"{BASE_URL}/{job_id}")
+    return response.json() if response.status_code == 200 else {}
 
-# Fetch existing locations from API
-try:
-    response = requests.get(f"{BASE_URL}/postings/by_location")
-    response.raise_for_status()
-    st.session_state["locations"] = list(set(st.session_state["locations"] + response.json()))
-except requests.exceptions.RequestException as e:
-    st.error(f"Failed to fetch locations: {e}")
+# # Initialize session state
+# if "locations" not in st.session_state:
+#     st.session_state["locations"] = []  # Initialize with an empty list
 
+# Streamlit UI
+st.title("Career Compass")
 
-    .search-bar {
-        flex-grow: 1;
-        margin: 0 20px;
-        display: flex;
-        align-items: center;
-    }
-    </style>
+# Job search by ID
+st.header("Search for a Specific Job")
+job_id = st.text_input("Enter Job ID:")
+if job_id:
+    job_details = fetch_job_by_id(job_id)
+    if job_details:
+        st.subheader(f"Job Details for ID {job_id}")
+        st.write(job_details)
+    else:
+        st.error("No job found with this ID.")
 
-    <div class="navbar">
-        <div>Career Compass</div>
-        <div class="search-bar"><input type="text" placeholder="Search..." style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.header("Filter Jobs")
 
-st.divider()
+# Filter by city
+city_filter = st.text_input("Filter by City (press Enter):")
+if city_filter:
+    jobs = fetch_jobs_by_location(city_filter)
+    if jobs:
+        st.subheader(f"Jobs in {city_filter}")
+        for job in jobs:
+            if st.button(f"{job['Title']} | {job['Company_Name']}"):
+                st.write(job)
+    else:
+        st.error("No jobs found in this location.")
 
-# Filters Section
-with st.container():
-    st.header("Filters")
+# Filter by minimum pay
+pay_filter = st.text_input("Filter by Minimum Pay:")
+if pay_filter:
+    try:
+        pay_filter = float(pay_filter)
+        jobs = fetch_jobs_by_pay(pay_filter)
+        if jobs:
+            st.subheader(f"Jobs with Minimum Pay of ${pay_filter}")
+            for job in jobs:
+                if st.button(f"{job['Title']} | {job['Company_Name']}"):
+                    st.write(job)
+        else:
+            st.error("No jobs found with this pay range.")
+    except ValueError:
+        st.error("Please enter a valid pay amount.")
 
-    # Dropdown for filtering locations
-    selected_location = st.selectbox(
-        "Select a Location",
-        ["All Locations"] + st.session_state["locations"],  # Sorted locations
-        index=0 if st.session_state["selected_location"] == "All Locations"
-        else st.session_state["locations"].index(st.session_state["selected_location"]) + 1,
-        key="location_filter",
-    )
-
-    # Update session state if location changes
-    if selected_location != st.session_state["selected_location"]:
-        st.session_state["selected_location"] = selected_location
-        st.rerun()
-
-    # Input field for adding a new location
-    new_location = st.text_input("Add a New Location", key="new_location_input")
-    if new_location:
-        if new_location not in st.session_state["locations"]:
-            st.session_state["locations"].append(new_location)
-            st.session_state["locations"].sort()  # Keep locations sorted
-            st.success(f"Added new location: {new_location}")
-            st.rerun()
-
-
-# Fetch existing locations (cities) from API
-try:
-    response = requests.get(f"{BASE_URL}/postings/by_location")
-    response.raise_for_status()
-    # Extract and deduplicate cities from the API response
-    locs = []
-    for job in response.json():
-        if (job["City"] == st.session_state["locations"]):
-            locs.append(job)
-    st.session_state["locations"] = locs
-
-except requests.exceptions.RequestException as e:
-    st.error(f"Failed to fetch locations: {e}")
-
-
-# Fetch job postings based on filters
-try:
-    query_params = f"?min_pay={st.session_state['pay_threshold']}"
-    if st.session_state["selected_location"] != "All Locations":
-        query_params += f"&location={st.session_state['selected_location']}"
-    response = requests.get(f"{BASE_URL}/postings/by_pay{query_params}")
-    response.raise_for_status()
-    job_postings = response.json()
-except requests.exceptions.RequestException as e:
-    st.error(f"Failed to fetch filtered jobs: {e}")
-    job_postings = []
-
-# Display Job Postings
 job_col, details_col = st.columns([2, 3])
 
 with job_col:
     st.markdown("### Job Postings")
-    for job in job_postings:
+    for job in jobs:
         if st.button(job["Title"] + " | " + job["Company_Name"], key=job["ID"]):
             st.session_state["selected_job"] = job  # Update session state with the selected job
-            st.rerun()  # Refresh to show job details immediately
+            st.rerun()
 
 # Job Details Column
 with details_col:
