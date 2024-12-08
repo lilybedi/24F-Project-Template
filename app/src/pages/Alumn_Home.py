@@ -1,89 +1,104 @@
-# import logging
-# logger = logging.getLogger(__name__)
-# import streamlit as st
-# from streamlit_extras.app_logo import add_logo
-# import numpy as np
-# import random
-# import time
-# from modules.nav import SideBarLinks
-
-import logging
-
-import requests
-logger = logging.getLogger(__name__)
-
 import streamlit as st
-from modules.nav import SideBarLinks
-
-st.set_page_config(layout = 'wide')
-
-SideBarLinks()
 import requests
-import streamlit as st
 
-# # Example Streamlit page
-# st.title("Filter Postings by Location")
+# Base API URL for alumni routes
+BASE_URL = "http://api:4000/a"
 
-# # Input field for location
-# location = st.text_input("Enter location (city, state, or country):")
+st.set_page_config(layout="wide")
+st.title(f"Welcome Alumni, {st.session_state.get('first_name', 'Guest')}!")
 
-# # Button to trigger API call
-# if st.button("Search"):
-#     if location:
-#         try:
-#             # Make the API call
-#             response = requests.get(
-#                 "http://api:4000/s/postings/by_location",
-#                 params={"location": location},
-#             )
-            
-#             # Raise error for bad status codes
-#             response.raise_for_status()
-            
-#             # Parse and display the data
-#             data = response.json()
-#             st.write(f"Results for location: {location}")
-#             st.dataframe(data)
-#         except requests.RequestException as e:
-#             st.error(f"Error fetching data: {e}")
-#     else:
-#         st.error("Please enter a location before searching.")
+# Sidebar navigation
+if st.sidebar.button("Chat with Lily McStudent"):
+    st.switch_page("Chat_Lily.py")
+if st.sidebar.button("Chat with Other Student"):
+    st.switch_page("Other_Student.py")
 
+# Display alumni profile
+st.markdown("### Profile Details")
+alumni_id = st.session_state.get("alumni_id", 1)  # Replace '1' with dynamic ID for real implementation
 
-# st.title(f"Welcome Alumni , {st.session_state['first_name']}.")
-# st.write('')
-# st.write('')
-# st.write('### What would you like to do today?')
-
-# data = {} 
-# try:
-#   data = requests.get('http://api:4000/s/get_all').json()
-# except:
-#   st.write("**Important**: Could not connect to sample api, so using dummy data.")
-#   data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
-
-# st.dataframe(data)
-
-st.title(f"Welcome Alumni , {st.session_state['first_name']}.")
-
-# Placeholder for student ID (replace with dynamic value in real implementation)
-student_id = st.session_state.get("student_id", 1)  # Replace '1' with actual student ID
-
-st.write('')
-st.write('')
-st.write('### Your Applications')
-
-# Fetch applications from the API
 try:
-    # Make API call to fetch applications for the student
-    response = requests.get(f"http://api:4000/s/applications/{student_id}")
-    response.raise_for_status()  # Raise an exception for HTTP errors
-    applications = response.json()
+    # Fetch alumni profile details
+    response = requests.get(f"{BASE_URL}/{alumni_id}")
+    response.raise_for_status()
+    profile = response.json()
 
-    # Display the applications in a table
-    if applications:
-        st.dataframe(applications)
-    else:
-        st.write("No applications found.")
+    # Display profile details
+    st.markdown(f"""
+    - **Name**: {profile['First_Name']} {profile['Last_Name']}
+    - **Email**: {profile['Email']}
+    - **Graduated**: {profile['Grad_Year']}
+    - **College**: {profile['College']}
+    - **Majors**: {profile['Majors']}
+    - **Minors**: {profile['Minors']}
+    """)
+
 except requests.RequestException as e:
-    st.error(f"Error fetching applications: {e}")
+    st.error(f"Failed to fetch profile: {e}")
+
+# Buttons for profile actions
+if st.button("Edit Profile Details"):
+    st.switch_page("pages/Alumn_Edit.py")
+
+if st.button("Add Co-op Experience"):
+    st.switch_page("pages/Add_Alumn_Experience.py")
+
+# Alumni Previous Positions
+st.markdown("### Previous Positions")
+try:
+    response = requests.get(f"{BASE_URL}/{alumni_id}/previous_positions")
+    response.raise_for_status()
+    positions = response.json()
+
+    if positions["count"] > 0:
+        st.write("#### Previous Positions:")
+        for position in positions["positions"]:
+            st.write(f"""
+            - **Title**: {position['Title']}
+            - **Company**: {position['Company_Name']} ({position['Industry']})
+            - **Duration**: {position['Date_Start']} to {position['Date_End']}
+            - **Pay**: ${position['Pay']}
+            - **Location**: {position['City']}, {position['State']}, {position['Country']}
+            - **Skills**: {", ".join(position['Required_Skills']) if position['Required_Skills'] else "None"}
+            """)
+    else:
+        st.info("No previous positions found.")
+except requests.RequestException as e:
+    st.error(f"Failed to fetch previous positions: {e}")
+
+# Alumni Messages
+st.markdown("### Messages")
+try:
+    response = requests.get(f"{BASE_URL}/messages/{alumni_id}")
+    response.raise_for_status()
+    messages = response.json()
+
+    if messages:
+        st.write("#### Messages:")
+        for message in messages:
+            st.write(f"""
+            - **From**: {message['Student_First_Name']} {message['Student_Last_Name']}
+            - **Message**: {message['Message']}
+            """)
+    else:
+        st.info("No messages found.")
+except requests.RequestException as e:
+    st.error(f"Failed to fetch messages: {e}")
+
+# Send Message
+st.markdown("### Send Message")
+student_id = st.number_input("Enter Student ID:", min_value=1, step=1, value=1)
+message = st.text_area("Message:")
+
+if st.button("Send Message"):
+    payload = {
+        "Student_ID": student_id,
+        "Alumni_ID": alumni_id,
+        "Message": message,
+    }
+    try:
+        response = requests.post(f"{BASE_URL}/messages/send", json=payload)
+        response.raise_for_status()
+        st.success("Message sent successfully!")
+    except requests.RequestException as e:
+        st.error(f"Failed to send message: {e}")

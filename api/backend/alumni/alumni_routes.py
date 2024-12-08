@@ -9,7 +9,7 @@ import logging
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-students = Blueprint('alumni', __name__) 
+alumni = Blueprint('alumni', __name__) 
 
 
 @alumni.route('/<int:alumni_id>', methods=['GET'])
@@ -100,20 +100,73 @@ def update_alumni_profile(alumni_id):
     db.get_db().commit()
     return jsonify({"message": "Profile updated successfully"}), 200
 
-@alumni.route('/<int:alumni_id>/positions', methods=['GET'])
-def get_alumni_positions(alumni_id):
+@alumni.route('/<int:alumni_id>/previous_positions', methods=['GET'])
+def get_alumni_previous_positions(alumni_id):
+    """
+    Get all previous positions held by an alumni with detailed information
+    about the company, location, and required skills.
+    """
     query = '''
-        SELECT p.*, c.Name as Company_Name, pl.City, pl.State, pl.Country
+        SELECT 
+            p.ID as Position_ID,
+            p.Title,
+            p.Description as Position_Description,
+            p.Pay,
+            p.Date_Start,
+            p.Date_End,
+            c.Name as Company_Name,
+            c.Industry,
+            c.Description as Company_Description,
+            pl.City,
+            pl.State,
+            pl.Country,
+            GROUP_CONCAT(DISTINCT s.Name) as Required_Skills
         FROM Alumni_Position ap
         JOIN Posting p ON ap.Position_ID = p.ID
         JOIN Company c ON p.Company_ID = c.ID
         JOIN Posting_Location pl ON p.Location = pl.ID
+        LEFT JOIN Posting_Skills ps ON p.ID = ps.Position_ID
+        LEFT JOIN Skill s ON ps.Skill_ID = s.ID
         WHERE ap.Alumni_ID = %s
+        GROUP BY p.ID
         ORDER BY p.Date_Start DESC
     '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query, (alumni_id,))
-    return jsonify(cursor.fetchall()), 200
+    
+    try:
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (alumni_id,))
+        positions = cursor.fetchall()
+        
+        if not positions:
+            return jsonify({
+                "message": "No previous positions found for this alumni",
+                "positions": []
+            }), 200
+            
+        # Format dates for JSON response
+        for position in positions:
+            if position['Date_Start']:
+                position['Date_Start'] = position['Date_Start'].strftime('%Y-%m-%d')
+            if position['Date_End']:
+                position['Date_End'] = position['Date_End'].strftime('%Y-%m-%d')
+            
+            # Convert skills string to list if not None
+            if position['Required_Skills']:
+                position['Required_Skills'] = position['Required_Skills'].split(',')
+            else:
+                position['Required_Skills'] = []
+        
+        return jsonify({
+            "positions": positions,
+            "count": len(positions)
+        }), 200
+        
+    except Exception as e:
+        current_app.logger.error(f"Error fetching alumni positions: {str(e)}")
+        return jsonify({
+            "error": "An error occurred while fetching positions",
+            "details": str(e)
+        }), 500
 
 @alumni.route('/messages/send', methods=['POST'])
 def send_message():
@@ -230,3 +283,157 @@ def create_alumni_profile():
     
     db.get_db().commit()
     return jsonify({"message": "Alumni profile created", "id": alumni_id}), 201
+
+
+@alumni.route('/<int:alumni_id>/students', methods=['GET'])
+def get_alumni_students(alumni_id):
+    """
+    Get all students related to an alumni (via Alumni_Student table)
+    """
+    try:
+        query = '''
+            SELECT 
+                s.ID as Student_ID,
+                s.First_Name,
+                s.Last_Name,
+                s.GPA,
+                c.Name as College_Name,
+                GROUP_CONCAT(DISTINCT f.Name) as Majors
+            FROM Alumni_Student al
+            JOIN Student s ON al.Student_ID = s.ID
+            JOIN College c ON s.College_ID = c.ID
+            LEFT JOIN Student_Majors sm ON s.ID = sm.Student_ID
+            LEFT JOIN FieldOfStudy f ON sm.FieldOfStudy_ID = f.ID
+            WHERE al.Alumni_ID = %s
+            GROUP BY s.ID
+        '''
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (alumni_id,))
+        results = cursor.fetchall()
+        
+        if not results:
+            return jsonify({"message": "No related students found for this alumni"}), 404
+        
+        return jsonify(results), 200
+    except Exception as e:
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+    
+@alumni.route('/<int:alumni_id>/positions', methods=['POST'])
+def add_alumni_position(alumni_id):
+    """
+    Add a new position to an alumni's profile. The position can either be:
+    1. An existing posting (using posting_id)
+    2. A new position entry (requiring full position details)
+    """
+    try:
+        data = request.get_json()
+        cursor = db.get_db().cursor()
+        
+        # First verify the alumni exists
+        cursor.execute('SELECT ID FROM Alumni WHERE ID = %s', (alumni_id,))
+        if not cursor.fetchone():
+            return jsonify({"error": "Alumni not found"}), 404
+            
+        position_id = None
+        
+        # If posting_id is provided, use existing posting
+        if 'posting_id' in data:
+            cursor.execute('SELECT ID FROM Posting WHERE ID = %s', (data['posting_id'],))
+            if not cursor.fetchone():
+                return jsonify({"error": "Posting not found"}), 404
+            position_id = data['posting_id']
+            
+        # Otherwise, create new posting
+        else:
+            # Validate required fields
+            required_fields = ['title', 'company_name', 'date_start', 'pay']
+            if not all(field in data for field in required_fields):
+                return jsonify({"error": "Missing required fields"}), 400
+                
+            # Get or create company
+            cursor.execute('SELECT ID FROM Company WHERE Name = %s', (data['company_name'],))
+            company_result = cursor.fetchone()
+            
+            if company_result:
+                company_id = company_result['ID']
+            else:
+                # Create new company
+                cursor.execute(
+                    'INSERT INTO Company (Name, Industry, Description) VALUES (%s, %s, %s)',
+                    (data['company_name'], data.get('industry'), data.get('company_description'))
+                )
+                company_id = cursor.lastrowid
+                
+            # Create or get location
+            location_query = '''
+                INSERT INTO Posting_Location (City, State, Country)
+                VALUES (%s, %s, %s)
+            '''
+            cursor.execute(location_query, (
+                data.get('city'),
+                data.get('state'),
+                data.get('country')
+            ))
+            location_id = cursor.lastrowid
+            
+            # Create new posting
+            posting_query = '''
+                INSERT INTO Posting (
+                    Name, Title, Company_ID, Location, Date_Start, Date_End,
+                    Description, Pay, Industry
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            '''
+            # Use title as the Name if not explicitly provided
+            posting_name = data.get('name', data['title'])
+            
+            cursor.execute(posting_query, (
+                posting_name,
+                data['title'],
+                company_id,
+                location_id,
+                data['date_start'],
+                data.get('date_end'),
+                data.get('description'),
+                data['pay'],
+                data.get('industry')
+            ))
+            position_id = cursor.lastrowid
+            
+            # Add skills if provided
+            if 'skills' in data:
+                for skill_name in data['skills']:
+                    # Get or create skill
+                    cursor.execute('SELECT ID FROM Skill WHERE Name = %s', (skill_name,))
+                    skill_result = cursor.fetchone()
+                    
+                    if not skill_result:
+                        cursor.execute('INSERT INTO Skill (Name) VALUES (%s)', (skill_name,))
+                        skill_id = cursor.lastrowid
+                    else:
+                        skill_id = skill_result['ID']
+                        
+                    # Add to posting_skills
+                    cursor.execute(
+                        'INSERT INTO Posting_Skills (Position_ID, Skill_ID) VALUES (%s, %s)',
+                        (position_id, skill_id)
+                    )
+        
+        # Add position to alumni's profile
+        cursor.execute(
+            'INSERT INTO Alumni_Position (Position_ID, Alumni_ID) VALUES (%s, %s)',
+            (position_id, alumni_id)
+        )
+        
+        db.get_db().commit()
+        return jsonify({
+            "message": "Position added successfully",
+            "position_id": position_id
+        }), 201
+        
+    except Exception as e:
+        current_app.logger.error(f"Error adding alumni position: {str(e)}")
+        db.get_db().rollback()
+        return jsonify({
+            "error": "An error occurred while adding the position",
+            "details": str(e)
+        }), 500
