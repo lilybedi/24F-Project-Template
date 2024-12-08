@@ -220,3 +220,30 @@ def restrict_account(account_type, account_id):
     except Exception as e:
         db.get_db().rollback()
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
+
+
+@system_admin.route('/<int:admin_id>', methods=['GET'])
+def get_system_admin(admin_id):
+    try:
+        cursor = db.get_db().cursor()
+        
+        query = '''
+            SELECT 
+                ID,
+                First_Name,
+                Last_Name,
+                Preferred_Name
+            FROM System_Admin
+            WHERE ID = %s
+        '''
+        cursor.execute(query, (admin_id,))
+        result = cursor.fetchone()
+        
+        if not result:
+            return jsonify({"error": "System admin not found"}), 404
+            
+        return jsonify(result), 200
+        
+    except Exception as e:
+        current_app.logger.error(f"Error fetching system admin: {str(e)}")
+        return jsonify({"error": f"Error occurred: {str(e)}"}), 500
