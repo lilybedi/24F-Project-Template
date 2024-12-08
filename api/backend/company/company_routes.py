@@ -8,6 +8,7 @@ from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
+from pymysql.err import IntegrityError, DatabaseError
 
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
@@ -28,7 +29,7 @@ def create_company_profile():
         cursor.execute(query, (
             data['name'],
             data['industry'],
-            data.get('description')
+            data.get('description', None)  # Use default value for description
         ))
         company_id = cursor.lastrowid
         db.get_db().commit()
@@ -37,9 +38,15 @@ def create_company_profile():
             "message": "Company profile created successfully",
             "company_id": company_id
         }), 201
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
 
+    except KeyError as ke:
+        return jsonify({"error": f"Missing field: {str(ke)}"}), 400
+    except IntegrityError as ie:
+        return jsonify({"error": "Database integrity error: " + str(ie)}), 400
+    except DatabaseError as de:
+        return jsonify({"error": "Database error: " + str(de)}), 500
+    except Exception as e:
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
 @companies.route('/profile/<int:company_id>', methods=['PUT'])
 def update_company_profile(company_id):

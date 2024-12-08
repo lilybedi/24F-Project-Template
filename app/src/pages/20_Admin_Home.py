@@ -14,39 +14,36 @@ st.title('System Admin Home Page')
 st.write(f"### Welcome, {st.session_state['first_name']}!")
 st.write('')
 
-BASE_URL = "http://api:4000"
-admin_id = st.session_state.get("alumni_id", 1)
+# admin_id = st.session_state.get("alumni_id", 1)
 
-
+# # try:
+# #     # Fetch alumni profile details
+# #     response = requests.get(f"{BASE_URL}/{admin_id}")
+# #     response.raise_for_status()
+# #     profile = response.json()
+    
+# #     # Display profile details
+# #     st.markdown(f"""
+# #     - **Name**: {profile['First_Name']} {profile['Last_Name']}
+# #     """)
+    
+# # except requests.RequestException as e:
+# #     st.error(f"Failed to fetch profile: {e}")
 
 # try:
-#     # Fetch alumni profile details
-#     response = requests.get(f"{BASE_URL}/{admin_id}")
-#     response.raise_for_status()
-#     profile = response.json()
-    
-#     # Display profile details
-#     st.markdown(f"""
-#     - **Name**: {profile['First_Name']} {profile['Last_Name']}
-#     """)
-    
+#         # Fetch admin profile details
+#         response = requests.get(f"{BASE_URL}/sys/{admin_id}")
+#         response.raise_for_status()
+#         profile = response.json()
+
+#         # Display profile details
+#         st.markdown(f"""
+#         - **Name**: {profile['First_Name']} {profile['Last_Name']}
+#         - **Preferred Name**: {profile.get('Preferred_Name', 'N/A')}
+#         """)
+
 # except requests.RequestException as e:
-#     st.error(f"Failed to fetch profile: {e}")
-
-try:
-        # Fetch admin profile details
-        response = requests.get(f"{BASE_URL}/sys/{admin_id}")
-        response.raise_for_status()
-        profile = response.json()
-
-        # Display profile details
-        st.markdown(f"""
-        - **Name**: {profile['First_Name']} {profile['Last_Name']}
-        - **Preferred Name**: {profile.get('Preferred_Name', 'N/A')}
-        """)
-
-except requests.RequestException as e:
-        st.error(f"Failed to fetch profile: {e}")
+#         st.error(f"Failed to fetch profile: {e}")
 
 st.write('')
 st.write('### What would you like to do today?')

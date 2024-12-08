@@ -7,34 +7,26 @@ st.set_page_config(layout='wide')
 
 # Show appropriate sidebar links for the role of the currently logged-in user
 SideBarLinks()
+
 BASE_URL = "http://web-api:4000/st"
 
-# Initialize session state for locations and pay thresholds
+# Initialize session state for locations, pay threshold, and selected parameters
 if "locations" not in st.session_state:
     st.session_state["locations"] = []  # Initialize with an empty list
 
 if "pay_threshold" not in st.session_state:
     st.session_state["pay_threshold"] = 15  # Default minimum pay
 
-# Default minimum pay
-DEFAULT_MIN_PAY = 15
-min_pay = DEFAULT_MIN_PAY  # Initialize to default value
+if "selected_location" not in st.session_state:
+    st.session_state["selected_location"] = "All Locations"  # Default location
 
-# Fetch existing locations and job postings
+# Fetch existing locations from API
 try:
     response = requests.get(f"{BASE_URL}/postings/by_location")
     response.raise_for_status()
-    locations = response.json()  # Assuming the API returns a list of locations
-
-    # Fetch job postings with default minimum pay
-    response = requests.get(f"{BASE_URL}/postings/by_pay?min_pay={min_pay}")
-    response.raise_for_status()
-    job_postings = response.json()
-
+    st.session_state["locations"] = list(set(st.session_state["locations"] + response.json()))
 except requests.exceptions.RequestException as e:
-    st.error(f"Failed to fetch data: {e}")
-    locations = []
-    job_postings = []
+    st.error(f"Failed to fetch locations: {e}")
 
 # Header Section: Navbar
 st.markdown(
@@ -80,6 +72,9 @@ with st.container():
         selected_location = st.selectbox(
             "Select a Location",
             ["All Locations"] + st.session_state["locations"],
+            index=["All Locations"] + st.session_state["locations"].index(st.session_state["selected_location"])
+            if st.session_state["selected_location"] in st.session_state["locations"]
+            else 0,
             key="location_filter",
         )
         # Input field for adding a new location
@@ -88,6 +83,8 @@ with st.container():
             if new_location not in st.session_state["locations"]:
                 st.session_state["locations"].append(new_location)
                 st.success(f"Added new location: {new_location}")
+                
+                st.rerun()  # Refresh page to update dropdown immediately
             else:
                 st.warning(f"Location '{new_location}' already exists.")
 
@@ -101,20 +98,21 @@ with st.container():
             key="min_pay_filter",
         )
         # Update session state for pay threshold
-        st.session_state["pay_threshold"] = min_pay
+        if min_pay != st.session_state["pay_threshold"]:
+            st.session_state["pay_threshold"] = min_pay
+            st.experimental_rerun()  # Refresh page to apply new pay threshold immediately
 
 st.divider()
 
-# Update job postings based on filters
+# Fetch job postings based on filters
 try:
-    query_params = f"?min_pay={min_pay}"
-    if selected_location and selected_location != "All Locations":
-        query_params += f"&location={selected_location}"
+    query_params = f"?min_pay={st.session_state['pay_threshold']}"
+    if st.session_state["selected_location"] != "All Locations":
+        query_params += f"&location={st.session_state['selected_location']}"
 
     response = requests.get(f"{BASE_URL}/postings/by_pay{query_params}")
     response.raise_for_status()
     job_postings = response.json()
-
 except requests.exceptions.RequestException as e:
     st.error(f"Failed to fetch filtered jobs: {e}")
     job_postings = []
@@ -126,7 +124,7 @@ job_col, details_col = st.columns([2, 3])
 with job_col:
     st.markdown("### Job Postings")
     for job in job_postings:
-        if st.button(job["Title"] + " | " + job["Company_Name"], key=job["ID"]):  # Each job title is a button
+        if st.button(job["Title"] + " | " + job["Company_Name"], key=job["ID"]):
             st.session_state["selected_job"] = job  # Update session state with the selected job
 
 # Job Details Column

@@ -54,8 +54,6 @@ def remove_advisor(advisor_id):
         db.get_db().rollback()
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
     
-
-
 @system_admin.route('/students/<int:student_id>/override', methods=['PUT'])
 def override_student_restrictions(student_id):
     try:

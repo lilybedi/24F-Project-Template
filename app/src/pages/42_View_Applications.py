@@ -92,6 +92,8 @@ if st.session_state.view_app_id:
         st.write(f"**Graduation Year:** {selected_app['grad_year']}")
         st.write(f"**GPA:** {selected_app['gpa']}")
         st.write(f"**Cycle:** {selected_app['cycle']}")
+        st.write(f"**Cycle:** {selected_app['cycle']}")
+
         st.write(f"[View Resume]({selected_app['resume_link']})")
         
         # Button to close detailed view

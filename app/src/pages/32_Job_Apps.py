@@ -85,6 +85,4 @@ with tabs[0]:
         st.image(selected_job["image"], use_container_width=True)
         st.markdown(f"**Job Title:** {selected_job['title']}")
         st.write(f"**Company Name:** {selected_job['company']}")
-        st.write(f"**Percentage Match:** {selected_job['match']}")
-        st.button("Click to see full breakdown")  # Static button for additional breakdown functionality
         st.write(f"**Job Description:** {selected_job['description']}")

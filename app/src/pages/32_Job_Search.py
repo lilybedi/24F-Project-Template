@@ -134,6 +134,5 @@ with details_col:
     st.markdown(f"**Job Title:** {selected_job['title']}")
     st.write(f"**Company Name:** {selected_job['company']}")
     st.write(f"**Percentage Match:** {selected_job['match']}")
-    st.button("Click to see full breakdown")  # Static button for additional breakdown functionality
     st.write(f"**Job Description:** {selected_job['description']}")
-
+    st.write(f"**:** {selected_job['description']}")
