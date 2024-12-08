@@ -318,3 +318,122 @@ def get_alumni_students(alumni_id):
     except Exception as e:
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
     
+@alumni.route('/<int:alumni_id>/positions', methods=['POST'])
+def add_alumni_position(alumni_id):
+    """
+    Add a new position to an alumni's profile. The position can either be:
+    1. An existing posting (using posting_id)
+    2. A new position entry (requiring full position details)
+    """
+    try:
+        data = request.get_json()
+        cursor = db.get_db().cursor()
+        
+        # First verify the alumni exists
+        cursor.execute('SELECT ID FROM Alumni WHERE ID = %s', (alumni_id,))
+        if not cursor.fetchone():
+            return jsonify({"error": "Alumni not found"}), 404
+            
+        position_id = None
+        
+        # If posting_id is provided, use existing posting
+        if 'posting_id' in data:
+            cursor.execute('SELECT ID FROM Posting WHERE ID = %s', (data['posting_id'],))
+            if not cursor.fetchone():
+                return jsonify({"error": "Posting not found"}), 404
+            position_id = data['posting_id']
+            
+        # Otherwise, create new posting
+        else:
+            # Validate required fields
+            required_fields = ['title', 'company_name', 'date_start', 'pay']
+            if not all(field in data for field in required_fields):
+                return jsonify({"error": "Missing required fields"}), 400
+                
+            # Get or create company
+            cursor.execute('SELECT ID FROM Company WHERE Name = %s', (data['company_name'],))
+            company_result = cursor.fetchone()
+            
+            if company_result:
+                company_id = company_result['ID']
+            else:
+                # Create new company
+                cursor.execute(
+                    'INSERT INTO Company (Name, Industry, Description) VALUES (%s, %s, %s)',
+                    (data['company_name'], data.get('industry'), data.get('company_description'))
+                )
+                company_id = cursor.lastrowid
+                
+            # Create or get location
+            location_query = '''
+                INSERT INTO Posting_Location (City, State, Country)
+                VALUES (%s, %s, %s)
+            '''
+            cursor.execute(location_query, (
+                data.get('city'),
+                data.get('state'),
+                data.get('country')
+            ))
+            location_id = cursor.lastrowid
+            
+            # Create new posting
+            posting_query = '''
+                INSERT INTO Posting (
+                    Name, Title, Company_ID, Location, Date_Start, Date_End,
+                    Description, Pay, Industry
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            '''
+            # Use title as the Name if not explicitly provided
+            posting_name = data.get('name', data['title'])
+            
+            cursor.execute(posting_query, (
+                posting_name,
+                data['title'],
+                company_id,
+                location_id,
+                data['date_start'],
+                data.get('date_end'),
+                data.get('description'),
+                data['pay'],
+                data.get('industry')
+            ))
+            position_id = cursor.lastrowid
+            
+            # Add skills if provided
+            if 'skills' in data:
+                for skill_name in data['skills']:
+                    # Get or create skill
+                    cursor.execute('SELECT ID FROM Skill WHERE Name = %s', (skill_name,))
+                    skill_result = cursor.fetchone()
+                    
+                    if not skill_result:
+                        cursor.execute('INSERT INTO Skill (Name) VALUES (%s)', (skill_name,))
+                        skill_id = cursor.lastrowid
+                    else:
+                        skill_id = skill_result['ID']
+                        
+                    # Add to posting_skills
+                    cursor.execute(
+                        'INSERT INTO Posting_Skills (Position_ID, Skill_ID) VALUES (%s, %s)',
+                        (position_id, skill_id)
+                    )
+        
+        # Add position to alumni's profile
+        cursor.execute(
+            'INSERT INTO Alumni_Position (Position_ID, Alumni_ID) VALUES (%s, %s)',
+            (position_id, alumni_id)
+        )
+        
+        db.get_db().commit()
+        return jsonify({
+            "message": "Position added successfully",
+            "position_id": position_id
+        }), 201
+        
+    except Exception as e:
+        current_app.logger.error(f"Error adding alumni position: {str(e)}")
+        db.get_db().rollback()
+        return jsonify({
+            "error": "An error occurred while adding the position",
+            "details": str(e)
+        }), 500

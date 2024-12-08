@@ -1,71 +1,105 @@
+import datetime
 import streamlit as st
 import requests
 from modules.nav import SideBarLinks
 
 st.set_page_config(layout='wide')
 
-# Show appropriate sidebar links for the role of the currently logged-in user
+# Sidebar navigation
 SideBarLinks()
 
-BASE_URL = "http://web-api:4000"
+# Base API URL
+BASE_URL = "http://api:4000"
 
-# Function to create a job posting
-def create_job_posting(job_data):
-    response = requests.post(f"{BASE_URL}/postings/create", json=job_data)
-    if response.status_code == 201:
-        st.success("Job added to profile!")
-    else:
-        st.error(f"Failed to add to profile: {response.status_code} - {response.json().get('error', 'Unknown error')}")
+# Function to add a position to the alumni's profile
+def add_alumni_position(alumni_id, position_data):
+    """Make a POST request to add a position to an alumni's profile."""
+    try:
+        st.write("Payload being sent to the backend:", position_data)
+        response = requests.post(f"{BASE_URL}/a/{alumni_id}/positions", json=position_data)
+        if response.status_code == 201:
+            st.success("Position added to alumni profile!")
+        else:
+            error_message = response.json().get("error", "Unknown error")
+            st.error(f"Failed to add position: {response.status_code} - {error_message}")
+    except requests.RequestException as e:
+        st.error(f"An error occurred: {e}")
 
-# Initialize session state for position data
+# Retrieve the alumni ID from session state
+if "alumni_id" not in st.session_state:
+    st.session_state["alumni_id"] = 1  # Replace with dynamic alumni ID retrieval
+
+alumni_id = st.session_state["alumni_id"]
+
+# Initialize session state for job data
 if "position_title" not in st.session_state:
-    st.session_state["position_title"] = "Position Name"
+    st.session_state["position_title"] = "Position Title"
 
-if "description" not in st.session_state:
-    st.session_state["description"] = ""
+if "company_name" not in st.session_state:
+    st.session_state["company_name"] = "Company Name"
 
 if "pay" not in st.session_state:
     st.session_state["pay"] = 0
 
-if "location" not in st.session_state:
-    st.session_state["location"] = "City, State"
+if "date_start" not in st.session_state:
+    st.session_state["date_start"] = None
+
+if "date_end" not in st.session_state:
+    st.session_state["date_end"] = None
+
+if "city" not in st.session_state:
+    st.session_state["city"] = ""
+
+if "state" not in st.session_state:
+    st.session_state["state"] = ""
+
+if "country" not in st.session_state:
+    st.session_state["country"] = ""
+
+if "description" not in st.session_state:
+    st.session_state["description"] = ""
+
+if "skills" not in st.session_state:
+    st.session_state["skills"] = ""
 
 # Header Section
-st.markdown("## List a co-op position")
+st.markdown("## Add a Position to Your Profile")
 st.divider()
 
 # Job Posting Form
-st.markdown("### Job Details")
+st.markdown("### Position Details")
 
-# Title and Pay
+# Input Fields
 st.text_input("Position Title", key="position_title")
+st.text_input("Company Name", key="company_name")
+st.text_input("Industry", key="industry")  # New field for industry
 st.number_input("Pay (in USD)", min_value=0, step=1, key="pay")
-st.text_input("Location (City, State)", key="location")
+st.date_input("Start Date", key="date_start", value=st.session_state["date_start"] or datetime.date.today())
+st.date_input("End Date (Optional)", key="date_end", value=st.session_state["date_end"])
+st.text_input("City", key="city")
+st.text_input("State", key="state")
+st.text_input("Country", key="country")
+st.text_area("Description", key="description")
+st.text_input("Required Skills (comma-separated)", key="skills")
 
-# Job Description
-st.text_area("Job Description", value=st.session_state["description"], key="description")
-
-# # Job review
-# st.text_area("Job review (what did you think?)", value=st.session_state["review"], key="review")
-
-def add_alumni_position(alumn_id, position_data): 
-    response = requests.post(f"{BASE_URL}/alumni/{alumn_id}/add_position", json=position_data) 
-    if response.status_code == 200: 
-        st.success("Position added to alumnus profile!") 
-    else: 
-        st.error(f"Failed to add position: {response.status_code} - {response.json().get('error', 'Unknown error')}")
-
-# Submit Button
-if st.button("Add to profile"):
+# Submit button
+if st.button("Add to Profile"):
     job_data = {
-        "alumn_ID": st.session_state["alumnID"],
         "title": st.session_state["position_title"],
+        "company_name": st.session_state["company_name"],
+        "industry": st.session_state.get("industry", ""),  # Add industry
         "pay": st.session_state["pay"],
-        "location": st.session_state["location"],
-        "required_skills": st.session_state["required_skills"],
+        "date_start": st.session_state["date_start"].strftime('%Y-%m-%d'),
+        "date_end": st.session_state["date_end"].strftime('%Y-%m-%d'),
+        "city": st.session_state["city"],
+        "state": st.session_state["state"],
+        "country": st.session_state["country"],
         "description": st.session_state["description"],
+        "skills": st.session_state["skills"].split(",") if st.session_state["skills"] else []
     }
-    add_alumni_position(job_data)
+    add_alumni_position(alumni_id, job_data)
+    st.switch_page("pages/Alumn_Home.py")
+
 
 # Divider
 st.divider()
