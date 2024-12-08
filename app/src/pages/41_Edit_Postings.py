@@ -14,6 +14,8 @@ job_postings = [
     {"id": "#004", "job_title": "CFO", "job_description": "Manage corporate financials", "min_gpa": "3.8", "grad_year": "2024", "college": "Engineering", "skills": "Accounting, Finance, Leadership"},
 ]
 
+st.session_state.job_postings = job_postings
+
 # UI Header Section
 st.markdown("## Manage Job Postings")
 st.divider()
