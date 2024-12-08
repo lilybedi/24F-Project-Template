@@ -1,13 +1,28 @@
-# Career Compass Repository
+# Career Compass 
+Tarini Shanka
 
-This repo is a template for your semester project.  It includes most of the infrastructure setup (containers) and sample code and data throughout.  Explore it fully and ask questions.
+## Final Presentation Video Link 
 
-## Prerequisites
 
-- A GitHub Account
-- A terminal-based or GUI git client
-- VSCode with the Python Plugin
-- A distrobution of Python running on your laptop (Choco (for Windows), brew (for Macs), miniconda, Anaconda, etc). 
+## Env file setup
+SECRET_KEY=someCrazyS3cR3T!Key.!
+DB_USER=root
+DB_HOST=db
+DB_PORT=3306
+DB_NAME=Career_Compass
+MYSQL_ROOT_PASSWORD=MYSQLpassword
+
+## Runinng the Docker Containers
+- docker compose up -d to start all the containers in the background
+- docker compose down to shutdown and delete the containers
+- docker compose up db -d only start the database container 
+- docker compose stop to turn off the containers but not delete them.
+
+## Project Overview 
+
+Career Compass is a data-driven application designed to enhance NUWorks by revolutionizing how Northeastern students, advisors, alumni, and employers/companies connect in the search and application process. By centralizing and streamlining profile management, job applications, and advisor progress tracking, this app empowers a variety of end-users to ensure a curated, efficient, and effective co-op search process. For students seeking highly specific roles, our app offers advanced filtering and tailored recommendations to ensure each co-op position aligns with their skillset, location preferences, and pay requirements. Meanwhile, advisors can monitor their set of assigned students at a glance, and easily identify those needing extra support through our advanced dashboard. They will no longer have to send and wait for email responses on co-op status, our dashboard will update in real-time once a student accepts an offer!	 
+
+Our app directly addresses critical pain points in the system by allowing companies to set minimum qualifications and job requirements, reducing time spent sifting through unqualified applications. It also allows for alumni to directly connect and mentor students without giving away sensitive information (phone number, etc). Key features include the ability for students to track their application history, advisors to view cohort-wide metrics, and employers to update job postings in real time. With this platform, each end-user has the tools to manage their co-op experience with confidence and transparency, fostering a stronger, more engaged Northeastern co-op program for all!
 
 ## Current Project Components
 
@@ -42,22 +57,25 @@ Before you start: As a team, one person needs to assume the role of *Team Projec
 - `docker compose up db -d` only start the database container (replace db with the other services as needed)
 - `docker compose stop` to "turn off" the containers but not delete them. 
 
+## Users 
+
+### Student 
+A student currently taking classes at Northeastern needs to be able to apply to co-ops and use special filters, connect with alumni and their advisor. 
+### Company Employee 
+A company employee that needs to be able to post/edit a job with minimum requirements, view student applications and mark a posting as filled or delete it. 
+### Student Advisor
+An advisor needs to be able to interact with their students by viewing their applications. Should also be able to filter students that have and have not recieved co-ops and view their profiles. 
+### Alumni 
+An alumni who has graduated from Northeastern having done a co-op should be able to connect with students to give them advice. They should also be able to display thier previous co-op experiences. 
+### System Administrator 
+A system administrator should be able view tickets of errors that need fixing, resolve or delete these errors and they should have full control over all users including, deleting accounts. 
 
 ## Handling User Role Access and Control
 
-In most applications, when a user logs in, they assume a particular role.  For instance, when one logs in to a stock price prediction app, they may be a single investor, a portfolio manager, or a corporate executive (of a publicly traded company).  Each of those *roles* will likely present some similar features as well as some different features when compared to the other roles. So, how do you accomplish this in Streamlit?  This is sometimes called Role-based Access Control, or **RBAC** for short. 
+Each persona is accessed by click on one of the Act as blank Buttons which brings the user to exclusive 
 
-The code in this project demonstrates how to implement a simple RBAC system in Streamlit but without actually using user authentication (usernames and passwords).  The Streamlit pages from the original template repo are split up among 3 roles - Political Strategist, USAID Worker, and a System Administrator role (this is used for any sort of system tasks such as re-training ML model, etc.). It also demonstrates how to deploy an ML model. 
-
-Wrapping your head around this will take a little time and exploration of this code base.  Some highlights are below. 
-
-### Getting Started with the RBAC 
-1. We need to turn off the standard panel of links on the left side of the Streamlit app. This is done through the `app/src/.streamlit/config.toml` file.  So check that out. We are turning it off so we can control directly what links are shown. 
-1. Then I created a new python module in `app/src/modules/nav.py`.  When you look at the file, you will se that there are functions for basically each page of the application. The `st.sidebar.page_link(...)` adds a single link to the sidebar. We have a separate function for each page so that we can organize the links/pages by role. 
-1. Next, check out the `app/src/Home.py` file. Notice that there are 3 buttons added to the page and when one is clicked, it redirects via `st.switch_page(...)` to that Roles Home page in `app/src/pages`.  But before the redirect, I set a few different variables in the Streamlit `session_state` object to track role, first name of the user, and that the user is now authenticated.  
-1. Notice near the top of `app/src/Home.py` and all other pages, there is a call to `SideBarLinks(...)` from the `app/src/nav.py` module.  This is the function that will use the role set in `session_state` to determine what links to show the user in the sidebar. 
-1. The pages are organized by Role.  Pages that start with a `0` are related to the *Political Strategist* role.  Pages that start with a `1` are related to the *USAID worker* role.  And, pages that start with a `2` are related to The *System Administrator* role. 
-
+## Accessing Career Compass
+http://localhost:8503/
 
 
  
