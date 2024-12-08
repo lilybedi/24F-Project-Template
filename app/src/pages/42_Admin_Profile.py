@@ -1,43 +1,129 @@
+# admin_profile.py
 import streamlit as st
 import logging
-logger = logging.getLogger(__name__)
-import requests  # You can use this to make API calls in real-world apps
+import requests
+from datetime import datetime
 from modules.nav import SideBarLinks
 
-# Set page configuration
-st.set_page_config(layout="centered", page_title="Admin Profile", page_icon="🛠️")
-SideBarLinks()
+logger = logging.getLogger(__name__)
 
-# --- Check if 'first_name' is in session state and display it ---
-if 'first_name' not in st.session_state:
-    st.session_state['first_name'] = 'Admin'  # Default value if not set
+# Constants
+API_BASE_URL = "http://api:4000/sys"  # Adjust based on your Flask backend URL
+DEFAULT_ADMIN_ID = 1
 
-# Admin Profile Information NEEDS TO BE CONNECTED TO BACKEND
-admin_profile = {
-    "ID": "123243435",
-    "role": "System Admin",
-    "last_login": "2024-12-06 09:45 AM"
-}
+def fetch_admin_data(admin_id):
+    """Fetch admin data from backend API"""
+    try:
+        response = requests.get(f"{API_BASE_URL}/{admin_id}")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logger.error(f"Failed to fetch admin data: {response.status_code}")
+            return None
+    except Exception as e:
+        logger.error(f"Error fetching admin data: {str(e)}")
+        return None
 
-# --- Admin Profile Display ---
-st.markdown(f"# Welcome, {st.session_state['first_name']}.")
+def fetch_tickets():
+    """Fetch tickets from backend API"""
+    try:
+        response = requests.get(f"{API_BASE_URL}/tickets")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logger.error(f"Failed to fetch tickets: {response.status_code}")
+            return []
+    except Exception as e:
+        logger.error(f"Error fetching tickets: {str(e)}")
+        return []
 
-# Display the admin's profile in two columns
-col1, col2 = st.columns([1, 1])
+def fetch_recent_applications():
+    """Fetch recent applications from backend API"""
+    try:
+        response = requests.get(f"{API_BASE_URL}/activity/applications")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logger.error(f"Failed to fetch applications: {response.status_code}")
+            return []
+    except Exception as e:
+        logger.error(f"Error fetching applications: {str(e)}")
+        return []
 
-with col1:
-    st.subheader("Admin Information")
-    st.write(f"**Name**: {st.session_state['first_name']}")
-    st.write(f"**ID**: {admin_profile['ID']}")
-    st.write(f"**Role**: {admin_profile['role']}")
-    st.write(f"**Last Login**: {admin_profile['last_login']}")
+def main():
+    # Page configuration
+    st.set_page_config(layout="centered", page_title="Admin Profile", page_icon="🛠️")
+    SideBarLinks()
 
-# Button for System Settings
-with col2:
-    if st.button("System Settings"):
-        # This button could lead to a different page or trigger a system settings function
-        st.info("System settings would be implemented here!")
-        # You can redirect to another page or open a modal in the app with further options
+    # Initialize session state
+    if 'admin_data' not in st.session_state:
+        admin_data = fetch_admin_data(DEFAULT_ADMIN_ID)
+        if admin_data:
+            st.session_state['admin_data'] = admin_data
+            st.session_state['first_name'] = admin_data.get('First_Name', 'Admin')
+        else:
+            st.session_state['first_name'] = 'Admin'
 
-# --- Footer Section ---
-st.markdown("---")
+    # Main header
+    st.markdown(f"# Welcome, {st.session_state['first_name']}!")
+
+    # Admin Profile Section
+    col1, col2 = st.columns([1, 1])
+
+    with col1:
+        st.subheader("Admin Information")
+        if 'admin_data' in st.session_state:
+            admin_data = st.session_state['admin_data']
+            st.write(f"**Name**: {admin_data.get('First_Name', '')} {admin_data.get('Last_Name', '')}")
+            st.write(f"**Preferred Name**: {admin_data.get('Preferred_Name', 'Not set')}")
+            st.write(f"**ID**: {admin_data.get('ID', '')}")
+            st.write(f"**Role**: System Administrator")
+            st.write(f"**Last Login**: {datetime.now().strftime('%Y-%m-%d %I:%M %p')}")
+
+    # System Settings and Actions
+    with col2:
+        st.subheader("Quick Actions")
+        if st.button("System Settings"):
+            st.info("System settings would be implemented here!")
+        if st.button("Refresh Data"):
+            st.session_state['admin_data'] = fetch_admin_data(DEFAULT_ADMIN_ID)
+            st.rerun()
+
+    # Tickets Section
+    st.markdown("---")
+    st.subheader("Recent Support Tickets")
+    tickets = fetch_tickets()
+    if tickets:
+        for ticket in tickets[:5]:  # Show last 5 tickets
+            with st.expander(f"Ticket #{ticket['ID']}: {ticket['Message'][:50]}..."):
+                st.write(f"**Reporter**: {ticket['Reporter_First_Name']} {ticket['Reporter_Last_Name']}")
+                st.write(f"**Status**: {'Completed' if ticket['Completed'] else 'Pending'}")
+                if not ticket['Completed']:
+                    if st.button("Mark Complete", key=f"ticket_{ticket['ID']}"):
+                        try:
+                            requests.put(
+                                f"{API_BASE_URL}/tickets/{ticket['ID']}", 
+                                json={"completed": True}
+                            )
+                            st.success("Ticket marked as complete!")
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Failed to update ticket: {str(e)}")
+
+    # Recent Applications Section
+    st.markdown("---")
+    st.subheader("Recent Applications")
+    applications = fetch_recent_applications()
+    if applications:
+        for app in applications[:5]:  # Show last 5 applications
+            with st.expander(f"Application: {app['Position_Name']} at {app['Company_Name']}"):
+                st.write(f"**Student**: {app['Student_First_Name']} {app['Student_Last_Name']}")
+                st.write(f"**Submitted**: {app['submittedDate']}")
+                st.write(f"**Status**: {app['Status_Description']}")
+
+    # Footer
+    st.markdown("---")
+    st.markdown("*For technical support, please contact the IT department.*")
+
+if __name__ == "__main__":
+    main()

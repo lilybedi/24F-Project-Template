@@ -50,6 +50,8 @@ def create_app():
     app.register_blueprint(companies, url_prefix='/cp')
     app.register_blueprint(advisors, url_prefix='/ad')
     app.register_blueprint(system_admin, url_prefix='/sys')
+    app.register_blueprint(students, url_prefix='/s')
+
 
 
     # Don't forget to return the app object

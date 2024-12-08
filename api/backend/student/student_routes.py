@@ -111,6 +111,7 @@ def edit_student_profile(student_id):
 
 @students.route('/postings/by_pay', methods=['GET'])
 def filter_postings_by_pay():
+    logging.info("filter_postings_by_pay endpoint was called")
     min_pay = request.args.get('min_pay', type=int)
     query = '''
         SELECT p.*, c.Name as Company_Name, pl.City, pl.State, pl.Country
@@ -183,6 +184,8 @@ def get_all_jobs():
         location = request.args.get('location', '')
         min_pay = request.args.get('min_pay', type=int, default=0)
 
+        logging.info(f"Fetching jobs with location: {location}, min_pay: {min_pay}")
+
         # Base query - removed trailing comma after Position_Title
         query = '''
             SELECT 
@@ -231,6 +234,7 @@ def get_all_jobs():
 
         return jsonify(results), 200
     except Exception as e:
+        logging.error(f"Error fetching jobsL {e}")
         return jsonify({"error": str(e)}), 400
 
 

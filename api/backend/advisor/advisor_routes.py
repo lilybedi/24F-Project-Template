@@ -206,3 +206,30 @@ def get_term_summary(advisor_id):
         }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+
+@advisors.route('/<int:advisor_id>', methods=['GET'])
+def get_advisor_by_id(advisor_id):
+    """Fetch advisor details by ID"""
+    try:
+        query = '''
+            SELECT 
+                a.ID,
+                a.First_Name,
+                a.Last_Name,
+                a.Preferred_Name,
+                c.Name as College_Name
+            FROM Advisor a
+            JOIN College c ON a.College_ID = c.ID
+            WHERE a.ID = %s
+        '''
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (advisor_id,))
+        result = cursor.fetchone()
+
+        if not result:
+            return jsonify({"error": "Advisor not found"}), 404
+
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

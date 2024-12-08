@@ -5,6 +5,8 @@ from modules.nav import SideBarLinks
 
 SideBarLinks()
 
+#TODO: FIX ERROR 404 ON FETCHING JOBS
+BASE_URL = "http://api:4000"
 
 #
 # Information needed on load -- FIX
